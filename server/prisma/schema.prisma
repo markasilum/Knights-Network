@@ -10,24 +10,264 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Profiling Module and Resume Module Tables
 model Person {
-  id              String   @id @default(uuid())
-  firstName       String
-  middleName      String
-  lastName        String
-  suffix          String
-  maindenLastName String
-  maritalStatus   String
-  birthdate       DateTime @db.DateTime(0)
-  username        String
-  password        String
-  streetAddress   String
-  cityName        String
-  countryName     String
-  zipCode         String
-  contactNum      String
-  emailAddress    String
-  profPic         Bytes
-  biography       String
-  verified        Boolean
+  id                String                  @id @default(uuid())
+  firstName         String
+  middleName        String
+  lastName          String
+  suffix            String
+  maindenLastName   String
+  maritalStatus     String
+  birthdate         DateTime                @db.Date
+  username          String
+  password          String
+  streetAddress     String
+  cityName          String
+  countryName       String
+  zipCode           String
+  contactNum        String
+  emailAddress      String
+  profPic           Bytes
+  biography         String
+  verified          Boolean
+  education         Education[]
+  experience        Experience[]
+  certificaiton     Certification[]
+  verifiReq         PersonVerificationReqs?
+  skills            PersonSkill[]
+  personLicense     PersonLicense[]
+  role              Roles?
+  applicationLetter ApplicationLetter[]
+  application       Application[]
+}
+
+model Education {
+  id         String   @id @default(uuid())
+  person     Person   @relation(fields: [personId], references: [id])
+  personId   String
+  schoolName String
+  awards     String?
+  qpi        String?
+  startDate  DateTime @db.Date
+  endDate    DateTime @db.Date
+  degree     Degree   @relation(fields: [degreeId], references: [id])
+  degreeId   String
+}
+
+model Degree {
+  id           String         @id @default(uuid())
+  degreeName   String
+  education    Education[]
+  jobDegreeReq JobDegreeReq[]
+}
+
+model Experience {
+  id          String   @id @default(uuid())
+  person      Person   @relation(fields: [personId], references: [id])
+  personId    String
+  jobTitle    String
+  jobDetails  String
+  companyName String
+  startDate   DateTime @db.Date
+  endDate     DateTime @db.Date
+}
+
+model Certification {
+  id          String @id @default(uuid())
+  person      Person @relation(fields: [personId], references: [id])
+  personId    String
+  certName    String
+  certDetails String
+  certPhoto   Bytes
+}
+
+model PersonVerificationReqs {
+  id       String @id @default(uuid())
+  person   Person @relation(fields: [personId], references: [id])
+  personId String @unique
+  idPhoto  Bytes
+}
+
+model PersonSkill {
+  id       String @id @default(uuid())
+  person   Person @relation(fields: [personId], references: [id])
+  personId String
+  skill    Skills @relation(fields: [skillId], references: [id])
+  skillId  String
+}
+
+model Skills {
+  id           String         @id @default(uuid())
+  skillName    String
+  personSkill  PersonSkill[]
+  jobSkillsReq JobSkillsReq[]
+}
+
+model PersonLicense {
+  id        String      @id @default(uuid())
+  person    Person      @relation(fields: [personId], references: [id])
+  personId  String
+  license   PRCLicenses @relation(fields: [licenseId], references: [id])
+  licenseId String
+}
+
+model PRCLicenses {
+  id            String          @id @default(uuid())
+  licenseName   String
+  personLicense PersonLicense[]
+  jobLicenseReq JobLicenseReq[]
+}
+
+model Roles {
+  id           String     @id @default(uuid())
+  roleName     String
+  person       Person     @relation(fields: [personId], references: [id])
+  personId     String     @unique
+  company      Company    @relation(fields: [companyId], references: [id])
+  companyId    String     @unique
+  supervisor   Supervisor @relation(fields: [supervisorId], references: [id])
+  supervisorId String     @unique
+}
+
+model Company {
+  id            String                   @id @default(uuid())
+  companyName   String
+  companySize   String
+  username      String
+  password      String
+  streetAddress String
+  cityName      String
+  countryName   String
+  zipCode       String
+  contactNum    String
+  emailAddress  String
+  profPic       Bytes
+  biography     String
+  verified      Boolean
+  role          Roles?
+  verifiReq     CompanyVerificationReqs?
+  industry      CompIndustry[]
+  jobPost       JobPost[]
+  companyEvents CompanyEvents[]
+}
+
+model CompanyVerificationReqs {
+  id              String  @id @default(uuid())
+  company         Company @relation(fields: [companyId], references: [id])
+  companyId       String  @unique
+  secRegistration Bytes
+  dtiRegistration Bytes
+  businessPermit  Bytes
+}
+
+model CompIndustry {
+  id         String   @id @default(uuid())
+  company    Company  @relation(fields: [companyId], references: [id])
+  companyId  String   @unique
+  industry   Industry @relation(fields: [industryId], references: [id])
+  industryId String
+}
+
+model Industry {
+  id           String         @id @default(uuid())
+  industryName String
+  compIndustry CompIndustry[]
+}
+
+//Job Posting Module Tables
+
+model JobPost {
+  id                String              @id @default(uuid())
+  company           Company             @relation(fields: [companyId], references: [id])
+  companyId         String
+  jobTitle          String
+  yearsExp          String
+  jobDesc           String
+  jobLoc            String
+  employmentType    String
+  salary            Int
+  isOpen            Boolean
+  workModel         String
+  validity          DateTime
+  numOfPosition     Int
+  isAppLetterReq    Boolean
+  dateCreated       DateTime            @default(now())
+  dateUpdated       DateTime            @updatedAt
+  applicationLetter ApplicationLetter[]
+  application       Application[]
+  jobSkillsReq      JobSkillsReq[]
+  jobLicenseReq     JobLicenseReq[]
+  jobDegreeReq      JobDegreeReq[]
+}
+
+model ApplicationLetter {
+  id            String  @id @default(uuid())
+  appLetterFile Boolean
+  person        Person  @relation(fields: [personId], references: [id])
+  personId      String
+  jobPost       JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId     String
+}
+
+model Application {
+  id        String  @id @default(uuid())
+  person    Person  @relation(fields: [personId], references: [id])
+  personId  String
+  jobPost   JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId String
+}
+
+model JobSkillsReq {
+  id        String  @id @default(uuid())
+  jobPost   JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId String
+  skill     Skills  @relation(fields: [skillId], references: [id])
+  skillId   String
+}
+
+model JobLicenseReq {
+  id        String      @id @default(uuid())
+  jobPost   JobPost     @relation(fields: [jobPostId], references: [id])
+  jobPostId String
+  license   PRCLicenses @relation(fields: [licenseId], references: [id])
+  licenseId String
+}
+
+model JobDegreeReq {
+  id        String  @id @default(uuid())
+  jobPost   JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId String
+  degree    Degree  @relation(fields: [degreeId], references: [id])
+  degreeId  String
+}
+
+model Supervisor {
+  id           String @id @default(uuid())
+  firstName    String
+  middleName   String
+  lastName     String
+  suffix       String
+  contactNum   String
+  emailAddress String
+  role         Roles?
+}
+
+model Events {
+  id            String          @id @default(uuid())
+  eventName     String
+  eventDesc     String
+  eventDate     DateTime        @db.Date
+  eventTime     DateTime        @db.Time()
+  eventLocation String
+  eventPhoto    Bytes
+  companyEvents CompanyEvents[]
+}
+
+model CompanyEvents {
+  id        String  @id @default(uuid())
+  event     Events  @relation(fields: [eventId], references: [id])
+  eventId   String
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String
 }
