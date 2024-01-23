@@ -9,7 +9,7 @@ const port = 3000;
 app.use(cors())
 
 app.get('/api/data', async (req, res) => {
-    const data = await prisma.person.findMany();
+    const data = await prisma.person.findFirst();
     res.json(data);
   });
 
