@@ -28,7 +28,7 @@ model Person {
   zipCode           String
   contactNum        String
   emailAddress      String
-  profPic           Bytes
+  profPic           Bytes?
   biography         String
   verified          Boolean
   education         Education[]
