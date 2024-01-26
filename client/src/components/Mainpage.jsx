@@ -5,10 +5,10 @@ import HomePage from './HomePage'
 
 const Mainpage = () => {
   return (
-    <div className='w-9/12 bg-black h-screen flex flex-col'>
+    <div className='w-9/12 bg-neutral  h-screen flex flex-col'>
         <TopBar/>
         
-        <div className='flex flex-row'>
+        <div className='flex flex-row gap-2'>
             <SideBar/>
             <HomePage/>
         </div>
