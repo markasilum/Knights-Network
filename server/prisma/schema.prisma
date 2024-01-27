@@ -17,9 +17,9 @@ model Person {
   middleName        String
   lastName          String
   suffix            String
-  maindenLastName   String
-  maritalStatus     String
-  birthdate         DateTime                @db.Date
+  maindenLastName   String?
+  maritalStatus     String?
+  birthdate         DateTime?                @db.Date
   username          String
   password          String
   streetAddress     String
