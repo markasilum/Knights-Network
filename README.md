@@ -30,6 +30,10 @@ Create scripts for starting the server in your package.json:
   "dev": "nodemon server"
 }
 ```
+Use nodemon on server file:
+```
+npx nodemon server.js
+```
 
 ### Prisma Setup
 Install Prisma:
@@ -55,3 +59,12 @@ npm install
 npm run dev
 ```
 
+## Server Dependencies
+### CORS
+```
+npm install cors
+```
+### Multer
+```
+npm install --save multer
+```
