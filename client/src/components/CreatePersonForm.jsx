@@ -39,13 +39,19 @@ const CreatePersonForm = () => {
       formData.append('zipCode', zipCode);
       formData.append('countryName', countryName);
       formData.append('emailAddress', emailAddress);
-      formData.append('phoneNumber', phoneNumber);
-      formData.append('bio', bio);
-      formData.append('verified', false);
+      formData.append('contactNum', phoneNumber);
+      formData.append('biography', bio);
+     
 
       for (const value of formData.values()) {
         console.log(value);
       }
+
+      // const data = new URLSearchParams();
+      
+      // for (const pair of formData.values()) {
+      //   data.append(pair[0], pair[1]);
+      // }
     try {
       // Send the article data to your server
       const response = await fetch('http://localhost:3000/api/persons', {
@@ -65,7 +71,7 @@ const CreatePersonForm = () => {
      
     } catch (error) {
       setIsSubmitting(false);
-      console.error('Error submitting article:', error);
+      console.error('Error creating person:', error);
     }
   };
  
