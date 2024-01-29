@@ -13,7 +13,7 @@ import CreateAccount from './pages/Create-Account/CreateAccount';
 function App() {
 
   return (
-    <div className='className=w-full h-screen flex justify-center align-middle bg-base-200 overflow-hidden	'>
+    <div className='className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	'>
       <Router>
           <Routes>
             <Route index element={<Mainpage/>}/>
