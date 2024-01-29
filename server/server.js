@@ -8,8 +8,8 @@ const app = express();
 const port = 3000;
 
 app.use(cors())
-app.use(express.json())  
-app.use(express.urlencoded({extended: false}))
+// app.use(express.json())  
+// app.use(express.urlencoded({extended: false}))
 const upload = multer();
 
 app.get('/api/data', async (req, res) => {
@@ -26,7 +26,7 @@ app.get('/api/data', async (req, res) => {
       const streetAddress = `${houseNumber} ${street}`;
   
       // Create a new person record in the database using Prisma
-      const newPerson = await prisma.person.create({
+      const newPerson = await prisma.person.create({ 
         data: {
           firstName,
           middleName,
