@@ -16,7 +16,7 @@ model Person {
   firstName         String
   middleName        String
   lastName          String
-  suffix            String
+  suffix            String?
   maindenLastName   String?
   maritalStatus     String?
   birthdate         DateTime?                @db.Date
@@ -29,7 +29,7 @@ model Person {
   contactNum        String
   emailAddress      String
   profPic           Bytes?
-  biography         String
+  biography         String @db.Text
   verified          Boolean
   education         Education[]
   experience        Experience[]
