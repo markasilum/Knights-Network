@@ -20,13 +20,13 @@ useEffect(() => {
   return (
     
     <div className='flex flex-col w-9/12  h-screen  bg-neutral '>
-      <div className='pt-5 pr-5 pl-3'>
+      <div className='pt-5 pr-5 pl-3 overflow-auto'>
 
         <div className='overflow-hidden w-full bg-white h-80 p-5 flex flex-col shadow-md rounded-xl'>
                 <div className='w-28 min-h-28 bg-black flex flex-col'></div>
                 <h1 className='font-bold text-2xl mt-5'>{data.firstName+" "+data.middleName+" "+data.lastName}</h1>
-                <p>{data.streetAddress}</p>
-                <p>{data.cityName}</p>
+                <p>{data.streetAddress+","}</p>
+                <p>{data.cityName+","}</p>
                 <p>{data.countryName}</p>
 
                 <div className='mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 '>
@@ -36,8 +36,9 @@ useEffect(() => {
                 </div>
         </div>
 
-        <div className='overflow-auto-y w-full bg-white h-full mt-5 p-5 flex flex-col'>
-            <p>{data.biography}</p>
+        {/* create a component */}
+        <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl shadow-md mb-5'>
+            <p className='text-justify'>{data.biography}</p>
         </div>  
       </div>
     </div>
