@@ -2,7 +2,7 @@ import React from 'react'
 
 const TopBar = () => {
   return (
-    <div className='navbar bg-primary text-base-100 text-2xl justify-between'>
+    <div className='navbar bg-primary text-base-100 text-2xl justify-between '>
     <div className='flex flex-row'>
       <img src="src\assets\UniversitySealWhite.png" className="h-12 w-12 m-3"/>
       <p>Knights Network </p>
