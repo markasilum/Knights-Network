@@ -15,7 +15,7 @@ const upload = multer();
 app.get('/api/data', async (req, res) => {
     const data = await prisma.person.findUnique({
       where:{
-        id: "b38c6bf3-59f0-41d3-824b-01ae40b18d67",
+        id: "5f7e70ef-fc8c-40d5-92a5-7a4f2761b038",
       },}
     );
     
