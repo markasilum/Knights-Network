@@ -158,7 +158,7 @@ const CreatePersonForm = () => {
           </div>
         </label>
           
-          {/* <div className='flex flex-row justify-center gap-10 items-center'>   
+          <div className='flex flex-row justify-center gap-10 items-center'>   
               <div className='flex flex-row items-center'>
               <input type="radio" name="radio-10" id="student" className="radio checked:bg-success" checked />
                 <label className="label cursor-pointer">
@@ -172,7 +172,7 @@ const CreatePersonForm = () => {
                     <span className="label-text">Alumni</span> 
                 </label>
                 </div>  
-          </div> */}
+          </div>
         </div>
       </div>
 
