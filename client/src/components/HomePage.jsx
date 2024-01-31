@@ -34,7 +34,7 @@ useEffect(() => {
                 <div className="w-28 ">
                   <img className='rounded-xl' src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                 </div>
-                <h1 className='font-bold text-2xl mt-5'>{data.firstName+" "+data.middleName+" "+data.lastName}</h1>
+                <h1 className='font-bold text-2xl mt-5'>{data.firstName+" "+data.middleName+" "+data.lastName +" "+data.suffix}</h1>
                 <p>{data.streetAddress+","}</p>
                 <p>{data.cityName+","}</p>
                 <p>{data.countryName}</p>

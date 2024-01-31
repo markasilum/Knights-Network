@@ -1,5 +1,12 @@
 import React from 'react'
 import { useState, useEffect} from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useNavigate 
+} from "react-router-dom";
+
 import TopBar from './topbar'
 
 const EditPersonProfile = (userData) => {
@@ -9,15 +16,14 @@ const EditPersonProfile = (userData) => {
     const [suffix, setSuffix] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [houseNumber, setHouseNumber] = useState('');
-    const [street, setStreet] = useState('');
+    const [streetAddress, setStreetAdd] = useState('');
     const [cityName, setCityName] = useState('');
     const [zipCode, setZipCode] = useState('');
     const [countryName, setCountryName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [bio, setBio] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,14 +37,13 @@ const EditPersonProfile = (userData) => {
                 setSuffix(result.suffix);
                 setUsername(result.username);
                 setPassword(result.password);
-                setHouseNumber(result.houseNumber);
-                setStreet(result.street);
+                setStreetAdd(result.streetAddress)
                 setCityName(result.cityName);
                 setZipCode(result.zipCode);
                 setCountryName(result.countryName);
                 setEmailAddress(result.emailAddress);
-                setPhoneNumber(result.phoneNumber);
-                setBio(result.bio);
+                setPhoneNumber(result.contactNum);
+                setBio(result.biography);
 
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -63,8 +68,7 @@ const EditPersonProfile = (userData) => {
         formData.append('suffix', suffix);
         formData.append('username', username);
         formData.append('password', password);
-        formData.append('houseNumber', houseNumber);
-        formData.append('street', street);
+        formData.append('streetAddress', streetAddress);
         formData.append('cityName', cityName);
         formData.append('zipCode', zipCode);
         formData.append('countryName', countryName);
@@ -84,21 +88,13 @@ const EditPersonProfile = (userData) => {
         // }
       try {
         // Send the article data to your server
-        const response = await fetch('http://localhost:3000/api/persons', {
-          method: 'POST',
+        const response = await fetch('http://localhost:3000/api/updateperson', {
+          method: 'PUT',
           body: formData
         });
-  
-        const responseData = await response.json();
-  
-        if (!response.ok) {
-          throw new Error(responseData.error);
-        }
-       
-  
-        const newArticleId = responseData.id; 
-  
-       
+
+      navigate("/home")
+      
       } catch (error) {
         setIsSubmitting(false);
         console.error('Error creating person:', error);
@@ -151,8 +147,7 @@ const EditPersonProfile = (userData) => {
           </label>
         
         <div className='grid grid-cols-2 gap-2 w-full'>
-          <input type="text" id="houseNumber" placeholder="House #" className="input input-bordered w-full " value={houseNumber} onChange={(e) => setHouseNumber(e.target.value)} />
-          <input type="text" id="street" placeholder="Street" className="input input-bordered w-full" value={street} onChange={(e) => setStreet(e.target.value)} />
+          <input type="text" id="streetAddress" placeholder="House #, Street Name" className="input input-bordered w-full col-span-2" value={streetAddress} onChange={(e) => setStreetAdd(e.target.value)} />
           <input type="text" id="cityName" placeholder="City Name" className="input input-bordered w-full " value={cityName} onChange={(e) => setCityName(e.target.value)} />
           <input type="text" id="zipCode" placeholder="Zip Code" className="input input-bordered w-full" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
           <input type="text" id="countryName" placeholder="Country Name" className="input input-bordered w-full col-span-2" value={countryName} onChange={(e) => setCountryName(e.target.value)} />
@@ -182,7 +177,7 @@ const EditPersonProfile = (userData) => {
             <input type="file" id="profilePicture" className="file-input file-input-bordered w-full max-w-xs" />
           </div>
           
-          <div>
+          {/* <div>
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text font-bold">Student or Alumni</span>
@@ -204,7 +199,7 @@ const EditPersonProfile = (userData) => {
                   </label>
                   </div>  
             </div>
-          </div>
+          </div> */}
         </div>
   
         <label className="form-control w-full max-w-xs">
