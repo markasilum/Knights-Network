@@ -22,7 +22,8 @@ app.get('/api/data', async (req, res) => {
 
     res.json(data);
   });
-  app.post('/api/persons',upload.none(), async (req, res) => {
+//create person
+app.post('/api/persons',upload.none(), async (req, res) => {
     console.log('Request Body:', req.body);
     try {
       // Extract data from the request body
@@ -59,6 +60,10 @@ app.get('/api/data', async (req, res) => {
       console.log(req.body)
     }
   });
+
+app.put('/api/updateperson', (req, res) => {
+    res.send('Got a PUT request at /user')
+  })
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
