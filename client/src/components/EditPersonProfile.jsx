@@ -1,8 +1,8 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import TopBar from './topbar'
 
-const EditPersonProfile = (userId) => {
+const EditPersonProfile = (userData) => {
     const [firstName, setFirstName] = useState('');
     const [middleName, setMiddleName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -18,6 +18,35 @@ const EditPersonProfile = (userId) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [bio, setBio] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:3000/api/data');
+            const result = await response.json();
+
+                setFirstName(result.firstName);
+                setMiddleName(result.middleName);
+                setLastName(result.lastName);
+                setSuffix(result.suffix);
+                setUsername(result.username);
+                setPassword(result.password);
+                setHouseNumber(result.houseNumber);
+                setStreet(result.street);
+                setCityName(result.cityName);
+                setZipCode(result.zipCode);
+                setCountryName(result.countryName);
+                setEmailAddress(result.emailAddress);
+                setPhoneNumber(result.phoneNumber);
+                setBio(result.bio);
+
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+
+      fetchData();
+    }, []);
   
   
     const handleSubmit = async (event) => {
@@ -195,7 +224,7 @@ const EditPersonProfile = (userId) => {
           <input type="file" id="validId" className="file-input file-input-bordered w-full" />
         </div>
   
-        <button type="submit" className={`btn btn-primary w-40 mt-5`}>Create Account</button>
+        <button type="submit" className={`btn btn-primary w-40 mt-5`}>Update Account</button>
   
         </div>
       </form>
