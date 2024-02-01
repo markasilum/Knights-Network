@@ -83,20 +83,17 @@ app.post('/api/persons',upload.none(), async (req, res) => {
   });
 
 app.put('/api/updateperson',upload.none(), async (req, res) => {
+  //to do: include id in the request body
   try {
     // Extract data from the request body
-    const { firstName, middleName, lastName, suffix, username, password, streetAddress, cityName, zipCode, countryName, emailAddress, contactNum, biography } = req.body;
+    const { firstName, middleName, lastName, suffix, username, password, streetAddress, cityName, zipCode, countryName, emailAddress, contactNum, biography, personId } = req.body;
     // Construct the full street address
 
-    const updatePerson = await prisma.person.update({
+    const updatePerson = await prisma.user.update({
       where: {
-        id: "b38c6bf3-59f0-41d3-824b-01ae40b18d67",
+        id: "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be",
       },
       data: {
-          firstName,
-          middleName,
-          lastName,
-          suffix,
           username,
           password,
           streetAddress,
@@ -106,6 +103,23 @@ app.put('/api/updateperson',upload.none(), async (req, res) => {
           emailAddress,
           contactNum,
           biography,
+          person:{
+              update:{
+                where:{
+                  id: personId
+                },
+                data:{
+                  firstName,
+                middleName,
+                lastName,
+                suffix,
+                }
+                
+              },
+            },
+        },
+        include: {
+          person: true,
         },
     })
 
