@@ -122,12 +122,12 @@ model PRCLicenses {
 model Roles {
   id           String     @id @default(uuid())
   roleName     String
-  person       Person     @relation(fields: [personId], references: [id])
-  personId     String     @unique
-  company      Company    @relation(fields: [companyId], references: [id])
-  companyId    String     @unique
-  supervisor   Supervisor @relation(fields: [supervisorId], references: [id])
-  supervisorId String     @unique
+  person       Person?     @relation(fields: [personId], references: [id])
+  personId     String?     @unique
+  company      Company?    @relation(fields: [companyId], references: [id])
+  companyId    String?     @unique
+  supervisor   Supervisor? @relation(fields: [supervisorId], references: [id])
+  supervisorId String?     @unique
 }
 
 model Company {

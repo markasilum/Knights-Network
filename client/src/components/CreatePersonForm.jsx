@@ -8,8 +8,7 @@ const CreatePersonForm = () => {
   const [suffix, setSuffix] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [houseNumber, setHouseNumber] = useState('');
-  const [street, setStreet] = useState('');
+  const [streetAddress, setStreetAdd] = useState('');
   const [cityName, setCityName] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [countryName, setCountryName] = useState('');
@@ -33,8 +32,7 @@ const CreatePersonForm = () => {
       formData.append('suffix', suffix);
       formData.append('username', username);
       formData.append('password', password);
-      formData.append('houseNumber', houseNumber);
-      formData.append('street', street);
+      formData.append('streetAddress', streetAddress);
       formData.append('cityName', cityName);
       formData.append('zipCode', zipCode);
       formData.append('countryName', countryName);
@@ -120,8 +118,7 @@ const CreatePersonForm = () => {
         </label>
       
       <div className='grid grid-cols-2 gap-2 w-full'>
-        <input type="text" id="houseNumber" placeholder="House #" className="input input-bordered w-full " value={houseNumber} onChange={(e) => setHouseNumber(e.target.value)} />
-        <input type="text" id="street" placeholder="Street" className="input input-bordered w-full" value={street} onChange={(e) => setStreet(e.target.value)} />
+      <input type="text" id="streetAddress" placeholder="House #, Street Name" className="input input-bordered w-full col-span-2" value={streetAddress} onChange={(e) => setStreetAdd(e.target.value)} />
         <input type="text" id="cityName" placeholder="City Name" className="input input-bordered w-full " value={cityName} onChange={(e) => setCityName(e.target.value)} />
         <input type="text" id="zipCode" placeholder="Zip Code" className="input input-bordered w-full" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
         <input type="text" id="countryName" placeholder="Country Name" className="input input-bordered w-full col-span-2" value={countryName} onChange={(e) => setCountryName(e.target.value)} />
@@ -158,7 +155,7 @@ const CreatePersonForm = () => {
           </div>
         </label>
           
-          {/* <div className='flex flex-row justify-center gap-10 items-center'>   
+          <div className='flex flex-row justify-center gap-10 items-center'>   
               <div className='flex flex-row items-center'>
               <input type="radio" name="radio-10" id="student" className="radio checked:bg-success" checked />
                 <label className="label cursor-pointer">
@@ -172,7 +169,7 @@ const CreatePersonForm = () => {
                     <span className="label-text">Alumni</span> 
                 </label>
                 </div>  
-          </div> */}
+          </div>
         </div>
       </div>
 
