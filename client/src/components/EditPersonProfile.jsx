@@ -106,7 +106,7 @@ const EditPersonProfile = (userData) => {
         <TopBar/>
   
         <form onSubmit={handleSubmit}>
-        <div className='flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl'>
+        <div className='flex flex-col bg-base-200 p-10 mt-5 rounded-xl'>
             <span>Edit Account</span>
           <label className="form-control w-full max-w-xs">
             <div className="label">

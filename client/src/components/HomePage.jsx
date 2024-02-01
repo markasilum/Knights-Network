@@ -28,7 +28,7 @@ useEffect(() => {
     <div className='flex flex-col w-9/12  h-screen  bg-neutral '>
       <div className='pt-5 pr-5 pl-3 overflow-auto'>
 
-        <div className='overflow-hidden w-full bg-white h-80 p-5 grid grid-cols-2 shadow-md rounded-xl mb-2'>
+        <div className='overflow-hidden w-full bg-white h-80 p-5 grid grid-cols-2 rounded-xl mb-2'>
 
           <div className='flex flex-col col-span-1'>
                 <div className="w-28 ">
@@ -50,29 +50,24 @@ useEffect(() => {
               <button className='font-bold' onClick={()=>setProfileNavButton("about")}>About</button>
               <button className='font-bold'onClick={()=>setProfileNavButton("creds")}>Credentials</button>
               <button className='font-bold'onClick={()=>setProfileNavButton("contact")}>Contact</button>
-          </div>
-
-
-               
-
-                  
+          </div>            
         </div>
 
         {/* create a components */}
 
         {profileNavButton==="about" && 
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl shadow-md mb-5'>
+          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
             <p className='text-justify'>{data.biography}</p>
           </div>  
         }
         {profileNavButton==="creds" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl shadow-md mb-5'>
+          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
           <p className='text-justify'>Credentials</p>
         </div>  
         }
 
         {profileNavButton==="contact" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl shadow-md mb-5'>
+          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
           <p className='text-justify'>Email: {data.emailAddress}</p>
           <p className='text-justify'>Phone: {data.contactNum}</p>
         </div>  
