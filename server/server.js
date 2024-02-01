@@ -15,7 +15,18 @@ const upload = multer();
 app.get('/api/data', async (req, res) => {
     const data = await prisma.person.findUnique({
       where:{
-        id: "b38c6bf3-59f0-41d3-824b-01ae40b18d67",
+        id: "9689255f-6e15-4073-8c68-5d39ad8f9003",
+      },}
+    );
+    
+
+    res.json(data);
+  });
+
+  app.get('/api/getuser', async (req, res) => {
+    const data = await prisma.user.findUnique({
+      where:{
+        id: "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be",
       },}
     );
     
@@ -30,12 +41,8 @@ app.post('/api/persons',upload.none(), async (req, res) => {
       const { firstName, middleName, lastName, suffix, username, password, streetAddress, cityName, zipCode, countryName, emailAddress, contactNum, biography } = req.body;
   
       // Create a new person record in the database using Prisma
-      const newPerson = await prisma.person.create({ 
-        data: {
-          firstName,
-          middleName,
-          lastName,
-          suffix,
+      const newPerson = await prisma.user.create({ 
+        data:{
           username,
           password,
           streetAddress,
@@ -45,7 +52,24 @@ app.post('/api/persons',upload.none(), async (req, res) => {
           emailAddress,
           contactNum,
           biography,
-          verified: false, // Set verified to false
+          verified: false,
+          person:{
+            create:{
+                firstName,
+                middleName,
+                lastName,
+                suffix,
+            }
+          },
+          role:{
+            create:{
+              roleName: "alumni"
+            }
+          }
+        },
+        include: {
+          person: true,
+          role: true,
         },
       });
   
