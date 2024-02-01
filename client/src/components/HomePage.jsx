@@ -5,20 +5,35 @@ import {
   Link
 } from "react-router-dom";
 const HomePage = () => {
+const [userData, setUserData] = useState([]);
 const [data, setData] = useState([]);
 
 useEffect(() => {
-    const fetchData = async () => {
+
+    const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/data');
-        const result = await response.json();
-        setData(result);
+        const response = await fetch('http://localhost:3000/api/getuser');
+        const getUserResult = await response.json();
+        setUserData(getUserResult);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchData();
+    const fetchPersonData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/data');
+        const getPersonResult = await response.json();
+        setData(getPersonResult);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchUserData();
+    fetchPersonData();
+
+
   }, []);
 
   const [profileNavButton, setProfileNavButton] = useState("about");
@@ -35,9 +50,9 @@ useEffect(() => {
                   <img className='rounded-xl' src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                 </div>
                 <h1 className='font-bold text-2xl mt-5'>{data.firstName+" "+data.middleName+" "+data.lastName +" "+data.suffix}</h1>
-                <p>{data.streetAddress+","}</p>
-                <p>{data.cityName+","}</p>
-                <p>{data.countryName}</p>
+                <p>{userData.streetAddress+","}</p>
+                <p>{userData.cityName+","}</p>
+                <p>{userData.countryName}</p>
           </div>
 
           <div className='flex flex-col col-span-1 items-end'>
@@ -57,7 +72,7 @@ useEffect(() => {
 
         {profileNavButton==="about" && 
           <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-            <p className='text-justify'>{data.biography}</p>
+            <p className='text-justify'>{userData.biography}</p>
           </div>  
         }
         {profileNavButton==="creds" &&
@@ -68,8 +83,8 @@ useEffect(() => {
 
         {profileNavButton==="contact" &&
           <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-          <p className='text-justify'>Email: {data.emailAddress}</p>
-          <p className='text-justify'>Phone: {data.contactNum}</p>
+          <p className='text-justify'>Email: {userData.emailAddress}</p>
+          <p className='text-justify'>Phone: {userData.contactNum}</p>
         </div>  
         }
         
