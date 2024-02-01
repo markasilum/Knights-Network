@@ -22,14 +22,12 @@ app.get('/api/data', async (req, res) => {
 
     res.json(data);
   });
-  app.post('/api/persons',upload.none(), async (req, res) => {
+//create person
+app.post('/api/persons',upload.none(), async (req, res) => {
     console.log('Request Body:', req.body);
     try {
       // Extract data from the request body
-      const { firstName, middleName, lastName, suffix, username, password, street, houseNumber, cityName, zipCode, countryName, emailAddress, contactNum, biography } = req.body;
-  
-      // Construct the full street address
-      const streetAddress = `${houseNumber} ${street}`;
+      const { firstName, middleName, lastName, suffix, username, password, streetAddress, cityName, zipCode, countryName, emailAddress, contactNum, biography } = req.body;
   
       // Create a new person record in the database using Prisma
       const newPerson = await prisma.person.create({ 
@@ -59,6 +57,44 @@ app.get('/api/data', async (req, res) => {
       console.log(req.body)
     }
   });
+
+app.put('/api/updateperson',upload.none(), async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { firstName, middleName, lastName, suffix, username, password, streetAddress, cityName, zipCode, countryName, emailAddress, contactNum, biography } = req.body;
+    // Construct the full street address
+
+    const updatePerson = await prisma.person.update({
+      where: {
+        id: "b38c6bf3-59f0-41d3-824b-01ae40b18d67",
+      },
+      data: {
+          firstName,
+          middleName,
+          lastName,
+          suffix,
+          username,
+          password,
+          streetAddress,
+          cityName,
+          zipCode,
+          countryName,
+          emailAddress,
+          contactNum,
+          biography,
+        },
+    })
+
+    // Send a response with the newly created person
+    res.status(201).json(updatePerson);
+  } catch (error) {
+    console.error('Error creating person:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(req.body)
+  }
+
+  
+  })
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

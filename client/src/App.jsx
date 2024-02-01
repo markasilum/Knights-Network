@@ -8,6 +8,7 @@ import {
   Link
 } from "react-router-dom";
 import CreateAccount from './pages/Create-Account/CreateAccount';
+import EditAccount from './pages/Edit-Account/EditAccount';
 
 
 function App() {
@@ -17,7 +18,9 @@ function App() {
       <Router>
           <Routes>
             <Route index element={<Mainpage/>}/>
-            <Route path="/CreateAccount" element={<CreateAccount/>}/>
+            <Route path='/home' element={<Mainpage/>}/>
+            <Route path="/createaccount" element={<CreateAccount/>}/>
+            <Route path="/editaccount" element={<EditAccount/>}/>
           </Routes>
       </Router>
     </div>
