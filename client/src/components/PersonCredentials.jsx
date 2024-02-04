@@ -15,11 +15,15 @@ const PersonCredentials = ({educData}) => {
         </div>
         {educData.map((education)=>(
           <div key={education.id} className='flex flex-col mb-5'>
-              <span>{education.schoolName}</span>
-              <span>{education.qpi}</span>
-              <span><DateToWords dateString={education.startDate}/></span>
-              <span><DateToWords dateString={education.endDate}/></span>
-              <span>{education.awards}</span>
+              <span className='font-semibold'>{education.schoolName}</span>
+             
+              <div className='flex flex-row gap-1'>
+              <span className='font-thin'>{education.startDate.slice(0, 4)}</span>
+              <span className='font-thin'>-</span>
+              <span className='font-thin'>{education.endDate.slice(0, 4)}</span>
+              </div>
+              <span className='font-thin'>{"QPI: " +education.qpi}</span>
+              <span className='font-thin'>{education.awards}</span>
 
 
           </div>
