@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import CreateAccount from './pages/Create-Account/CreateAccount';
 import EditAccount from './pages/Edit-Account/EditAccount';
+import LoginScreen from './pages/Login/LoginScreen';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path='/home' element={<Mainpage/>}/>
             <Route path="/createaccount" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
+            <Route path="/login" element={<LoginScreen/>}/>
           </Routes>
       </Router>
     </div>
