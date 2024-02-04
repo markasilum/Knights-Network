@@ -77,7 +77,7 @@ const CreatePersonForm = () => {
     <div className='w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto'>
       <TopBar/>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='w-2/3'>
       <div className='flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl'>
         <label className="form-control w-full max-w-xs">
           <div className="label">
