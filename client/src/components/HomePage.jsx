@@ -9,7 +9,9 @@ import PersonCredentials from './PersonCredentials';
 const HomePage = () => {
   
 const [userData, setUserData] = useState([]);
+const [educData, setEducData] = useState([]);
 const [data, setData] = useState([]);
+
 
 useEffect(() => {
 
@@ -18,6 +20,7 @@ useEffect(() => {
         const response = await fetch('http://localhost:3000/api/getuser');
         const getUserResult = await response.json();
         setUserData(getUserResult);
+        // console.log(getUserResult)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -32,7 +35,18 @@ useEffect(() => {
         console.error('Error fetching data:', error);
       }
     };
+    const fetchEducation = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/geteduc');
+        const getEducRes = await response.json();
+        setEducData(getEducRes);
+        // console.log(getEducRes)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
+    fetchEducation();
     fetchUserData();
     fetchPersonData();
 
@@ -77,7 +91,7 @@ useEffect(() => {
           <PersonAbout userData={userData}/>
         }
         {profileNavButton==="creds" &&
-         <PersonCredentials/>
+         <PersonCredentials educData={educData}/>
         }
 
         {profileNavButton==="contact" &&

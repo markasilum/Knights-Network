@@ -3,30 +3,33 @@ import DateTime from "react-datetime";
 import { useState } from "react";
 import TopBar from "./topbar";
 import "react-datetime/css/react-datetime.css";
-
+import { useEffect } from "react";
 const EducationForm = () => {
   const [schoolName, setSchoolName] = useState("");
   const [degree, setDegree] = useState("");
   const [qpi, setQpi] = useState("");
-  const [startDate, setStartDate] = useState("Start Date");
-  const [endDate, setEndDate] = useState("End Date");
+  const [startDate, setStartDate] = useState(new Date().toISOString());
+  const [endDate, setEndDate] = useState(new Date().toISOString());
   const [awards, setAwards] = useState("");
+  const [userData, setUserData] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log(startDate)
+    
     const formData = new FormData();
 
     formData.append("schoolName", schoolName);
     formData.append("degree", degree);
     formData.append("qpi", qpi);
-    formData.append("starDate", startDate);
+    formData.append("startDate", startDate);
     formData.append("endDate", endDate);
     formData.append("awards", awards);
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/createeducation",
+        "http://localhost:3000/createeducation",
         {
           method: "POST",
           body: formData,
@@ -39,19 +42,22 @@ const EducationForm = () => {
         throw new Error(responseData.error);
       }
     } catch (error) {
-      setIsSubmitting(false);
       console.error("Error creating education:", error);
     }
   };
 
-  const handleStartDate = (newStartDate) => {
-    const newStart = newStartDate.toISOString().slice(0, 10);
-    setStartDate(newStart);
+  const handleStartDateChange = (startDate) => {
+    
+    const start = startDate.toISOString();
+    setStartDate(start);
   };
-  const handleEndDate = (newEndDate) => {
-    const newEnd = newEndDate.toISOString().slice(0, 10);
-    setEndDate(newEnd);
+
+  // Function to handle changes in the date-time value for end date
+  const handleEndDateChange = (endDate) => {
+    const end = endDate.toISOString();
+    setEndDate(end);
   };
+
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
       <TopBar />
@@ -90,22 +96,26 @@ const EducationForm = () => {
             />
             <div className="grid grid-cols-2 gap-3">
               <DateTime
-                value={startDate === "Start Date" ? null : startDate}
+                id="startdate"
+                dateFormat="YYYY-MM-DD"
+                selected={startDate}
                 timeFormat={false}
-                onChange={handleStartDate}
+                onChange={handleStartDateChange}
                 inputProps={{
-                  placeholder: startDate,
+                  placeholder: "Start Date",
                   className:
                     "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
                 }}
               />
 
               <DateTime
-                value={endDate === "End Date" ? null : endDate}
+                id="enddate"
+                dateFormat="YYYY-MM-DD"
+                selected={endDate}
                 timeFormat={false}
-                onChange={handleEndDate}
+                onChange={handleEndDateChange}
                 inputProps={{
-                  placeholder: endDate,
+                  placeholder: "End Date",
                   className:
                     "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
                 }}
@@ -120,7 +130,10 @@ const EducationForm = () => {
               onChange={(e) => setAwards(e.target.value)}
             />
           </div>
+          <button type="submit" className={`btn btn-primary w-40 mt-5`}>Create Education</button>
+
         </div>
+
       </form>
     </div>
   );

@@ -12,7 +12,7 @@ datasource db {
 //User model
 model User{
   id String @id @default(uuid())
-  username          String
+  username          String 
   password          String
   streetAddress     String
   cityName          String
@@ -59,15 +59,15 @@ model Education {
   schoolName String
   awards     String?
   qpi        String?
-  startDate  DateTime @db.Date
-  endDate    DateTime @db.Date
+  startDate  DateTime? @db.Date
+  endDate    DateTime? @db.Date
   degree     Degree   @relation(fields: [degreeId], references: [id])
   degreeId   String
 }
 
 model Degree {
   id           String         @id @default(uuid())
-  degreeName   String
+  degreeName   String @unique
   education    Education[]
   jobDegreeReq JobDegreeReq[]
 }
