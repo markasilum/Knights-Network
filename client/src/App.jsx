@@ -10,6 +10,7 @@ import {
 import CreateAccount from './pages/Create-Account/CreateAccount';
 import EditAccount from './pages/Edit-Account/EditAccount';
 import LoginScreen from './pages/Login/LoginScreen';
+import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/createaccount" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
             <Route path="/login" element={<LoginScreen/>}/>
+            <Route path="/credentials" element={<CredentialsForm/>}/>
           </Routes>
       </Router>
     </div>
