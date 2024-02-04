@@ -9,17 +9,9 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
-//Profiling Module and Resume Module Tables
-model Person {
-  id                String                  @id @default(uuid())
-  firstName         String
-  middleName        String
-  lastName          String
-  suffix            String?
-  maindenLastName   String?
-  maritalStatus     String?
-  birthdate         DateTime?                @db.Date
+//User model
+model User{
+  id String @id @default(uuid())
   username          String
   password          String
   streetAddress     String
@@ -31,13 +23,31 @@ model Person {
   profPic           Bytes?
   biography         String @db.Text
   verified          Boolean
+  role Roles?
+  person Person[]
+  company Company[]
+}
+
+
+//Profiling Module and Resume Module Tables
+model Person {
+  id                String                  @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  firstName         String
+  middleName        String
+  lastName          String
+  suffix            String?
+  maindenLastName   String?
+  maritalStatus     String?
+  birthdate         DateTime?                @db.Date
+  supervison Supervisor[]
   education         Education[]
   experience        Experience[]
   certificaiton     Certification[]
   verifiReq         PersonVerificationReqs?
   skills            PersonSkill[]
   personLicense     PersonLicense[]
-  role              Roles?
   applicationLetter ApplicationLetter[]
   application       Application[]
 }
@@ -121,31 +131,18 @@ model PRCLicenses {
 
 model Roles {
   id           String     @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
   roleName     String
-  person       Person?     @relation(fields: [personId], references: [id])
-  personId     String?     @unique
-  company      Company?    @relation(fields: [companyId], references: [id])
-  companyId    String?     @unique
-  supervisor   Supervisor? @relation(fields: [supervisorId], references: [id])
-  supervisorId String?     @unique
+ 
 }
 
 model Company {
   id            String                   @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
   companyName   String
   companySize   String
-  username      String
-  password      String
-  streetAddress String
-  cityName      String
-  countryName   String
-  zipCode       String
-  contactNum    String
-  emailAddress  String
-  profPic       Bytes
-  biography     String
-  verified      Boolean
-  role          Roles?
   verifiReq     CompanyVerificationReqs?
   industry      CompIndustry[]
   jobPost       JobPost[]
@@ -244,13 +241,8 @@ model JobDegreeReq {
 
 model Supervisor {
   id           String @id @default(uuid())
-  firstName    String
-  middleName   String
-  lastName     String
-  suffix       String
-  contactNum   String
-  emailAddress String
-  role         Roles?
+  person     Person   @relation(fields: [personId], references: [id])
+  personId   String
 }
 
 model Events {
