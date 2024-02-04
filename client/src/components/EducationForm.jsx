@@ -47,8 +47,9 @@ const EducationForm = () => {
   };
 
   const handleStartDateChange = (startDate) => {
-    
+    console.log(startDate)
     const start = startDate.toISOString();
+    console.log(start)
     setStartDate(start);
   };
 
@@ -97,7 +98,7 @@ const EducationForm = () => {
             <div className="grid grid-cols-2 gap-3">
               <DateTime
                 id="startdate"
-                dateFormat="YYYY-MM-DD"
+                dateFormat="YYYY-MM"
                 selected={startDate}
                 timeFormat={false}
                 onChange={handleStartDateChange}
@@ -110,7 +111,7 @@ const EducationForm = () => {
 
               <DateTime
                 id="enddate"
-                dateFormat="YYYY-MM-DD"
+                dateFormat="YYYY-MM"
                 selected={endDate}
                 timeFormat={false}
                 onChange={handleEndDateChange}
