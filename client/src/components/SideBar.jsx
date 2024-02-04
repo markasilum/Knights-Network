@@ -20,7 +20,7 @@ const SideBar = () => {
           <SidebarButton text={"Applications"}/>
           <SidebarButton text={"Events"}/>
           <SidebarButton text={"Calendar"}/> 
-          <SidebarButton text={"Create Account"} onCick={"/createaccount"}/> 
+          <SidebarButton text={"Logout"} onCick={"/login"}/> 
         </ul>
   //  </div>
     

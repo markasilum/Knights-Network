@@ -23,18 +23,15 @@ const EditPersonProfile = (userData) => {
     const [emailAddress, setEmailAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [bio, setBio] = useState('');
+    const [personId, setPersonId] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/api/data');
+            const response = await fetch('http://localhost:3000/api/getuser');
             const result = await response.json();
 
-                setFirstName(result.firstName);
-                setMiddleName(result.middleName);
-                setLastName(result.lastName);
-                setSuffix(result.suffix);
                 setUsername(result.username);
                 setPassword(result.password);
                 setStreetAdd(result.streetAddress)
@@ -49,8 +46,22 @@ const EditPersonProfile = (userData) => {
             console.error('Error fetching data:', error);
           }
         };
+        const fetchPersonData = async () => {
+          try {
+            const response = await fetch('http://localhost:3000/api/data');
+            const result = await response.json();
+            setFirstName(result.firstName);
+            setMiddleName(result.middleName);
+            setLastName(result.lastName);
+            setSuffix(result.suffix);
+            setPersonId(result.id)
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
 
-      fetchData();
+      fetchUserData();
+      fetchPersonData();
     }, []);
   
   
@@ -75,6 +86,7 @@ const EditPersonProfile = (userData) => {
         formData.append('emailAddress', emailAddress);
         formData.append('contactNum', phoneNumber);
         formData.append('biography', bio);
+        formData.append('personId', personId);
        
   
         for (const value of formData.values()) {
