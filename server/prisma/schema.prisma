@@ -77,7 +77,7 @@ model Experience {
   person      Person   @relation(fields: [personId], references: [id])
   personId    String
   jobTitle    String
-  jobDetails  String
+  jobDetails  String @db.Text
   companyName String
   startDate   DateTime @db.Date
   endDate     DateTime @db.Date

@@ -46,7 +46,6 @@ const EducCard = ({educData}) => {
               <span className='font-thin'>{"QPI: " +education.qpi}</span>
               <span className='font-thin'>{education.awards}</span>
 
-
           </div>
         ))}
         

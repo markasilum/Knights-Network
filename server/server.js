@@ -231,6 +231,65 @@ app.get('/api/getdegree', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
   }
 });
+//get experience
+app.get('/api/getexperience', async (req, res) => {
+  try{    
+    const data = await prisma.experience.findMany({
+      where:{
+        personId:'9689255f-6e15-4073-8c68-5d39ad8f9003',
+      },
+    });
+
+    res.json(data);
+    
+  }catch(error){
+    console.error('Error getting degree:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(req.body)
+
+  }
+
+})
+//create experience
+app.post('/createexperience',upload.none(), async (req, res) => {
+  console.log(req.body)
+  try {
+    // Extract data from the request body
+    const { jobTitle, companyName, jobDetails, startDate, endDate} = req.body;
+    console.log("startDate "+startDate)
+    // Create a new person record in the database using Prisma
+    const newEducation = await prisma.experience.create({ 
+      data:{
+        jobTitle, 
+        companyName, 
+        jobDetails,
+        startDate,
+        endDate,
+        person:{
+          connect:{
+              id:"9689255f-6e15-4073-8c68-5d39ad8f9003",
+          }
+        },
+      },
+      include: {
+        person: true,
+      },
+    });
+
+    // Send a response with the newly created person
+    res.status(201).json(newEducation);
+    console.log(newEducation)
+  } catch (error) {
+    console.error('Error creating person:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    // console.log(req.body)
+  }
+});
+
+
+
+
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
