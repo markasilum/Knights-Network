@@ -120,6 +120,8 @@ model PersonLicense {
   personId  String
   license   PRCLicenses @relation(fields: [licenseId], references: [id])
   licenseId String
+  licensePic Bytes?
+  licenseValidity DateTime @db.Date
 }
 
 model PRCLicenses {
