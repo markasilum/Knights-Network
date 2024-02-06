@@ -12,6 +12,7 @@ import EditAccount from './pages/Edit-Account/EditAccount';
 import LoginScreen from './pages/Login/LoginScreen';
 import CreateCompany from './pages/Create-Account/CreateCompany';
 import EditCompanyProfile from './pages/Edit-Account/EditCompanyProfile';
+import CreateJobPost from './pages/Create-Job-Post/CreateJobPost';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/login" element={<LoginScreen/>}/>
             <Route path="/createcompany" element={<CreateCompany/>}/>
             <Route path="/editcompprofile" element={<EditCompanyProfile/>}/>
+            <Route path="/createjobpost" element={<CreateJobPost/>}/>
 
           </Routes>
       </Router>
