@@ -4,12 +4,16 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import PersonAbout from './PersonAbout';
+import PersonCredentials from './PersonCredentials';
 const HomePage = () => {
   
 const [userData, setUserData] = useState([]);
+const [educData, setEducData] = useState([]);
 const [data, setData] = useState([]);
 const [compData, setCompData] = useState([]);
 const [userRole, setUserRole] = useState('')
+
 
 useEffect(() => {
 
@@ -30,6 +34,7 @@ useEffect(() => {
         const response = await fetch('http://localhost:3000/api/getuser');
         const getUserResult = await response.json();
         setUserData(getUserResult);
+        // console.log(getUserResult)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -49,12 +54,19 @@ useEffect(() => {
         const response = await fetch('http://localhost:3000/api/getcompany');
         const getPersonResult = await response.json();
         setCompData(getPersonResult);
+    const fetchEducation = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/geteduc');
+        const getEducRes = await response.json();
+        setEducData(getEducRes);
+        // console.log(getEducRes)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchUserRole();
     fetchCompanyData()
+    fetchEducation();
     fetchUserData();
     fetchPersonData();
 
@@ -143,6 +155,11 @@ useEffect(() => {
 
           )
         
+        {profileNavButton==="about" && 
+          <PersonAbout userData={userData}/>
+        }
+        {profileNavButton==="creds" &&
+         <PersonCredentials educData={educData}/>
         }
         
         
