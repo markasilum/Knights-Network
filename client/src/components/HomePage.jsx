@@ -9,9 +9,21 @@ const HomePage = () => {
 const [userData, setUserData] = useState([]);
 const [data, setData] = useState([]);
 const [compData, setCompData] = useState([]);
-
+const [userRole, setUserRole] = useState('')
 
 useEffect(() => {
+
+    const fetchUserRole = async() =>{
+      try {
+        const response = await fetch('http://localhost:3000/api/getuserrole');
+        const getUserResult = await response.json();
+        setUserRole(getUserResult);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+
+      console.log(userRole.roleName)
+    }
 
     const fetchUserData = async () => {
       try {
@@ -41,6 +53,7 @@ useEffect(() => {
         console.error('Error fetching data:', error);
       }
     };
+    fetchUserRole();
     fetchCompanyData()
     fetchUserData();
     fetchPersonData();
@@ -61,7 +74,11 @@ useEffect(() => {
                 <div className="w-28 h-28 bg-black rounded-lg">
                   
                 </div>
-                <h1 className='font-bold text-2xl mt-5'>{compData.companyName}</h1>
+                {userRole.roleName === "company"&&
+                    <h1 className='font-bold text-2xl mt-5'>{compData.companyName}</h1>
+                }{userRole.roleName === "alumni" || userRole.roleName === "student"&&
+                  <h1 className='font-bold text-2xl mt-5'>{data.firstName+" "+data.middleName+" "+data.lastName +" "+data.suffix}</h1>
+                 }
                 <p>{userData.streetAddress+","}</p>
                 <p>{userData.cityName+","}</p>
                 <p>{userData.countryName}</p>
@@ -83,29 +100,54 @@ useEffect(() => {
         </div>
 
         {/* create a components */}
+        {
+          (()=> {
+            if(userRole.roleName == "company"){
+              {profileNavButton==="about" && 
+                <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
+                  <p className='text-justify'>{userData.biography}</p>
+                </div>  
+              }
+              {profileNavButton==="jobs" &&
+                <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
+                <p className='text-justify'>Posted Jobs</p>
+              </div>  
+              }
+              {profileNavButton==="contact" &&
+                <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
+                <p className='text-justify'>Email: {userData.emailAddress}</p>
+                <p className='text-justify'>Phone: {userData.contactNum}</p>
+              </div>  
+            }
+            }else if(userRole.roleName ==="alumni" || userRole.roleName ==="students"){
+                    {
+                      profileNavButton === "about" && (
+                        <PersonAbout userData={userData} />
+                      );
+                    }
+                    {
+                      profileNavButton === "creds" && (
+                        <PersonCredentials educData={educData} />
+                      );
+                    }
+                    {profileNavButton==="contact" &&
+                        <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
+                        <p className='text-justify'>Email: {userData.emailAddress}</p>
+                        <p className='text-justify'>Phone: {userData.contactNum}</p>
+                      </div>  
+                    }
 
-        {profileNavButton==="about" && 
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-            <p className='text-justify'>{userData.biography}</p>
-          </div>  
-        }
-        {profileNavButton==="creds" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-          <p className='text-justify'>Credentials</p>
-        </div>  
-        }
-        {profileNavButton==="jobs" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-          <p className='text-justify'>Posted Jobs</p>
-        </div>  
-        }
+            }
 
-        {profileNavButton==="contact" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-          <p className='text-justify'>Email: {userData.emailAddress}</p>
-          <p className='text-justify'>Phone: {userData.contactNum}</p>
-        </div>  
+          }
+
+          )
+        
         }
+        
+        
+
+       
         
       </div>
     </div>
