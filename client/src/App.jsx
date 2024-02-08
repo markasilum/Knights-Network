@@ -10,6 +10,9 @@ import {
 import CreateAccount from './pages/Create-Account/CreateAccount';
 import EditAccount from './pages/Edit-Account/EditAccount';
 import LoginScreen from './pages/Login/LoginScreen';
+import CreateCompany from './pages/Create-Account/CreateCompany';
+import EditCompanyProfile from './pages/Edit-Account/EditCompanyProfile';
+import CreateJobPost from './pages/Create-Job-Post/CreateJobPost';
 import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
 import ExperienceForm from './components/ExperienceForm';
 import LicenseForm from './components/LicenseForm';
@@ -28,6 +31,9 @@ function App() {
             <Route path="/createaccount" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
             <Route path="/login" element={<LoginScreen/>}/>
+            <Route path="/createcompany" element={<CreateCompany/>}/>
+            <Route path="/editcompprofile" element={<EditCompanyProfile/>}/>
+            <Route path="/createjobpost" element={<CreateJobPost/>}/>
             <Route path="/credentials" element={<CredentialsForm/>}/>
             <Route path="/expform" element={<ExperienceForm/>}/>
             <Route path="/licenseform" element={<LicenseForm/>}/>
