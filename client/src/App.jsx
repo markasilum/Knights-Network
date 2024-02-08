@@ -10,6 +10,11 @@ import {
 import CreateAccount from './pages/Create-Account/CreateAccount';
 import EditAccount from './pages/Edit-Account/EditAccount';
 import LoginScreen from './pages/Login/LoginScreen';
+import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
+import ExperienceForm from './components/ExperienceForm';
+import LicenseForm from './components/LicenseForm';
+import SkillsForm from './components/SkillsForm';
+import CertificationsForm from './components/CertificationsForm';
 
 
 function App() {
@@ -23,6 +28,11 @@ function App() {
             <Route path="/createaccount" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
             <Route path="/login" element={<LoginScreen/>}/>
+            <Route path="/credentials" element={<CredentialsForm/>}/>
+            <Route path="/expform" element={<ExperienceForm/>}/>
+            <Route path="/licenseform" element={<LicenseForm/>}/>
+            <Route path="/skillsform" element={<SkillsForm/>}/>
+            <Route path="/certificationform" element={<CertificationsForm/>}/>
           </Routes>
       </Router>
     </div>
