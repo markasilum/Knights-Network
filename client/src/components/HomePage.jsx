@@ -8,6 +8,8 @@ const HomePage = () => {
   
 const [userData, setUserData] = useState([]);
 const [data, setData] = useState([]);
+const [compData, setCompData] = useState([]);
+
 
 useEffect(() => {
 
@@ -30,7 +32,16 @@ useEffect(() => {
         console.error('Error fetching data:', error);
       }
     };
-
+    const fetchCompanyData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/getcompany');
+        const getPersonResult = await response.json();
+        setCompData(getPersonResult);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchCompanyData()
     fetchUserData();
     fetchPersonData();
 
@@ -44,27 +55,29 @@ useEffect(() => {
     <div className='flex flex-col w-9/12  h-screen  bg-neutral '>
       <div className='pt-5 pr-5 pl-3 overflow-auto'>
 
-        <div className='overflow-hidden w-full bg-white h-80 p-5 grid grid-cols-2 rounded-xl mb-2'>
+        <div className='overflow-hidden w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2'>
 
           <div className='flex flex-col col-span-1'>
-                <div className="w-28 ">
-                  <img className='rounded-xl' src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <div className="w-28 h-28 bg-black rounded-lg">
+                  
                 </div>
-                <h1 className='font-bold text-2xl mt-5'>{data.firstName+" "+data.middleName+" "+data.lastName +" "+data.suffix}</h1>
+                <h1 className='font-bold text-2xl mt-5'>{compData.companyName}</h1>
                 <p>{userData.streetAddress+","}</p>
                 <p>{userData.cityName+","}</p>
                 <p>{userData.countryName}</p>
+
+                <p>{userData.contactNum}</p>
           </div>
 
           <div className='flex flex-col col-span-1 items-end'>
             <a href='' className='underline'></a>
-            <Link className='underline' to="/editaccount">Edit Profile</Link>
-            <span>Temp: {data.id}</span>
+            <Link className='underline' to="/editcompprofile">Edit Profile</Link>
+            <span>Temp: {compData.id}</span>
           </div>
 
           <div className='mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 col-span-2'>
               <button className='font-bold' onClick={()=>setProfileNavButton("about")}>About</button>
-              <button className='font-bold'onClick={()=>setProfileNavButton("creds")}>Credentials</button>
+              <button className='font-bold'onClick={()=>setProfileNavButton("jobs")}>Jobs</button>
               <button className='font-bold'onClick={()=>setProfileNavButton("contact")}>Contact</button>
           </div>            
         </div>
@@ -79,6 +92,11 @@ useEffect(() => {
         {profileNavButton==="creds" &&
           <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
           <p className='text-justify'>Credentials</p>
+        </div>  
+        }
+        {profileNavButton==="jobs" &&
+          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
+          <p className='text-justify'>Posted Jobs</p>
         </div>  
         }
 
