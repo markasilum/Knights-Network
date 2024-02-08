@@ -4,10 +4,14 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import PersonAbout from './PersonAbout';
+import PersonCredentials from './PersonCredentials';
 const HomePage = () => {
   
 const [userData, setUserData] = useState([]);
+const [educData, setEducData] = useState([]);
 const [data, setData] = useState([]);
+
 
 useEffect(() => {
 
@@ -16,6 +20,7 @@ useEffect(() => {
         const response = await fetch('http://localhost:3000/api/getuser');
         const getUserResult = await response.json();
         setUserData(getUserResult);
+        // console.log(getUserResult)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -30,7 +35,18 @@ useEffect(() => {
         console.error('Error fetching data:', error);
       }
     };
+    const fetchEducation = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/geteduc');
+        const getEducRes = await response.json();
+        setEducData(getEducRes);
+        // console.log(getEducRes)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
+    fetchEducation();
     fetchUserData();
     fetchPersonData();
 
@@ -72,14 +88,10 @@ useEffect(() => {
         {/* create a components */}
 
         {profileNavButton==="about" && 
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-            <p className='text-justify'>{userData.biography}</p>
-          </div>  
+          <PersonAbout userData={userData}/>
         }
         {profileNavButton==="creds" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-          <p className='text-justify'>Credentials</p>
-        </div>  
+         <PersonCredentials educData={educData}/>
         }
 
         {profileNavButton==="contact" &&
