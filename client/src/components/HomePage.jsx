@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import PersonAbout from "./PersonAbout";
 import PersonCredentials from "./PersonCredentials";
-const HomePage = () => {
+ const HomePage = () => {
   const [userData, setUserData] = useState([]);
   const [educData, setEducData] = useState([]);
   const [data, setData] = useState([]);
   const [compData, setCompData] = useState([]);
   const [userRole, setUserRole] = useState([]);
+  const [profileNavButton, setProfileNavButton] = useState("about");
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -19,7 +20,6 @@ const HomePage = () => {
         console.error("Error fetching data:", error);
       }
 
-      console.log(userRole.roleName);
     };
 
     const fetchUserData = async () => {
@@ -67,23 +67,23 @@ const HomePage = () => {
     fetchEducation();
     fetchUserData();
     fetchPersonData();
-  }, []);
+    
+ }, []);
 
-  const [profileNavButton, setProfileNavButton] = useState("about");
 
   return (
     <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
       <div className="pt-5 pr-5 pl-3 overflow-auto">
-        <div className="overflow-hidden w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
+        
+        <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
             <div className="w-28 h-28 bg-black rounded-lg"></div>
-            {/* {userRole.roleName === "company" && (
+            {userRole.roleName === "company" && (
               <h1 className="font-bold text-2xl mt-5">
                 {compData.companyName}
               </h1>
             )}
-            {userRole.roleName === "alumni" ||
-              (userRole.roleName === "student" && (
+            {userRole.roleName === "alumni" && (
                 <h1 className="font-bold text-2xl mt-5">
                   {data.firstName +
                     " " +
@@ -93,7 +93,18 @@ const HomePage = () => {
                     " " +
                     data.suffix}
                 </h1>
-              ))} */}
+              )}
+              {userRole.roleName === "student" && (
+                <h1 className="font-bold text-2xl mt-5">
+                  {data.firstName +
+                    " " +
+                    data.middleName +
+                    " " +
+                    data.lastName +
+                    " " +
+                    data.suffix}
+                </h1>
+              )}
             <p>{userData.streetAddress + ","}</p>
             <p>{userData.cityName + ","}</p>
             <p>{userData.countryName}</p>
@@ -102,11 +113,12 @@ const HomePage = () => {
           </div>
 
           <div className="flex flex-col col-span-1 items-end">
-            <a href="" className="underline"></a>
-            <Link className="underline" to="/editcompprofile">
-              Edit Profile
-            </Link>
-            <span>Temp: {compData.id}</span>
+            {userRole.roleName == "alumni"&&(
+                  <Link className="underline" to="/editaccount">Edit Profile</Link>
+            )}{userRole.roleName == "company"&&(
+              <Link className="underline" to="/editcompprofile">Edit Profile</Link>
+            )}
+            <span>Temp: {data.id}</span>
           </div>
 
           <div className="mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 col-span-2">
@@ -116,12 +128,11 @@ const HomePage = () => {
             >
               About
             </button>
-            <button
-              className="font-bold"
-              onClick={() => setProfileNavButton("jobs")}
-            >
-              Jobs
-            </button>
+            {userRole.roleName ==="company" &&
+                <button className="font-bold" onClick={() => setProfileNavButton("jobs")}>Jobs</button>
+            }{userRole.roleName ==="student"||userRole.roleName ==="alumni"  &&
+            <button className="font-bold" onClick={() => setProfileNavButton("creds")}>Credentials</button>
+            }
             <button
               className="font-bold"
               onClick={() => setProfileNavButton("contact")}
@@ -133,52 +144,26 @@ const HomePage = () => {
 
         {/* create a components */}
 
+        {profileNavButton==="about" && 
+          <PersonAbout userData={userData}/>
+        }
+   
+        {profileNavButton==="creds" &&
+         <PersonCredentials educData={educData}/>
+        }
+        {profileNavButton==="jobs" &&
+         <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>Posted Jobs</div>
+        }
 
-        {() => {
-          // if (userRole.roleName == "company") {
-
-          //   if(profileNavButton === "about"){
-          //       <div className="overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5">
-          //         <p className="text-justify">{userData.biography}</p>
-          //       </div>
-          //   }else if(profileNavButton === "jobs"){
-          //     <div className="overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5">
-          //     <p className="text-justify">Posted Jobs</p>
-          //   </div>
-          //   }
-          //   else if(profileNavButton === "contact" ){
-          //     <div className="overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5">
-          //         <p className="text-justify">Email: {userData.emailAddress}</p>
-          //         <p className="text-justify">Phone: {userData.contactNum}</p>
-          //       </div>
-          //   }
-          // } else if (
-          //   userRole.roleName === "alumni" ||
-          //   userRole.roleName === "students"
-          // ) {
-          //   {
-          //     profileNavButton === "about" && (
-          //       <PersonAbout userData={userData} />
-          //     );
-          //   }
-          //   {
-          //     profileNavButton === "creds" && (
-          //       <PersonCredentials educData={educData} />
-          //     );
-          //   }
-          //   {
-          //     profileNavButton === "contact" && (
-          //       <div className="overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5">
-          //         <p className="text-justify">Email: {userData.emailAddress}</p>
-          //         <p className="text-justify">Phone: {userData.contactNum}</p>
-          //       </div>
-          //     );
-          //   }
-          }
+        {profileNavButton==="contact" &&
+          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
+          <p className='text-justify'>Email: {userData.emailAddress}</p>
+          <p className='text-justify'>Phone: {userData.contactNum}</p>
+        </div>  
         }
       </div>
     </div>
-  );
-};
+   );
+ };
 
 export default HomePage;
