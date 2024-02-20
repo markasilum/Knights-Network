@@ -3,7 +3,8 @@ import { useState } from 'react';
 import TopBar from '../../components/topbar';
 import InputFields from '../../components/InputFields';
 import TextAreaInput from '../../components/TextAreaInput';
-
+import DateTime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
 const CreateJobPost = () => {
 const [companyName, setCompanyName] = useState('');
 const [jobTitle, setJobTitle] = useState('');
@@ -19,15 +20,15 @@ const [degree, setDegree] = useState('');
 const [yearsExp, setYearExp] = useState('');
 const [licenseName, setLicenseName] = useState([{licenseName:""}]);
 const [certification, setCertification] = useState([{certName:""}]);
-const [skill, setSkill] = useState([{skillName:""}]);
+const [skills, setSkill] = useState([{skillName:""}]);
 const [isAppLetterReq, setIsAppLetterReq] = useState(false);
 const [dateCreated, setDateCreated] = useState(new Date().toISOString());
 const [dateUpdated, setDateUpdated] = useState(new Date().toISOString());
 
-useEffect(()=>{console.log(isAppLetterReq)})
+// useEffect(()=>{console.log(isAppLetterReq)})
 
 const handleAddSkill = () => {
-  setSkill([...skill,{skillName:""}]);
+  setSkill([...skills,{skillName:""}]);
 };
 
 const handleAddLicense = () => {
@@ -41,7 +42,7 @@ const handleAddCert = () => {
 const handleChange = (event, index) => {
   event.preventDefault();
   let { name, value } = event.target;
-  let onChangeValue = [...skill];
+  let onChangeValue = [...skills];
   onChangeValue[index].skillName = value;
   setSkill(onChangeValue);
 };
@@ -62,7 +63,7 @@ const handleChangeCert = (event, index) => {
 };
 
 const handleDeleteInput = (index) => {
-  const newArray = [...skill];
+  const newArray = [...skills];
   newArray.splice(index, 1);
   setSkill(newArray);
 };
@@ -84,11 +85,72 @@ const handleCheckboxChange = () => {
   setIsAppLetterReq(!isAppLetterReq);
 };
 
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  
+  
+  const formData = new FormData();
+
+  formData.append('companyName', companyName);
+  formData.append('jobTitle', jobTitle);
+  formData.append('jobDesc', jobDesc);
+  formData.append('employmentType', employmentType);
+  formData.append('salary', salary);
+  formData.append('jobLoc', jobLoc);
+  formData.append('workModel', workModel);
+  formData.append('numOfPosition', numOfPosition);
+  formData.append('validity', validity);
+  formData.append('isOpen', isOpen);
+  formData.append('degree', degree);
+  formData.append('yearsExp', yearsExp);
+  formData.append('isAppLetterReq', isAppLetterReq);
+  
+  skills.forEach((item, index) => {
+    formData.append(`skill[${index}][skillName]`, item.skillName);
+  });
+  licenseName.forEach((item, index) => {
+    formData.append(`licenseName[${index}][licenseName]`, item.licenseName);
+  });
+  certification.forEach((item, index) => {
+    formData.append(`certification[${index}][certName]`, item.certName);
+  });
+
+
+
+  console.log("Form Data");
+  for (let obj of formData) {
+    console.log(obj);
+    }
+    
+
+  try {
+    const response = await fetch(
+      "http://localhost:3000/createjobpost",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData.error);
+    }
+  } catch (error) {
+    console.error("Error creating education:", error);
+  }
+};
+
+const handleValidity = (endDate) => {
+  const end = endDate.toISOString();
+  setValidity(end);
+};
   return (
     <div className='w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto'>
         <TopBar/>
 
-        <form className='w-2/3'>
+        <form className='w-2/3' onSubmit={handleSubmit}>
         <div className='grid grid-cols-2 bg-base-200 shadow-xl p-10 mt-5 mb-5 rounded-xl gap-2'>
             <h1 className='col-span-2 text-center font-medium border-b-2 border-info'>Job Creation Form</h1>
             <InputFields labelText={"Company Name"} placeholder={"ex. San Miguel Corporation"} id={"companyname"} value={companyName} onChange={(e) => setCompanyName(e.target.value)}/>
@@ -112,17 +174,17 @@ const handleCheckboxChange = () => {
             </div>
             <div className='col-span-2 flex flex-col gap-2'>
               
-              {skill.map((item, index) => (
+              {skills.map((item, index) => (
               
                 <div className="grid grid-cols-4 gap-3" key={index}>
                   
                   <input type="text" id={"skill"} className="input input-bordered w-full col-span-2" name={"skill"} value={item.skillName} placeholder={"ex: Project Management"} onChange={(event) => handleChange(event, index)}/>
 
-                  {index === skill.length - 1 && (
+                  {index === skills.length - 1 && (
                     <button className={`btn btn-success text-white `} onClick={() => handleAddSkill()}>Add</button>
                   )}
 
-                  {skill.length > 1 && (
+                  {skills.length > 1 && (
                     <button className={`btn btn-info text-white`} onClick={() => handleDeleteInput(index)}>Delete</button>
                   )}
                   {/* {console.log(index)} */}
@@ -142,7 +204,7 @@ const handleCheckboxChange = () => {
               
                 <div className="grid grid-cols-4 gap-3" key={index}>
                   
-                  <input type="text" id={"skill"} className="input input-bordered w-full col-span-2" name={"skill"} value={item.licenseName} placeholder={"ex: Chemical Engineer"} onChange={(event) => handleChangeLicense(event, index)}/>
+                  <input type="text" id={"license"} className="input input-bordered w-full col-span-2" name={"license"} value={item.licenseName} placeholder={"ex: Chemical Engineer"} onChange={(event) => handleChangeLicense(event, index)}/>
 
                   {index === licenseName.length - 1 && (
                     <button className={`btn btn-success text-white `} onClick={() => handleAddLicense()}>Add</button>
@@ -167,7 +229,7 @@ const handleCheckboxChange = () => {
               
                 <div className="grid grid-cols-4 gap-3" key={index}>
                   
-                  <input type="text" id={"skill"} className="input input-bordered w-full col-span-2" name={"skill"} value={item.certName} placeholder={"ex: CCNA"} onChange={(event) => handleChangeCert(event, index)}/>
+                  <input type="text" id={"certification"} className="input input-bordered w-full col-span-2" name={"certification"} value={item.certName} placeholder={"ex: CCNA"} onChange={(event) => handleChangeCert(event, index)}/>
 
                   {index === certification.length - 1 && (
                     <button className={`btn btn-success text-white `} onClick={() => handleAddCert()}>Add</button>
@@ -187,6 +249,23 @@ const handleCheckboxChange = () => {
                 <span className="label-text font-bold">Require Application Letter?</span> 
                 <input type="checkbox" className="toggle toggle-success"  checked={isAppLetterReq}  onChange={handleCheckboxChange}/>
             </div>
+            <div className='col-span-2'>
+                 <span className="label-text">Validity</span>
+            </div>
+            <DateTime
+                id="isOpen"
+                selected={validity}
+                timeFormat={false}
+                onChange={handleValidity}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                }}
+                inputProps={{
+                  placeholder: "Open Until",
+                  className:
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
+                }}
+              />
            
         
             

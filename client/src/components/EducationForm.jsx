@@ -1,8 +1,8 @@
 import React from "react";
 import DateTime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
 import { useState } from "react";
 import TopBar from "./topbar";
-import "react-datetime/css/react-datetime.css";
 import { useEffect } from "react";
 const EducationForm = () => {
   const [schoolName, setSchoolName] = useState("");
