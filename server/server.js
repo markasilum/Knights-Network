@@ -494,6 +494,24 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
   }
 });
 
+app.get('/api/getcompanyjobpost', async (req, res) => {
+  try{    
+    const data = await prisma.jobPost.findMany({
+      where:{
+        companyId:companyId,
+      },
+    });
+
+    res.json(data);
+    
+  }catch(error){
+    console.error('Error getting degree:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(req.body)
+
+  }
+
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
