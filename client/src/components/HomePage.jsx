@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import PersonAbout from "./PersonAbout";
 import PersonCredentials from "./PersonCredentials";
+import CompanyJobs from "./CompanyJobs";
  const HomePage = () => {
   const [userData, setUserData] = useState([]);
   const [educData, setEducData] = useState([]);
   const [data, setData] = useState([]);
   const [compData, setCompData] = useState([]);
+  const [compJobPostData, setCompJobPostData] = useState([]);
   const [userRole, setUserRole] = useState([]);
   const [profileNavButton, setProfileNavButton] = useState("about");
 
@@ -62,11 +64,25 @@ import PersonCredentials from "./PersonCredentials";
         console.error("Error fetching data:", error);
       }
     };
+
+    const fetchCompanyJobPost = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/getcompanyjobpost");
+        const getJobRes = await response.json();
+        setCompJobPostData(getJobRes);
+        // console.log(getEducRes)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    
     fetchUserRole();
     fetchCompanyData();
     fetchEducation();
     fetchUserData();
     fetchPersonData();
+    fetchCompanyJobPost()
     
  }, []);
 
@@ -152,7 +168,7 @@ import PersonCredentials from "./PersonCredentials";
          <PersonCredentials educData={educData}/>
         }
         {profileNavButton==="jobs" &&
-         <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>Posted Jobs</div>
+        <CompanyJobs jobData={compJobPostData} companyData={compData} />
         }
 
         {profileNavButton==="contact" &&
