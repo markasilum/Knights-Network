@@ -5,7 +5,7 @@ const ExperienceCards = () => {
 const[experience, setExperience] = useState([])
 
 useEffect(()=>{
-    const fetchDegree = async () =>{
+    const fetchExperience = async () =>{
       try {
         const response = await fetch(`http://localhost:3000/api/getexperience`);
         const getUserResult = await response.json();
@@ -16,7 +16,7 @@ useEffect(()=>{
       }
     }
 
-    fetchDegree()
+    fetchExperience()
     
   },[]);
 

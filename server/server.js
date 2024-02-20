@@ -14,12 +14,15 @@ const upload = multer();
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be"
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774"
 
+let userId = companyUserId
+
+let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003"
 let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe"
 
 app.get('/api/getuserrole', async (req, res) => {
   const data = await prisma.roles.findUnique({
     where:{
-      userId: companyUserId,
+      userId: userId,
     },}
   );
   
@@ -41,7 +44,7 @@ app.get('/api/data', async (req, res) => {
   app.get('/api/getuser', async (req, res) => {
     const data = await prisma.user.findUnique({
       where:{
-        id: companyUserId,
+        id: userId,
       },}
     );
     
@@ -394,8 +397,121 @@ app.post('/createexperience',upload.none(), async (req, res) => {
 });
 
 
+app.post('/createjobpost',upload.none(), async (req, res) => {
+  console.log(req.body)
+  try {
+    // Extract data from the request body
+    const {companyName,jobTitle,jobDesc,employmentType,salary,jobLoc,workModel,numOfPosition,validity,isOpen,yearsExp,isAppLetterReq,degree,skills,licenseName,certification} = req.body;
+    const parsedSalary = parseInt(salary);
+    const parsedPos = parseInt(numOfPosition);
 
+    const isOpenBoolean = true;
+    if(isOpen ==="false"){
+      isOpenBoolean = false
+    }
 
+    const appLettrBool = false
+    if(isAppLetterReq ==="true"){
+      isAppLetterReq = true
+    }
+
+    // Create a new person record in the database using Prisma
+    const newJobPost = await prisma.jobPost.create({ 
+      data:{
+        jobTitle,
+        jobDesc,
+        employmentType,
+        salary: parsedSalary,
+        jobLoc,
+        workModel,
+        numOfPosition: parsedPos,
+        validity,
+        isOpen: isOpenBoolean,
+        yearsExp,
+        isAppLetterReq:appLettrBool,
+        company:{
+          connect:{
+              id:companyId,
+          }
+        },
+        jobDegreeReq:{
+          create:{
+            degree:{
+              connectOrCreate:{
+                where: {
+                  degreeName: degree
+                },
+                create: {
+                  degreeName: degree
+                },  
+              }
+            }
+          }
+        },
+        // skills:{
+        //   connectOrCreate: skills.skillName?.map((skill)=>{
+        //     return{
+        //       where: {skillName: skill},
+        //       create: {skillName: skill},
+        //     }
+        //   })
+        // },
+        // licenseName:{
+        //   connectOrCreate: licenseName.licenseName?.map((license)=>{
+        //     return{
+        //       where: {licenseName: license },
+        //       create: {licenseName: license},
+
+        //     }
+        //   })
+        // },
+        // certification:{
+        //   connectOrCreate: certification.certName?.map((certification)=>{
+        //     return{
+        //       where: {certName: certification },
+        //       create: {certName: certification},
+        //     }
+        //   })
+        // },
+      },
+      include: {
+        company: true, 
+        jobDegreeReq: true,       
+        // degree: true,
+        // skills: true,
+        // licenseName: true,
+        // certification: true,
+      },
+    });
+
+    // Send a response with the newly created person
+    res.status(201).json(newJobPost);
+    console.log(newJobPost)
+  } catch (error) {
+    console.error('Error creating job post:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    // console.log(req.body)
+  }
+});
+
+app.get('/api/getcompanyjobpost', async (req, res) => {
+  try{    
+    const data = await prisma.jobPost.findMany({
+      where:{
+        companyId:companyId,
+      },
+    });
+
+    res.json(data);
+    
+  }catch(error){
+    console.error('Error getting degree:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(req.body)
+
+  }
+
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
