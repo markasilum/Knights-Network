@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import Mainpage from './components/Mainpage'
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,6 +17,9 @@ import ExperienceForm from './components/ExperienceForm';
 import LicenseForm from './components/LicenseForm';
 import SkillsForm from './components/SkillsForm';
 import CertificationsForm from './components/CertificationsForm';
+import ProfilePage from './pages/Profile/ProfilePage';
+import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboard';
+import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
 
 
 function App() {
@@ -26,8 +28,8 @@ function App() {
     <div className='className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	'>
       <Router>
           <Routes>
-            <Route index element={<Mainpage/>}/>
-            <Route path='/home' element={<Mainpage/>}/>
+            <Route index element={<ProfilePage/>}/>
+            <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/createaccount" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
             <Route path="/login" element={<LoginScreen/>}/>
@@ -39,6 +41,8 @@ function App() {
             <Route path="/licenseform" element={<LicenseForm/>}/>
             <Route path="/skillsform" element={<SkillsForm/>}/>
             <Route path="/certificationform" element={<CertificationsForm/>}/>
+            <Route path='/jobpostdashboard' element={<JobPostsDashboard/>}/>
+            <Route path='/jobpostdetails/:jobPostId' element={<JobPostDetails/>}/>
           </Routes>
       </Router>
     </div>

@@ -448,14 +448,20 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
             }
           }
         },
-        // skills:{
-        //   connectOrCreate: skills.skillName?.map((skill)=>{
-        //     return{
-        //       where: {skillName: skill},
-        //       create: {skillName: skill},
-        //     }
-        //   })
-        // },
+        jobSkillsReq:{
+          create:{
+            skills:{
+              connectOrCreate: skills.skillName?.map((skill)=>{
+                return{
+                  where: {skillName: skill},
+                  create: {skillName: skill},
+                }
+              })
+
+          }
+
+        }
+        },
         // licenseName:{
         //   connectOrCreate: licenseName.licenseName?.map((license)=>{
         //     return{
@@ -476,7 +482,9 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
       },
       include: {
         company: true, 
-        jobDegreeReq: true,       
+        jobDegreeReq: true,  
+        jobSkillsReq: true,       
+     
         // degree: true,
         // skills: true,
         // licenseName: true,
@@ -512,6 +520,28 @@ app.get('/api/getcompanyjobpost', async (req, res) => {
   }
 
 })
+
+app.get('/api/getjobdetails', async (req, res) => {
+  try {
+      // Extract the query parameter 'ids' from the request
+      const { id } = req.query;
+      console.log( id)
+
+      // Query the database using Prisma to fetch degrees by their IDs
+      const jobDetails = await prisma.jobPost.findUnique({
+          where: {
+              id: id // No need to parse IDs since they are strings
+          }
+      });
+
+      // Send the degrees as JSON response
+      res.json(jobDetails);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

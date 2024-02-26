@@ -153,10 +153,9 @@ const handleValidity = (endDate) => {
         <form className='w-2/3' onSubmit={handleSubmit}>
         <div className='grid grid-cols-2 bg-base-200 shadow-xl p-10 mt-5 mb-5 rounded-xl gap-2'>
             <h1 className='col-span-2 text-center font-medium border-b-2 border-info'>Job Creation Form</h1>
-            <InputFields labelText={"Company Name"} placeholder={"ex. San Miguel Corporation"} id={"companyname"} value={companyName} onChange={(e) => setCompanyName(e.target.value)}/>
-            <InputFields id={"jobtitle"} labelText={"Job Title"} placeholder={"ex: Jr. React Developer"} value={jobTitle} onChange={(e) => setJobTitle(e.target.value)}/>
             <div className='col-span-2'>
-            <TextAreaInput id={"jobdesc"} placeholder={"Job Description"} value={jobDesc} onChange={(e)=> setJobDesc(e.target.value)}/>
+            <InputFields id={"jobtitle"} labelText={"Job Title"} placeholder={"ex: Jr. React Developer"} value={jobTitle} onChange={(e) => setJobTitle(e.target.value)}/>
+            <TextAreaInput id={"jobdesc"} labelText={"Job Description"} placeholder={"Job Description"} value={jobDesc} onChange={(e)=> setJobDesc(e.target.value)}/>
             </div>
             <InputFields id={"employmentType"} labelText={"Employment Type"} placeholder={"ex: Full-time"} value={employmentType} onChange={(e) => setEmploymentType(e.target.value)} />
             <InputFields id={"salary"} labelText={"Salary"} placeholder={"ex: PHP 50,000"} value={salary} onChange={(e) => setSalary(e.target.value)} />
