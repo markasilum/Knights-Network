@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import PersonAbout from "./PersonAbout";
-import PersonCredentials from "./PersonCredentials";
-import CompanyJobs from "./CompanyJobs";
- const HomePage = () => {
+import PersonAbout from "../../components/PersonAbout";
+import PersonCredentials from "../../components/PersonCredentials";
+import CompanyJobs from "../../components/CompanyJobs";
+import TopBar from "../../components/topbar";
+import SideBar from "../../components/SideBar";
+ const ProfilePage = () => {
   const [userData, setUserData] = useState([]);
   const [educData, setEducData] = useState([]);
   const [data, setData] = useState([]);
@@ -88,9 +90,14 @@ import CompanyJobs from "./CompanyJobs";
 
 
   return (
-    <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-      <div className="pt-5 pr-5 pl-3 overflow-auto">
+    <div className='w-9/12 bg-neutral  h-screen flex flex-col shadow-xl' >
+      <TopBar/>
         
+      <div className='flex flex-row gap-2'>
+      <SideBar/>
+
+      <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
+      <div className="pt-5 pr-5 pl-3 overflow-auto">
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
             <div className="w-28 h-28 bg-black rounded-lg"></div>
@@ -179,7 +186,14 @@ import CompanyJobs from "./CompanyJobs";
         }
       </div>
     </div>
+            
+        </div>
+        
+    </div>
+
+
+    
    );
  };
 
-export default HomePage;
+export default ProfilePage;
