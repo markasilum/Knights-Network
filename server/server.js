@@ -390,7 +390,7 @@ app.post('/createexperience',upload.none(), async (req, res) => {
     res.status(201).json(newEducation);
     console.log(newEducation)
   } catch (error) {
-    console.error('Error creating person:', error);
+    console.error('Error creating experience:', error);
     res.status(500).json({ error: 'Internal Server Error' });
     // console.log(req.body)
   }
@@ -398,10 +398,10 @@ app.post('/createexperience',upload.none(), async (req, res) => {
 
 
 app.post('/createjobpost',upload.none(), async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   try {
     // Extract data from the request body
-    const {companyName,jobTitle,jobDesc,employmentType,salary,jobLoc,workModel,numOfPosition,validity,isOpen,yearsExp,isAppLetterReq,degree,skills,licenseName,certification} = req.body;
+    const {companyName,jobTitle,jobDesc,employmentType,salary,jobLoc,workModel,numOfPosition,validity,isOpen,yearsExp,isAppLetterReq,degree,skill,licenseName,certification} = req.body;
     const parsedSalary = parseInt(salary);
     const parsedPos = parseInt(numOfPosition);
 
@@ -415,9 +415,13 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
       isAppLetterReq = true
     }
 
+    for (let sk of skill) {
+      console.log(sk.skillName);
+      }
+    // console.log(skill.skillName)
     // Create a new person record in the database using Prisma
-    const newJobPost = await prisma.jobPost.create({ 
-      data:{
+    const newJobPost = await prisma.jobPost.create({
+      data: {
         jobTitle,
         jobDesc,
         employmentType,
@@ -428,40 +432,49 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
         validity,
         isOpen: isOpenBoolean,
         yearsExp,
-        isAppLetterReq:appLettrBool,
-        company:{
-          connect:{
-              id:companyId,
-          }
+        isAppLetterReq: appLettrBool,
+        company: {
+          connect: {
+            id: companyId,
+          },
         },
-        jobDegreeReq:{
-          create:{
-            degree:{
-              connectOrCreate:{
+        jobDegreeReq: {
+          create: {
+            degree: {
+              connectOrCreate: {
                 where: {
-                  degreeName: degree
+                  degreeName: degree,
                 },
                 create: {
-                  degreeName: degree
-                },  
-              }
-            }
-          }
+                  degreeName: degree,
+                },
+              },
+            },
+          },
         },
-        jobSkillsReq:{
-          create:{
-            skills:{
-              connectOrCreate: skills.skillName?.map((skill)=>{
-                return{
-                  where: {skillName: skill},
-                  create: {skillName: skill},
-                }
-              })
-
-          }
-
-        }
+        jobSkillsReq: {
+          create: skill.map((sk) => ({
+            skill: {
+              connectOrCreate: {
+                create:{
+                  skillName: sk.skillName
+                },
+                where:{
+                  skillName: sk.skillName
+                },
+                
+              },
+            },
+          })),
         },
+        // skill.map(skillItem => ({
+        //   skill: {
+        //     connectOrCreate: {
+        //       where: { skillName: skillItem.skillName },
+        //       create: { skillName: skillItem.skillName },
+        //     },
+        //   },
+        // }))
         // licenseName:{
         //   connectOrCreate: licenseName.licenseName?.map((license)=>{
         //     return{
@@ -481,10 +494,15 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
         // },
       },
       include: {
-        company: true, 
-        jobDegreeReq: true,  
-        jobSkillsReq: true,       
-     
+        company: true,
+        jobDegreeReq: true,
+        jobSkillsReq: true,
+        // {
+        //   include: {
+        //     skill: true,
+        //   },
+        // },
+
         // degree: true,
         // skills: true,
         // licenseName: true,

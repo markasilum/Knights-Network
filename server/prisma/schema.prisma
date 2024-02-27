@@ -109,7 +109,7 @@ model PersonSkill {
 
 model Skills {
   id           String         @id @default(uuid())
-  skillName    String
+  skillName    String @unique
   personSkill  PersonSkill[]
   jobSkillsReq JobSkillsReq[]
 }

@@ -118,8 +118,8 @@ const handleSubmit = async (event) => {
 
 
   console.log("Form Data");
-  for (let obj of formData) {
-    console.log(obj);
+  for (let sk of skills) {
+    console.log(sk);
     }
     
 
@@ -138,7 +138,7 @@ const handleSubmit = async (event) => {
       throw new Error(responseData.error);
     }
   } catch (error) {
-    console.error("Error creating education:", error);
+    console.error("Error creating job post:", error);
   }
 };
 
