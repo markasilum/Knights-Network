@@ -323,7 +323,7 @@ app.get('/api/getdegree', async (req, res) => {
 
       // Split the 'ids' string into an array
       const degreeIds = ids.split(',');
-
+      console.log(degreeIds)
       // Query the database using Prisma to fetch degrees by their IDs
       const degrees = await prisma.degree.findMany({
           where: {
@@ -332,9 +332,9 @@ app.get('/api/getdegree', async (req, res) => {
               }
           }
       });
-
       // Send the degrees as JSON response
       res.json(degrees);
+      console.log(degrees)
   } catch (error) {
       // If there's an error, send an error response
       console.error('Error:', error);
@@ -398,26 +398,26 @@ app.post('/createexperience',upload.none(), async (req, res) => {
 
 
 app.post('/createjobpost',upload.none(), async (req, res) => {
-  // console.log(req.body)
+  console.log(req.body)
   try {
     // Extract data from the request body
-    const {companyName,jobTitle,jobDesc,employmentType,salary,jobLoc,workModel,numOfPosition,validity,isOpen,yearsExp,isAppLetterReq,degree,skill,licenseName,certification} = req.body;
+    let {jobTitle,jobDesc,employmentType,salary,jobLoc,workModel,numOfPosition,validity,isOpen,yearsExp,isAppLetterReq,degree,skill,license} = req.body;
     const parsedSalary = parseInt(salary);
     const parsedPos = parseInt(numOfPosition);
 
-    const isOpenBoolean = true;
+    let isOpenBoolean = true;
     if(isOpen ==="false"){
       isOpenBoolean = false
     }
 
-    const appLettrBool = false
+    let appLettrBool = false
     if(isAppLetterReq ==="true"){
       isAppLetterReq = true
     }
 
-    for (let sk of skill) {
-      console.log(sk.skillName);
-      }
+    // for (let sk of skill) {
+    //   console.log(sk.skillName);
+    //   }
     // console.log(skill.skillName)
     // Create a new person record in the database using Prisma
     const newJobPost = await prisma.jobPost.create({
@@ -467,46 +467,28 @@ app.post('/createjobpost',upload.none(), async (req, res) => {
             },
           })),
         },
-        // skill.map(skillItem => ({
-        //   skill: {
-        //     connectOrCreate: {
-        //       where: { skillName: skillItem.skillName },
-        //       create: { skillName: skillItem.skillName },
-        //     },
-        //   },
-        // }))
-        // licenseName:{
-        //   connectOrCreate: licenseName.licenseName?.map((license)=>{
-        //     return{
-        //       where: {licenseName: license },
-        //       create: {licenseName: license},
-
-        //     }
-        //   })
-        // },
-        // certification:{
-        //   connectOrCreate: certification.certName?.map((certification)=>{
-        //     return{
-        //       where: {certName: certification },
-        //       create: {certName: certification},
-        //     }
-        //   })
-        // },
+        jobLicenseReq:{
+          create: license.map((li) => ({
+            license: {
+              connectOrCreate: {
+                create:{
+                  licenseName: li.licenseName
+                },
+                where:{
+                  licenseName: li.licenseName
+                },
+                
+              },
+            },
+          })),
+        },
+        
       },
       include: {
         company: true,
         jobDegreeReq: true,
         jobSkillsReq: true,
-        // {
-        //   include: {
-        //     skill: true,
-        //   },
-        // },
-
-        // degree: true,
-        // skills: true,
-        // licenseName: true,
-        // certification: true,
+        jobLicenseReq: true,
       },
     });
 
@@ -543,17 +525,91 @@ app.get('/api/getjobdetails', async (req, res) => {
   try {
       // Extract the query parameter 'ids' from the request
       const { id } = req.query;
-      console.log( id)
-
-      // Query the database using Prisma to fetch degrees by their IDs
+      // console.log(id)
+      // Query the database using Prisma to fetch job post by their IDs
       const jobDetails = await prisma.jobPost.findUnique({
           where: {
-              id: id // No need to parse IDs since they are strings
+              id: id 
           }
       });
-
-      // Send the degrees as JSON response
       res.json(jobDetails);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/getjobskillsreq', async (req, res) => {
+  try {
+      const { id } = req.query;
+      const skills = await prisma.jobSkillsReq.findMany({
+          where: {
+            jobPostId: id 
+          },
+          select: {
+            skill: {
+              select: {
+                skillName: true
+              }
+            }
+          }
+      });
+      const jobSkillsReq = skills.map(skill => skill.skill.skillName);
+      console.log(jobSkillsReq)
+      res.json(jobSkillsReq);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/getjoblicensereq', async (req, res) => {
+  try {
+      const { id } = req.query;
+      const licenses = await prisma.jobLicenseReq.findMany({
+          where: {
+              jobPostId: id 
+          },
+          select: {
+            license: {
+              select: {
+                licenseName: true
+              }
+            }
+          }
+      });
+      const jobLicenseReq = licenses.map(license => license.license.licenseName);
+      console.log(jobLicenseReq)
+      res.json(jobLicenseReq);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/getjobdegreereq', async (req, res) => {
+  try {
+      const { id } = req.query;
+      const degrees = await prisma.jobDegreeReq
+      .findMany({
+        where: {
+          jobPostId: id // Replace YOUR_JOB_POST_ID with the actual job post ID
+        },
+        select: {
+          degree: {
+            select: {
+              degreeName: true
+            }
+          }
+        }
+      });
+
+    const degreeNames = degrees.map(degree => degree.degree.degreeName);
+    res.json(degreeNames);
+    console.log(degreeNames);
   } catch (error) {
       // If there's an error, send an error response
       console.error('Error:', error);
