@@ -10,9 +10,13 @@ import {
   } from "react-router-dom";
 const JobPostDetails = () => {
     const[jobData, setJobData] = useState([])
+    const[jobSkills, setJobSkills] = useState([])
+    const[jobLicense, setJobLicense] = useState([])
+    const[jobDegree, setJobDegree] = useState([])
 
     const { jobPostId } = useParams();
     useEffect(()=>{
+        
         const fetchJobPostDetails = async () => {
             try {
               const response = await fetch(`http://localhost:3000/api/getjobdetails?id=${jobPostId}`);
@@ -23,10 +27,40 @@ const JobPostDetails = () => {
               console.error("Error fetching data:", error);
             }
           };
+          const fetchJobPostSkills = async () => {
+            try {
+              const response = await fetch(`http://localhost:3000/api/getjobskillsreq?id=${jobPostId}`);
+              const getJobSkillsRes = await response.json();
+              setJobSkills(getJobSkillsRes);
+              // console.log(getEducRes)
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+          };
+          const fetchJobPostLicense = async () => {
+            try {
+              const response = await fetch(`http://localhost:3000/api/getjoblicensereq?id=${jobPostId}`);
+              const getJobSkillsRes = await response.json();
+              setJobLicense(getJobSkillsRes);
+              // console.log(getEducRes)
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+          };
 
+          const fetchJobPostDegree= async () => {
+            try {
+              const response = await fetch(`http://localhost:3000/api/getjobdegreereq?id=${jobPostId}`);
+              const getJobDegreeRes = await response.json();
+              setJobDegree(getJobDegreeRes); 
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+          };
           fetchJobPostDetails()
-
-
+          fetchJobPostDegree()
+          fetchJobPostSkills()
+          fetchJobPostLicense()
 
     },[]);
 
@@ -52,9 +86,18 @@ const JobPostDetails = () => {
                     </div>
 
                     <div>
-                    <div className='font-semibold'>Qualification</div>
-                    <span className='ml-5'>---To follow---</span>
-
+                    <div className='font-semibold'>Qualifications</div>
+                      <ul className='list-disc'>
+                      {jobDegree != ""&&
+                         <li className='ml-10'>Degree: {jobDegree.join(", ")}</li>
+                      }
+                      {jobSkills != ""&&
+                        <li className='ml-10'>Skills: {jobSkills.join(", ")}</li>
+                      }
+                      {jobLicense != ""&&
+                        <li className='ml-10'>License: {jobLicense.join(", ")}</li>
+                      }
+                      </ul>
                     </div>
 
 

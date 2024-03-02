@@ -6,7 +6,6 @@ import TextAreaInput from '../../components/TextAreaInput';
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 const CreateJobPost = () => {
-const [companyName, setCompanyName] = useState('');
 const [jobTitle, setJobTitle] = useState('');
 const [jobDesc, setJobDesc] = useState('');
 const [employmentType, setEmploymentType] = useState('');
@@ -19,7 +18,7 @@ const [isOpen, setIsOpen] = useState(true);
 const [degree, setDegree] = useState('');
 const [yearsExp, setYearExp] = useState('');
 const [licenseName, setLicenseName] = useState([{licenseName:""}]);
-const [certification, setCertification] = useState([{certName:""}]);
+// const [certification, setCertification] = useState([{certName:""}]);
 const [skills, setSkill] = useState([{skillName:""}]);
 const [isAppLetterReq, setIsAppLetterReq] = useState(false);
 const [dateCreated, setDateCreated] = useState(new Date().toISOString());
@@ -54,13 +53,13 @@ const handleChangeLicense = (event, index) => {
   onChangeValue[index].licenseName = value;
   setLicenseName(onChangeValue);
 };
-const handleChangeCert = (event, index) => {
-  event.preventDefault();
-  let { name, value } = event.target;
-  let onChangeValue = [...certification];
-  onChangeValue[index].certName = value;
-  setCertification(onChangeValue);
-};
+// const handleChangeCert = (event, index) => {
+//   event.preventDefault();
+//   let { name, value } = event.target;
+//   let onChangeValue = [...certification];
+//   onChangeValue[index].certName = value;
+//   setCertification(onChangeValue);
+// };
 
 const handleDeleteInput = (index) => {
   const newArray = [...skills];
@@ -74,11 +73,11 @@ const handleDeleteInputLicense = (index) => {
   setLicenseName(newArray);
 };
 
-const handleDeleteInputCert = (index) => {
-  const newArray = [...certification];
-  newArray.splice(index, 1);
-  setCertification(newArray);
-};
+// const handleDeleteInputCert = (index) => {
+//   const newArray = [...certification];
+//   newArray.splice(index, 1);
+//   setCertification(newArray);
+// };
 
 const handleCheckboxChange = () => {
   // Toggle the boolean value when checkbox is clicked
@@ -91,7 +90,6 @@ const handleSubmit = async (event) => {
   
   const formData = new FormData();
 
-  formData.append('companyName', companyName);
   formData.append('jobTitle', jobTitle);
   formData.append('jobDesc', jobDesc);
   formData.append('employmentType', employmentType);
@@ -109,14 +107,9 @@ const handleSubmit = async (event) => {
     formData.append(`skill[${index}][skillName]`, item.skillName);
   });
   licenseName.forEach((item, index) => {
-    formData.append(`licenseName[${index}][licenseName]`, item.licenseName);
+    formData.append(`license[${index}][licenseName]`, item.licenseName);
   });
-  certification.forEach((item, index) => {
-    formData.append(`certification[${index}][certName]`, item.certName);
-  });
-
-
-
+  
   console.log("Form Data");
   for (let sk of skills) {
     console.log(sk);
@@ -219,7 +212,7 @@ const handleValidity = (endDate) => {
             </div>
 
 
-            <div className='col-span-2'>
+            {/* <div className='col-span-2'>
                  <span className="label-text">Certifications</span>
             </div>
             <div className='col-span-2 flex flex-col gap-2'>
@@ -237,13 +230,13 @@ const handleValidity = (endDate) => {
                   {certification.length > 1 && (
                     <button className={`btn btn-info text-white`} onClick={() => handleDeleteInputCert(index)}>Delete</button>
                   )}
-                  {/* {console.log(item.skillName)} */}
+                  
                 </div>
               
               ))}
               
 
-            </div>
+            </div> */}
             <div className="flex flex-row gap-5 mt-3">
                 <span className="label-text font-bold">Require Application Letter?</span> 
                 <input type="checkbox" className="toggle toggle-success"  checked={isAppLetterReq}  onChange={handleCheckboxChange}/>
