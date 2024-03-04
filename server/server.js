@@ -29,7 +29,6 @@ app.get('/api/getuserrole', async (req, res) => {
   
 
   res.json(data);
-  console.log(data)
 });
 
 app.get('/api/data', async (req, res) => {
@@ -617,6 +616,38 @@ app.get('/api/getjobdegreereq', async (req, res) => {
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal server error' });
   }
+});
+
+app.get('/api/getalljobpost', async (req, res) => {
+  try{
+    const jobPosts = await prisma.jobPost.findMany({
+      orderBy:[
+        {
+          dateUpdated: 'desc'
+        },
+        {
+          dateCreated: 'desc'
+        }
+      ],
+      include:{
+        company: true,
+        jobDegreeReq: {
+          include:{
+            degree: true
+          }
+        }
+
+      }
+    })
+
+    console.log(jobPosts)
+    res.json(jobPosts);
+
+  }catch(error){
+    console.error('Error: ', error)
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
 });
 
 app.listen(port, () => {
