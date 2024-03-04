@@ -94,7 +94,7 @@ import SideBar from "../../components/SideBar";
       <TopBar/>
         
       <div className='flex flex-row gap-2'>
-      <SideBar/>
+      <SideBar userRole={userRole}/>
 
       <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
       <div className="pt-5 pr-5 pl-3 overflow-auto">
