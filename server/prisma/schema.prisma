@@ -109,7 +109,7 @@ model PersonSkill {
 
 model Skills {
   id           String         @id @default(uuid())
-  skillName    String
+  skillName    String @unique
   personSkill  PersonSkill[]
   jobSkillsReq JobSkillsReq[]
 }
@@ -126,7 +126,7 @@ model PersonLicense {
 
 model PRCLicenses {
   id            String          @id @default(uuid())
-  licenseName   String
+  licenseName   String @unique
   personLicense PersonLicense[]
   jobLicenseReq JobLicenseReq[]
 }
@@ -182,7 +182,7 @@ model JobPost {
   companyId         String
   jobTitle          String
   yearsExp          String
-  jobDesc           String
+  jobDesc           String @db.Text
   jobLoc            String
   employmentType    String
   salary            Int
