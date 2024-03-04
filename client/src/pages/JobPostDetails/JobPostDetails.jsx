@@ -13,10 +13,20 @@ const JobPostDetails = () => {
     const[jobSkills, setJobSkills] = useState([])
     const[jobLicense, setJobLicense] = useState([])
     const[jobDegree, setJobDegree] = useState([])
-
+    const [userRole, setUserRole] = useState([]);
     const { jobPostId } = useParams();
+
     useEffect(()=>{
-        
+      const fetchUserRole = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/getuserrole");
+          const getUserResult = await response.json();
+          setUserRole(getUserResult);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+  
+      };
         const fetchJobPostDetails = async () => {
             try {
               const response = await fetch(`http://localhost:3000/api/getjobdetails?id=${jobPostId}`);
@@ -57,6 +67,7 @@ const JobPostDetails = () => {
               console.error("Error fetching data:", error);
             }
           };
+          fetchUserRole()
           fetchJobPostDetails()
           fetchJobPostDegree()
           fetchJobPostSkills()
@@ -69,7 +80,7 @@ const JobPostDetails = () => {
         <TopBar/>
 
         <div className="flex flex-row gap-2">
-            <SideBar/>
+            <SideBar userRole={userRole}/>
             <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
                 <div className="pt-5 pr-5 pl-3 overflow-auto">
                 <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col gap-5">
