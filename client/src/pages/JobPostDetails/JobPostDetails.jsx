@@ -72,7 +72,7 @@ const JobPostDetails = () => {
             <SideBar/>
             <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
                 <div className="pt-5 pr-5 pl-3 overflow-auto">
-                <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-2 flex flex-col gap-5">
+                <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col gap-5">
                 
                     <div >
                         <span className='font-semibold'>Job Title</span>
