@@ -1,6 +1,7 @@
 import React from "react";
 import ButtonPrimary from "./ButtonPrimary";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import ButtonNavigator from "./ButtonNavigator";
 
 const JobPostCard = ({ jobData }) => {
   return (
@@ -28,8 +29,7 @@ const JobPostCard = ({ jobData }) => {
             <h2>Employment Type: <span className="font-thin">{job.employmentType}</span></h2>
             <h2>Work Model: <span className="font-thin">{job.workModel}</span></h2>
             </div>
-            <Link className="btn btn-primary w-40 mt-5" to={`/jobpostdetails/${job.id}`}>View Details</Link>
-
+            <ButtonNavigator path={`/jobpostdetails/${job.id}`} text={"View Details"}/>
           </div>
         </div>
       ))}
