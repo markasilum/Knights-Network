@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors())
-// app.use(express.json())  
+app.use(express.json())  
 // app.use(express.urlencoded({extended: false}))
 const upload = multer();
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be"
@@ -29,7 +29,6 @@ app.get('/api/getuserrole', async (req, res) => {
   
 
   res.json(data);
-  console.log(data)
 });
 
 app.get('/api/data', async (req, res) => {
@@ -532,8 +531,12 @@ app.get('/api/getjobdetails', async (req, res) => {
       const jobDetails = await prisma.jobPost.findUnique({
           where: {
               id: id 
+          },
+          include:{
+            company: true,
           }
       });
+      // console.log(jobDetails)
       res.json(jobDetails);
   } catch (error) {
       // If there's an error, send an error response
@@ -558,7 +561,7 @@ app.get('/api/getjobskillsreq', async (req, res) => {
           }
       });
       const jobSkillsReq = skills.map(skill => skill.skill.skillName);
-      console.log(jobSkillsReq)
+      // console.log(jobSkillsReq)
       res.json(jobSkillsReq);
   } catch (error) {
       // If there's an error, send an error response
@@ -583,7 +586,7 @@ app.get('/api/getjoblicensereq', async (req, res) => {
           }
       });
       const jobLicenseReq = licenses.map(license => license.license.licenseName);
-      console.log(jobLicenseReq)
+      // console.log(jobLicenseReq)
       res.json(jobLicenseReq);
   } catch (error) {
       // If there's an error, send an error response
@@ -611,11 +614,77 @@ app.get('/api/getjobdegreereq', async (req, res) => {
 
     const degreeNames = degrees.map(degree => degree.degree.degreeName);
     res.json(degreeNames);
-    console.log(degreeNames);
+    // console.log(degreeNames);
   } catch (error) {
       // If there's an error, send an error response
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/getalljobpost', async (req, res) => {
+  try{
+    const jobPosts = await prisma.jobPost.findMany({
+      orderBy:[
+        {
+          dateUpdated: 'desc'
+        },
+        {
+          dateCreated: 'desc'
+        }
+      ],
+      include:{
+        company: true,
+        jobDegreeReq: {
+          include:{
+            degree: true
+          }
+        }
+
+      }
+    })
+
+    // console.log(jobPosts)
+    res.json(jobPosts);
+
+  }catch(error){
+    console.error('Error: ', error)
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+});
+
+//create education
+app.post('/sendapplication', async (req, res) => {
+  try {
+    const { id } = req.body;
+    // Create a new person record in the database using Prisma
+    const newApplication = await prisma.application.create({ 
+      data:{
+        person:{
+          connect:{
+              id:personId,
+          }
+        },
+        jobPost:{
+          connect:{
+            id: id
+          }
+        }
+      },
+      include: {
+        person: true,
+        jobPost: true,
+      },
+    });
+    console.log(id)
+
+    res.status(201).json(newApplication);
+    
+  } catch (error) {
+    console.error('Error creating person:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    // console.log(req.body)
   }
 });
 
