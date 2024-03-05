@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import {Routes, Route, useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import TopBar from '../../components/topbar';
 import InputFields from '../../components/InputFields';
@@ -6,6 +7,8 @@ import TextAreaInput from '../../components/TextAreaInput';
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 const CreateJobPost = () => {
+  const navigate = useNavigate();
+
 const [jobTitle, setJobTitle] = useState('');
 const [jobDesc, setJobDesc] = useState('');
 const [employmentType, setEmploymentType] = useState('');
@@ -84,6 +87,11 @@ const handleCheckboxChange = () => {
   setIsAppLetterReq(!isAppLetterReq);
 };
 
+const navigateHome = () => {
+  // 👇️ navigate to /
+  navigate('/home');
+};
+
 const handleSubmit = async (event) => {
   event.preventDefault();
   
@@ -129,6 +137,8 @@ const handleSubmit = async (event) => {
 
     if (!response.ok) {
       throw new Error(responseData.error);
+    }else{
+      navigateHome()
     }
   } catch (error) {
     console.error("Error creating job post:", error);
