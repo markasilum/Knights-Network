@@ -29,7 +29,7 @@ const EditPersonProfile = (userData) => {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/api/getuser');
+            const response = await fetch('http://localhost:3000/user/details');
             const result = await response.json();
 
                 setUsername(result.username);
@@ -48,7 +48,7 @@ const EditPersonProfile = (userData) => {
         };
         const fetchPersonData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/api/data');
+            const response = await fetch('http://localhost:3000/person/details');
             const result = await response.json();
             setFirstName(result.firstName);
             setMiddleName(result.middleName);
@@ -100,7 +100,7 @@ const EditPersonProfile = (userData) => {
         // }
       try {
         // Send the article data to your server
-        const response = await fetch('http://localhost:3000/api/updateperson', {
+        const response = await fetch('http://localhost:3000/person/update', {
           method: 'PUT',
           body: formData
         });

@@ -48,7 +48,7 @@ const CreateCompany = () => {
           // }
         try {
           // Send the article data to your server
-          const response = await fetch('http://localhost:3000/api/createcompany', {
+          const response = await fetch('http://localhost:3000/company/create', {
             method: 'POST',
             body: formData
           });

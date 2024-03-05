@@ -13,7 +13,7 @@ const ApplicationDashboard = () => {
     useEffect(()=>{
         const fetchUserRole = async () => {
           try {
-            const response = await fetch("http://localhost:3000/api/getuserrole");
+            const response = await fetch("http://localhost:3000/user/role");
             const getUserResult = await response.json();
             setUserRole(getUserResult);
           } catch (error) {
