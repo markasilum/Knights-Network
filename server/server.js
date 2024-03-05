@@ -688,6 +688,61 @@ app.post('/sendapplication', async (req, res) => {
   }
 });
 
+app.get('/api/getjobpostapplications', async (req, res) => {
+  try{    
+    const {id} = req.query
+    const data = await prisma.application.findMany({
+      where:{
+        personId: personId,
+      },  
+      orderBy:[
+        {
+          dateCreated: 'desc'
+        }
+      ],
+      include:{
+        jobPost:{
+          include: {
+            company: true
+          }
+        },
+      }
+    });
+    res.json(data);
+    
+  }catch(error){
+    console.error('Error getting application:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(req.body)
+
+  }
+})
+
+app.get('/api/checkuserapplication', async (req, res) => {
+  try{    
+    const {id} = req.query
+    const data = await prisma.application.findMany({
+      where:{
+        jobPostId: id,
+      }
+    });
+    let exist = false;
+    
+    data.map((job)=>{
+      if(job.jobPostId != null){
+        exist = true
+      }
+    })
+    res.json(exist);
+    
+  }catch(error){
+    console.error('Error getting application:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(req.body)
+
+  }
+})
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
