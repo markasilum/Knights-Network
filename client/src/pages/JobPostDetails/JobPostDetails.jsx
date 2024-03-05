@@ -9,6 +9,7 @@ import {
   useParams,
 } from "react-router-dom";
 import ButtonPrimary from "../../components/ButtonPrimary";
+import ButtonSuccess from "../../components/ButtonSuccess";
 const JobPostDetails = () => {
   const [jobData, setJobData] = useState([]);
   const [jobSkills, setJobSkills] = useState([]);
@@ -16,6 +17,8 @@ const JobPostDetails = () => {
   const [jobDegree, setJobDegree] = useState([]);
   const [userRole, setUserRole] = useState([]);
   const { jobPostId } = useParams();
+  const[applicationData,setApplicationData] = useState([])
+
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -76,11 +79,26 @@ const JobPostDetails = () => {
       }
     };
 
+    const fetchApplication = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/checkuserapplication?id=${jobPostId}`
+        );
+        const getApplicationData = await response.json();
+        setApplicationData(getApplicationData);
+        console.log(getApplicationData)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+
     fetchUserRole();
     fetchJobPostDetails();
     fetchJobPostDegree();
     fetchJobPostSkills();
     fetchJobPostLicense();
+    fetchApplication()
   }, []);
 
   const handleApplication = async (event) =>{
@@ -168,13 +186,20 @@ const JobPostDetails = () => {
                   </h2>
                 </div>
               </div>
+              
 
-              {userRole !="company" &&
-              <div className="w-full flex flex-row justify-end">
-                  <ButtonPrimary text={"Apply"} onClick={handleApplication}/>
-
-            </div>
+              {userRole !="company" && applicationData == false &&
+                <div className="w-full flex flex-row justify-end">
+                  <ButtonPrimary text={"Apply"} onClick={handleApplication}/> 
+                </div>
               }
+
+              {userRole !="company" && applicationData == true &&
+                <div className="w-full flex flex-row justify-end">
+                  <ButtonSuccess text={"Application Sent"}/> 
+                </div>
+              }
+
 
             </div>
           </div>
