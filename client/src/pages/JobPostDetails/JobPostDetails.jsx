@@ -23,7 +23,7 @@ const JobPostDetails = () => {
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/getuserrole");
+        const response = await fetch("http://localhost:3000/user/role");
         const getUserResult = await response.json();
         setUserRole(getUserResult);
       } catch (error) {
@@ -188,13 +188,13 @@ const JobPostDetails = () => {
               </div>
               
 
-              {userRole !="company" && applicationData == false &&
+              {userRole.roleName !== "company" && applicationData === false &&
                 <div className="w-full flex flex-row justify-end">
                   <ButtonPrimary text={"Apply"} onClick={handleApplication}/> 
                 </div>
               }
 
-              {userRole !="company" && applicationData == true &&
+              {userRole.roleName !== "company" && applicationData === true &&
                 <div className="w-full flex flex-row justify-end">
                   <ButtonSuccess text={"Application Sent"}/> 
                 </div>
