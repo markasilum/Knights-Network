@@ -20,6 +20,8 @@ import CertificationsForm from './components/CertificationsForm';
 import ProfilePage from './pages/Profile/ProfilePage';
 import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboard';
 import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
+import Homepage from './pages/Homepage/Homepage';
+import ApplicationDashboard from './pages/Applications-Dashboard/ApplicationDashboard';
 
 
 function App() {
@@ -30,6 +32,8 @@ function App() {
           <Routes>
             <Route index element={<ProfilePage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
+            <Route path="/home" element={<Homepage/>}/>
+            <Route path="/applications" element={<ApplicationDashboard/>}/>
             <Route path="/createaccount" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
             <Route path="/login" element={<LoginScreen/>}/>
