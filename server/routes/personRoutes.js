@@ -17,7 +17,7 @@ let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, './uploads');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -36,8 +36,8 @@ router.get("/details", async (req, res) => {
   res.json(data);
 });
 
-router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'imageId' }]), async (req, res) => {
-  console.log("Request Body:", req.body);
+router.post("/create", upload.single('profPic'), async (req, res) => {
+  
   try {
     // Extract data from the request body
     const {
@@ -57,9 +57,9 @@ router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'imageId' }])
       role
     } = req.body;
 
-    const profPic = req.files['profPic'] ? req.files['profPic'][0].path : null;
-    const imageId = req.files['imageId'] ? req.files['imageId'][0].path : null;
-
+    const profPic = req.file.path;
+   
+    console.log(profPic);
     // Create a new person record in the database using Prisma
     const newPerson = await prisma.user.create({
       data: {
