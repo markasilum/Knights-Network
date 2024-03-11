@@ -23,7 +23,7 @@ router.get("/details", async (req, res) => {
   res.json(data);
 });
 
-router.post("/create", upload.none(), async (req, res) => {
+router.post("/create", upload.any(), async (req, res) => {
   console.log("Request Body:", req.body);
   try {
     // Extract data from the request body
@@ -41,6 +41,8 @@ router.post("/create", upload.none(), async (req, res) => {
       emailAddress,
       contactNum,
       biography,
+      profPic,
+      role
     } = req.body;
 
     // Create a new person record in the database using Prisma
@@ -55,6 +57,7 @@ router.post("/create", upload.none(), async (req, res) => {
         emailAddress,
         contactNum,
         biography,
+        profPic,
         verified: false,
         person: {
           create: {
@@ -66,7 +69,7 @@ router.post("/create", upload.none(), async (req, res) => {
         },
         role: {
           create: {
-            roleName: "alumni",
+            roleName: role,
           },
         },
       },
@@ -81,7 +84,7 @@ router.post("/create", upload.none(), async (req, res) => {
   } catch (error) {
     console.error("Error creating person:", error);
     res.status(500).json({ error: "Internal Server Error" });
-    console.log(req.body);
+    
   }
 });
 
@@ -104,6 +107,7 @@ router.put("/update", upload.none(), async (req, res) => {
       contactNum,
       biography,
       personId,
+     
     } = req.body;
     // Construct the full street address
 
