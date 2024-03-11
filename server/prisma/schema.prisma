@@ -20,7 +20,7 @@ model User{
   zipCode           String
   contactNum        String
   emailAddress      String
-  profPic           Bytes?
+  profPic           String?
   biography         String @db.Text
   verified          Boolean
   role Roles?
