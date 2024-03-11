@@ -33,7 +33,7 @@ const JobPostDetails = () => {
     const fetchJobPostDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/getjobdetails?id=${jobPostId}`
+          `http://localhost:3000/jobpost/details?id=${jobPostId}`
         );
         const getJobRes = await response.json();
         setJobData(getJobRes);
@@ -45,7 +45,7 @@ const JobPostDetails = () => {
     const fetchJobPostSkills = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/getjobskillsreq?id=${jobPostId}`
+          `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`
         );
         const getJobSkillsRes = await response.json();
         setJobSkills(getJobSkillsRes);
@@ -57,7 +57,7 @@ const JobPostDetails = () => {
     const fetchJobPostLicense = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/getjoblicensereq?id=${jobPostId}`
+          `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`
         );
         const getJobSkillsRes = await response.json();
         setJobLicense(getJobSkillsRes);
@@ -70,7 +70,7 @@ const JobPostDetails = () => {
     const fetchJobPostDegree = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/getjobdegreereq?id=${jobPostId}`
+          `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`
         );
         const getJobDegreeRes = await response.json();
         setJobDegree(getJobDegreeRes);
@@ -82,7 +82,7 @@ const JobPostDetails = () => {
     const fetchApplication = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/checkuserapplication?id=${jobPostId}`
+          `http://localhost:3000/application/check?id=${jobPostId}`
         );
         const getApplicationData = await response.json();
         setApplicationData(getApplicationData);

@@ -14,6 +14,38 @@ let userId = personUserId;
 let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
 let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
 
+router.get('/index', async (req, res) => {
+  try{
+    const jobPosts = await prisma.jobPost.findMany({
+      orderBy:[
+        {
+          dateUpdated: 'desc'
+        },
+        {
+          dateCreated: 'desc'
+        }
+      ],
+      include:{
+        company: true,
+        jobDegreeReq: {
+          include:{
+            degree: true
+          }
+        }
+
+      }
+    })
+
+    // console.log(jobPosts)
+    res.json(jobPosts);
+
+  }catch(error){
+    console.error('Error: ', error)
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+});
+
 router.get("/company/index", async (req, res) => {
   try {
     const data = await prisma.jobPost.findMany({
@@ -137,6 +169,106 @@ router.post("/create", upload.none(), async (req, res) => {
     console.error("Error creating job post:", error);
     res.status(500).json({ error: "Internal Server Error" });
     // console.log(req.body)
+  }
+});
+
+router.get('/details', async (req, res) => {
+  try {
+      // Extract the query parameter 'ids' from the request
+      const { id } = req.query;
+      // console.log(id)
+      // Query the database using Prisma to fetch job post by their IDs
+      const jobDetails = await prisma.jobPost.findUnique({
+          where: {
+              id: id 
+          },
+          include:{
+            company: true,
+          }
+      });
+      // console.log(jobDetails)
+      res.json(jobDetails);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/requirements/skills', async (req, res) => {
+  try {
+      const { id } = req.query;
+      const skills = await prisma.jobSkillsReq.findMany({
+          where: {
+            jobPostId: id 
+          },
+          select: {
+            skill: {
+              select: {
+                skillName: true
+              }
+            }
+          }
+      });
+      const jobSkillsReq = skills.map(skill => skill.skill.skillName);
+      // console.log(jobSkillsReq)
+      res.json(jobSkillsReq);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/requirements/license', async (req, res) => {
+  try {
+      const { id } = req.query;
+      const licenses = await prisma.jobLicenseReq.findMany({
+          where: {
+              jobPostId: id 
+          },
+          select: {
+            license: {
+              select: {
+                licenseName: true
+              }
+            }
+          }
+      });
+      const jobLicenseReq = licenses.map(license => license.license.licenseName);
+      // console.log(jobLicenseReq)
+      res.json(jobLicenseReq);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/requirements/degree', async (req, res) => {
+  try {
+      const { id } = req.query;
+      const degrees = await prisma.jobDegreeReq
+      .findMany({
+        where: {
+          jobPostId: id // Replace YOUR_JOB_POST_ID with the actual job post ID
+        },
+        select: {
+          degree: {
+            select: {
+              degreeName: true
+            }
+          }
+        }
+      });
+
+    const degreeNames = degrees.map(degree => degree.degree.degreeName);
+    res.json(degreeNames);
+    // console.log(degreeNames);
+  } catch (error) {
+      // If there's an error, send an error response
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
   }
 });
 module.exports = router;
