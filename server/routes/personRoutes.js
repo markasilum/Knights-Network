@@ -2,9 +2,10 @@ const { PrismaClient } = require("@prisma/client");
 
 const express = require("express");
 const multer = require("multer");
+const path = require('path');
 const router = express.Router();
 const prisma = new PrismaClient();
-const upload = multer();
+
 
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
@@ -13,6 +14,18 @@ let userId = personUserId;
 
 let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
 let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+
+var upload = multer({ storage: storage })
 
 router.get("/details", async (req, res) => {
   const data = await prisma.person.findUnique({
@@ -23,7 +36,7 @@ router.get("/details", async (req, res) => {
   res.json(data);
 });
 
-router.post("/create", upload.any(), async (req, res) => {
+router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'imageId' }]), async (req, res) => {
   console.log("Request Body:", req.body);
   try {
     // Extract data from the request body
@@ -41,9 +54,11 @@ router.post("/create", upload.any(), async (req, res) => {
       emailAddress,
       contactNum,
       biography,
-      profPic,
       role
     } = req.body;
+
+    const profPic = req.files['profPic'] ? req.files['profPic'][0].path : null;
+    const imageId = req.files['imageId'] ? req.files['imageId'][0].path : null;
 
     // Create a new person record in the database using Prisma
     const newPerson = await prisma.user.create({
