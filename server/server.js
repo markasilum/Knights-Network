@@ -38,7 +38,7 @@ app.use('/degree', degreeRoutes)
 app.use('/experience', experienceRoutes)
 app.use('/jobpost', jobPostRoutes)
 app.use('/application', applicationRoutes)
-
+app.use('/uploads', express.static('uploads'))
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
