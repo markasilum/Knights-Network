@@ -16,6 +16,9 @@ const CreatePersonForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [bio, setBio] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imageId, setImageId] = useState(null);
+  const [role, setRole] = useState('');
 
 
   const handleSubmit = async (event) => {
@@ -23,7 +26,13 @@ const CreatePersonForm = () => {
     event.preventDefault();
 
     const formData = new FormData();
-  
+
+    // if (image) {
+    //   formData.append('profPic', image);
+    // }
+    // if (imageId) {
+    //   formData.append('profPic', image);
+    // }
     // Append article data to the formData
     // Append values to formData
       formData.append('firstName', firstName);
@@ -39,19 +48,13 @@ const CreatePersonForm = () => {
       formData.append('emailAddress', emailAddress);
       formData.append('contactNum', phoneNumber);
       formData.append('biography', bio);
+      formData.append('role', role);
      
 
       for (const value of formData.values()) {
         console.log(value);
       }
-
-      // const data = new URLSearchParams();
-      
-      // for (const pair of formData.values()) {
-      //   data.append(pair[0], pair[1]);
-      // }
     try {
-      // Send the article data to your server
       const response = await fetch('http://localhost:3000/persons/create', {
         method: 'POST',
         body: formData
@@ -71,6 +74,98 @@ const CreatePersonForm = () => {
       setIsSubmitting(false);
       console.error('Error creating person:', error);
     }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+  
+    // Function to reset file input
+    const resetFileInput = () => {
+      event.target.value = null; // This clears the selected file
+      setImage(null);
+      setImagePreviewUrl(null); // Clear the image preview URL
+    };
+  
+    // Check if file is selected
+    if (!file) {
+      resetFileInput();
+      return;
+    }
+  
+    // Check the file type
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type)) {
+      setToastMessage('Please upload an image in JPG or PNG format.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      resetFileInput();
+      return;
+    }
+  
+    // Check the file size (3 MB in bytes)
+    const maxSize = 3 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setToastMessage('File size should be less than 3 MB.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      resetFileInput();
+      return;
+    }
+  
+    // If file is valid, update the image state and set image preview URL
+    setImage(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+    // Resetting the file input if needed
+    document.getElementById('fileInput').value = "";
+  };
+
+  const handleFileChangeId = (event) => {
+    const file = event.target.files[0];
+  
+    // Function to reset file input
+    const resetFileInput = () => {
+      event.target.value = null; // This clears the selected file
+      setImage(null);
+      setImagePreviewUrl(null); // Clear the image preview URL
+    };
+  
+    // Check if file is selected
+    if (!file) {
+      resetFileInput();
+      return;
+    }
+  
+    // Check the file type
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type)) {
+      setToastMessage('Please upload an image in JPG or PNG format.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      resetFileInput();
+      return;
+    }
+  
+    // Check the file size (3 MB in bytes)
+    const maxSize = 3 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setToastMessage('File size should be less than 3 MB.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      resetFileInput();
+      return;
+    }
+  
+    // If file is valid, update the image state and set image preview URL
+    setImage(file);
+  };
+
+  const handleRemoveImageId = () => {
+    setImage(null);
+    // Resetting the file input if needed
+    document.getElementById('fileInput').value = "";
   };
  
   return (
@@ -107,7 +202,7 @@ const CreatePersonForm = () => {
             <span className="label-text font-bold">Password</span>
           </div>
         </label>
-        <input type="text" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input type="password" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
       </div>
 
@@ -138,40 +233,47 @@ const CreatePersonForm = () => {
 
 
      
-      <div className='w-full grid grid-cols-2 gap-2'>
-        <div>
+      <div className='w-full '>
+        <div >
         <label className="form-control w-full max-w-xs">
           <div className="label">
             <span className="label-text font-bold">Profile Picture</span>
           </div>
         </label>
-          <input type="file" id="profilePicture" className="file-input file-input-bordered w-full max-w-xs" />
+          <input type="file" id="profilePicture" className="file-input file-input-bordered w-full max-w-xs" onChange={handleFileChange} />
+          {image && (
+                <button onClick={handleRemoveImage} className="btn btn-error text-white ml-3">
+                  Remove Image
+                </button>
+              )}
         </div>
         
-        <div>
+        
+      </div>
+
+      <div> 
         <label className="form-control w-full max-w-xs">
           <div className="label">
             <span className="label-text font-bold">Student or Alumni</span>
           </div>
         </label>
           
-          <div className='flex flex-row justify-center gap-10 items-center'>   
+          <div className='flex flex-row gap-10 justify-start items-center ml-5'>   
               <div className='flex flex-row items-center'>
-              <input type="radio" name="radio-10" id="student" className="radio checked:bg-success" checked />
+              <input type="radio" name="radio-10" id="student" className="radio checked:bg-success" value={"student"} onChange={(e) => setRole(e.target.value)}/>
                 <label className="label cursor-pointer">
                     <span className="label-text">Student</span> 
                 </label>
               </div> 
 
               <div className='flex flex-row items-center'>
-              <input type="radio" name="radio-10" id="alumni" className="radio checked:bg-success" checked />
+              <input type="radio" name="radio-10" id="alumni" className="radio checked:bg-success"  value={"alumni"} onChange={(e) => setRole(e.target.value)} checked/>
               <label className="label cursor-pointer">
                     <span className="label-text">Alumni</span> 
                 </label>
                 </div>  
           </div>
         </div>
-      </div>
 
       <label className="form-control w-full max-w-xs">
           <div className="label">
@@ -188,6 +290,11 @@ const CreatePersonForm = () => {
             </div>
           </label>
         <input type="file" id="validId" className="file-input file-input-bordered w-full" />
+        {/* {imageId && (
+                <button onClick={handleRemoveImageId} className="btn btn-error text-white ml-3">
+                  Remove Image
+                </button>
+              )} */}
       </div>
 
       <button type="submit" className={`btn btn-primary w-40 mt-5`}>Create Account</button>
