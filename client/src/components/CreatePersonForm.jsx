@@ -18,7 +18,7 @@ const CreatePersonForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [image, setImage] = useState(null);
   const [imageId, setImageId] = useState(null);
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('alumni');
 
 
   const handleSubmit = async (event) => {
@@ -27,12 +27,12 @@ const CreatePersonForm = () => {
 
     const formData = new FormData();
 
-    // if (image) {
-    //   formData.append('profPic', image);
-    // }
-    // if (imageId) {
-    //   formData.append('profPic', image);
-    // }
+    if (image) {
+      formData.append('profPic', image);
+    }
+    if (imageId) {
+      formData.append('profPic', image);
+    }
     // Append article data to the formData
     // Append values to formData
       formData.append('firstName', firstName);
@@ -55,7 +55,7 @@ const CreatePersonForm = () => {
         console.log(value);
       }
     try {
-      const response = await fetch('http://localhost:3000/persons/create', {
+      const response = await fetch('http://localhost:3000/person/create', {
         method: 'POST',
         body: formData
       });
@@ -289,12 +289,12 @@ const CreatePersonForm = () => {
               <span className="label-text font-bold">Valid ID</span>
             </div>
           </label>
-        <input type="file" id="validId" className="file-input file-input-bordered w-full" />
-        {/* {imageId && (
+        <input type="file" id="validId" className="file-input file-input-bordered w-full" onChange={handleFileChangeId}/>
+        {imageId && (
                 <button onClick={handleRemoveImageId} className="btn btn-error text-white ml-3">
                   Remove Image
                 </button>
-              )} */}
+              )}
       </div>
 
       <button type="submit" className={`btn btn-primary w-40 mt-5`}>Create Account</button>
