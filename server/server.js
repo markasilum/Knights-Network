@@ -11,6 +11,7 @@ const jobPostRoutes = require('./routes/jobPostRoutes')
 const degreeRoutes = require('./routes/degreeRoutes')
 const experienceRoutes = require('./routes/experienceRoutes')
 const applicationRoutes = require('./routes/applicationRoutes')
+const licenseRoutes = require('./routes/licenseRoutes')
 
 const prisma = new PrismaClient();
 const app = express();
@@ -38,6 +39,8 @@ app.use('/degree', degreeRoutes)
 app.use('/experience', experienceRoutes)
 app.use('/jobpost', jobPostRoutes)
 app.use('/application', applicationRoutes)
+app.use('/license', licenseRoutes)
+
 app.use('/uploads', express.static('uploads'))
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
