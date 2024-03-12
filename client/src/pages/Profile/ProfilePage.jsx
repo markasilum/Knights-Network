@@ -98,7 +98,13 @@ import SideBar from "../../components/SideBar";
       <div className="pt-5 pr-5 pl-3 overflow-auto">
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
-            <div className="w-28 h-28 bg-black rounded-lg"></div>
+
+            <div className="avatar">
+              <div className="w-24 rounded">
+                <img src={`http://localhost:3000/uploads/prof_pics/${userData.profPic}`} />
+              </div>
+            </div>
+            
             {userRole.roleName === "company" && (
               <h1 className="font-bold text-2xl mt-5">
                 {compData.companyName}

@@ -11,15 +11,20 @@ const PersonCredentials = ({educData}) => {
       <EducCard educData={educData}/>
       <ExperienceCards/>
 
-      <div className='font-semibold'>License
+      <div className='font-semibold flex flex-col'>License
+      <Link to="/licenseform" className='font-thin bg-success rounded-md w-fit pr-3 pl-3 pb-1 pt-1 hover:bg-info text-white'>Add</Link>
       
       </div>
 
-      <div className='font-semibold'>Skills
-      
+      <div className='font-semibold flex flex-col'>Skills
+      <Link to="/skillsform" className='font-thin bg-success rounded-md w-fit pr-3 pl-3 pb-1 pt-1 hover:bg-info text-white'>Add</Link>
+
       </div>
       
-      <div className='font-semibold '>Certifications</div>
+      <div className='font-semibold flex flex-col'>Certifications
+      <Link to="/certificationform" className='font-thin bg-success rounded-md w-fit pr-3 pl-3 pb-1 pt-1 hover:bg-info text-white'>Add</Link>
+
+      </div>
     </div>
   )
 }
