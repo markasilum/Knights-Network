@@ -1,105 +1,12 @@
-const { PrismaClient } = require("@prisma/client");
-
 const express = require("express");
 const multer = require("multer");
 const router = express.Router();
-const prisma = new PrismaClient();
 const upload = multer();
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const applicationController = require('../controllers/applicationsController')
 
-let userId = personUserId;
-
-let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
-let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
-
-router.post('/create', async (req, res) => {
-    try {
-      const { id } = req.body;
-      // Create a new person record in the database using Prisma
-      const newApplication = await prisma.application.create({ 
-        data:{
-          person:{
-            connect:{
-                id:personId,
-            }
-          },
-          jobPost:{
-            connect:{
-              id: id
-            }
-          }
-        },
-        include: {
-          person: true,
-          jobPost: true,
-        },
-      });
-      console.log(id)
-  
-      res.status(201).json(newApplication);
-      
-    } catch (error) {
-      console.error('Error creating person:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-      // console.log(req.body)
-    }
-  });
-
-  router.get('/person/index', async (req, res) => {
-    try{    
-      const {id} = req.query
-      const data = await prisma.application.findMany({
-        where:{
-          personId: personId,
-        },  
-        orderBy:[
-          {
-            dateCreated: 'desc'
-          }
-        ],
-        include:{
-          jobPost:{
-            include: {
-              company: true
-            }
-          },
-        }
-      });
-      res.json(data);
-      
-    }catch(error){
-      console.error('Error getting application:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
-  
-    }
-  })
-
-  router.get('/check', async (req, res) => {
-    try{    
-      const {id} = req.query
-      const data = await prisma.application.findMany({
-        where:{
-          jobPostId: id,
-        }
-      });
-      let exist = false;
-      
-      data.map((job)=>{
-        if(job.jobPostId != null){
-          exist = true
-        }
-      })
-      res.json(exist);
-      
-    }catch(error){
-      console.error('Error getting application:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
-  
-    }
-  })
+router.post('/create', applicationController.apply);
+router.get('/person/index', applicationController.getListOfApplications)
+router.get('/check', applicationController.checkIfApplied)
 
 module.exports = router
