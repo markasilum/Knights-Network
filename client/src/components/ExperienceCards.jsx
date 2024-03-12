@@ -21,10 +21,14 @@ useEffect(()=>{
   },[]);
 
   return (
-    <div className=''>
+    <div>
         <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
             <span className='font-bold'>Experience</span>
+            <div className='flex gap-3'>
+            <Link to="/expform" className='font-thin underline'>Add</Link>
             <Link to="/expform" className='font-thin underline'>Edit</Link>
+            </div>
+            
         </div>
         
         {experience.map((experience)=>(
@@ -41,7 +45,6 @@ useEffect(()=>{
           </div>
         ))}
         
-        <Link to="/expform" className='font-thin bg-success rounded-md pr-3 pl-3 pb-1 pt-1 hover:bg-info text-white'>Add</Link>
 
       </div>
   )
