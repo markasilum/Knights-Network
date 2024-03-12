@@ -49,7 +49,8 @@ const EducCard = ({educData}) => {
           </div>
         ))}
         
-      
+        <Link to="/credentials" className='font-thin bg-success rounded-md pr-3 pl-3 pb-1 pt-1 hover:bg-info text-white'>Add</Link> 
+
       </div>
   )
 }
