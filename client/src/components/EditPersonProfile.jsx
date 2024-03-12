@@ -9,7 +9,7 @@ import {
 
 import TopBar from './topbar'
 
-const EditPersonProfile = (userData) => {
+const EditPersonProfile = () => {
     const [firstName, setFirstName] = useState('');
     const [middleName, setMiddleName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -24,6 +24,7 @@ const EditPersonProfile = (userData) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [bio, setBio] = useState('');
     const [personId, setPersonId] = useState('');
+    const [image, setImage] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const EditPersonProfile = (userData) => {
                 setEmailAddress(result.emailAddress);
                 setPhoneNumber(result.contactNum);
                 setBio(result.biography);
+                setImage(result.profPic);
 
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -62,6 +64,7 @@ const EditPersonProfile = (userData) => {
 
       fetchUserData();
       fetchPersonData();
+      console.log(image)
     }, []);
   
   
@@ -70,6 +73,9 @@ const EditPersonProfile = (userData) => {
       event.preventDefault();
   
       const formData = new FormData();
+      if (image) {
+        formData.append('profPic', image);
+      }
     
       // Append article data to the formData
       // Append values to formData
@@ -112,6 +118,93 @@ const EditPersonProfile = (userData) => {
         console.error('Error creating person:', error);
       }
     };
+
+    const handleFileChange = (event) => {
+      const file = event.target.files[0];
+    
+      // Function to reset file input
+      const resetFileInput = () => {
+        event.target.value = null; // This clears the selected file
+        setImage(null);
+        setImagePreviewUrl(null); // Clear the image preview URL
+      };
+    
+      // Check if file is selected
+      if (!file) {
+        resetFileInput();
+        return;
+      }
+    
+      // Check the file type
+      const validTypes = ['image/jpeg', 'image/png'];
+      if (!validTypes.includes(file.type)) {
+        setToastMessage('Please upload an image in JPG or PNG format.');
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        resetFileInput();
+        return;
+      }
+    
+      // Check the file size (3 MB in bytes)
+      const maxSize = 3 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setToastMessage('File size should be less than 3 MB.');
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        resetFileInput();
+        return;
+      }
+    
+      // If file is valid, update the image state and set image preview URL
+      setImage(file);
+    };
+  
+    const handleRemoveImage = () => {
+      setImage(null);
+      // Resetting the file input if needed
+      document.getElementById('fileInput').value = "";
+    };
+  
+    const handleFileChangeId = (event) => {
+      const file = event.target.files[0];
+    
+      // Function to reset file input
+      const resetFileInput = () => {
+        event.target.value = null; // This clears the selected file
+        setImage(null);
+        setImagePreviewUrl(null); // Clear the image preview URL
+      };
+    
+      // Check if file is selected
+      if (!file) {
+        resetFileInput();
+        return;
+      }
+    
+      // Check the file type
+      const validTypes = ['image/jpeg', 'image/png'];
+      if (!validTypes.includes(file.type)) {
+        setToastMessage('Please upload an image in JPG or PNG format.');
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        resetFileInput();
+        return;
+      }
+    
+      // Check the file size (3 MB in bytes)
+      const maxSize = 3 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setToastMessage('File size should be less than 3 MB.');
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        resetFileInput();
+        return;
+      }
+    
+      // If file is valid, update the image state and set image preview URL
+      setImage(file);
+    };
+  
    
     return (
       <div className='w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto'>
@@ -186,7 +279,12 @@ const EditPersonProfile = (userData) => {
               <span className="label-text font-bold">Profile Picture</span>
             </div>
           </label>
-            <input type="file" id="profilePicture" className="file-input file-input-bordered w-full max-w-xs" />
+            <input type="file" id="profilePicture" className="file-input file-input-bordered w-full max-w-xs" onChange={handleFileChange}/>
+            {image && (
+                <button onClick={handleRemoveImage} className="btn btn-error text-white ml-3">
+                  Remove Image
+                </button>
+              )}
           </div>
           
           {/* <div>
@@ -220,16 +318,6 @@ const EditPersonProfile = (userData) => {
             </div>
           </label>
         <textarea id="bio" placeholder="Bio" className="textarea textarea-bordered textarea-md w-full" value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
-  
-        <div className='flex flex-col mt-8 w-full items-center'>
-          <span className='text-lg font-bold'>Verification Requirements</span>
-          <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text font-bold">Valid ID</span>
-              </div>
-            </label>
-          <input type="file" id="validId" className="file-input file-input-bordered w-full" />
-        </div>
   
         <button type="submit" className={`btn btn-primary w-40 mt-5`}>Update Account</button>
   
