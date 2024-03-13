@@ -39,7 +39,7 @@ app.use('/degree', degreeRoutes)
 app.use('/experience', experienceRoutes)
 app.use('/jobpost', jobPostRoutes)
 app.use('/application', applicationRoutes)
-// app.use('/license', licenseRoutes)
+app.use('/license',licenseRoutes)
 
 app.use('/uploads', express.static('uploads'))
 app.listen(port, () => {
