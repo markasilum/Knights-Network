@@ -31,7 +31,7 @@ const CreatePersonForm = () => {
       formData.append('profPic', image);
     }
     if (imageId) {
-      formData.append('profPic', image);
+      formData.append('idPhoto', imageId);
     }
     // Append article data to the formData
     // Append values to formData
@@ -128,8 +128,7 @@ const CreatePersonForm = () => {
     // Function to reset file input
     const resetFileInput = () => {
       event.target.value = null; // This clears the selected file
-      setImage(null);
-      setImagePreviewUrl(null); // Clear the image preview URL
+      setImageId(null);
     };
   
     // Check if file is selected
@@ -159,11 +158,11 @@ const CreatePersonForm = () => {
     }
   
     // If file is valid, update the image state and set image preview URL
-    setImage(file);
+    setImageId(file);
   };
 
   const handleRemoveImageId = () => {
-    setImage(null);
+    setImageId(null);
     // Resetting the file input if needed
     document.getElementById('fileInput').value = "";
   };
