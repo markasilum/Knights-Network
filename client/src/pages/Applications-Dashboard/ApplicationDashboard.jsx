@@ -8,19 +8,8 @@ import DateToWords from "../../components/DateFormatter";
 const ApplicationDashboard = () => {
 
     const[applicationData,setApplicationData] = useState([])
-    const [userRole, setUserRole] = useState([]);
 
     useEffect(()=>{
-        const fetchUserRole = async () => {
-          try {
-            const response = await fetch("http://localhost:3000/user/role");
-            const getUserResult = await response.json();
-            setUserRole(getUserResult);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-      
-        };
           const fetchApplications = async () => {
               try {
                 const response = await fetch("http://localhost:3000/application/person/index");
@@ -30,7 +19,6 @@ const ApplicationDashboard = () => {
                 console.error("Error fetching data:", error);
               }
             };
-            fetchUserRole()
             fetchApplications()
        },[])
   return (
@@ -39,7 +27,7 @@ const ApplicationDashboard = () => {
       
 
       <div className="flex flex-row gap-2">
-        <SideBar userRole={userRole}/>
+        <SideBar/>
 
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
             <div className="pt-5 pr-5 pl-3 overflow-x-auto">
