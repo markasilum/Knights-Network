@@ -4,8 +4,27 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import CreateAccount from "../pages/Create-Account/CreateAccount";
 import HomePage from "../pages/Profile/ProfilePage";
 
-const SideBar = ({ userRole }) => {
+const SideBar = () => {
+  const [role, setUserRole] = useState([]);
   let userSideBar
+
+
+  useEffect(()=>{
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/user/role");
+        const getUserResult = await response.json();
+        setUserRole(getUserResult);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+
+    };
+    fetchUserRole();
+
+
+  },[])
+
 
   const companySidebar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
@@ -27,15 +46,12 @@ const SideBar = ({ userRole }) => {
       <SidebarButton text={"Logout"} onCick={"/login"} />
     </ul>
   )
-  if(userRole.roleName == "company"){
+  if(role.roleName == "company"){
     userSideBar = companySidebar
-  }else if(userRole.roleName == "alumni" || userRole.roleName == "student"){
+  }else if(role.roleName == "alumni" || role.roleName == "student"){
     userSideBar = alumniSideBar
   }
 
-
-
-  
   return (
     // <div className='w-3/12 bg-slate-500 flex flex-col gap-4 h-screen p-5'>
     userSideBar
