@@ -20,7 +20,7 @@ model User{
   zipCode           String
   contactNum        String
   emailAddress      String
-  profPic           Bytes?
+  profPic           String?
   biography         String @db.Text
   verified          Boolean
   role Roles?
@@ -120,7 +120,7 @@ model PersonLicense {
   personId  String
   license   PRCLicenses @relation(fields: [licenseId], references: [id])
   licenseId String
-  licensePic Bytes?
+  licensePic String?
   licenseValidity DateTime @db.Date
 }
 

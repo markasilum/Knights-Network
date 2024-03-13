@@ -9,7 +9,7 @@ const EducCard = ({educData}) => {
   useEffect(()=>{
     const fetchDegree = async () =>{
       try {
-        const response = await fetch(`http://localhost:3000/api/getdegree?ids=${degreeIds.join(',')}`);
+        const response = await fetch(`http://localhost:3000/degree/index?ids=${degreeIds.join(',')}`);
         const getUserResult = await response.json();
         setDegree(getUserResult);
         // console.log(getUserResult)
@@ -25,7 +25,10 @@ const EducCard = ({educData}) => {
     <div className=''>
         <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
             <span className='font-bold'>Education</span>
+            <div className='flex gap-3'>
+            <Link to="/credentials" className='font-thin underline'>Add</Link> 
             <Link to="/credentials" className='font-thin underline'>Edit</Link>
+            </div>
         </div>
         
         {educData.map((education)=>(
@@ -49,7 +52,7 @@ const EducCard = ({educData}) => {
           </div>
         ))}
         
-      
+
       </div>
   )
 }

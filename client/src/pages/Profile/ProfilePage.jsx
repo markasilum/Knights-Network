@@ -17,7 +17,7 @@ import SideBar from "../../components/SideBar";
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/getuserrole");
+        const response = await fetch("http://localhost:3000/user/role");
         const getUserResult = await response.json();
         setUserRole(getUserResult);
       } catch (error) {
@@ -28,7 +28,7 @@ import SideBar from "../../components/SideBar";
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/getuser");
+        const response = await fetch("http://localhost:3000/user/details");
         const getUserResult = await response.json();
         setUserData(getUserResult);
         // console.log(getUserResult)
@@ -39,7 +39,7 @@ import SideBar from "../../components/SideBar";
 
     const fetchPersonData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/data");
+        const response = await fetch("http://localhost:3000/person/details");
         const getPersonResult = await response.json();
         setData(getPersonResult);
       } catch (error) {
@@ -48,7 +48,7 @@ import SideBar from "../../components/SideBar";
     };
     const fetchCompanyData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/getcompany");
+        const response = await fetch("http://localhost:3000/company/details");
         const getPersonResult = await response.json();
         setCompData(getPersonResult);
       } catch (error) {
@@ -58,7 +58,7 @@ import SideBar from "../../components/SideBar";
 
     const fetchEducation = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/geteduc");
+        const response = await fetch("http://localhost:3000/education/index");
         const getEducRes = await response.json();
         setEducData(getEducRes);
         // console.log(getEducRes)
@@ -69,7 +69,7 @@ import SideBar from "../../components/SideBar";
 
     const fetchCompanyJobPost = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/getcompanyjobpost");
+        const response = await fetch("http://localhost:3000/jobpost/company/index");
         const getJobRes = await response.json();
         setCompJobPostData(getJobRes);
         // console.log(getEducRes)
@@ -78,14 +78,12 @@ import SideBar from "../../components/SideBar";
       }
     };
 
-    
     fetchUserRole();
-    fetchCompanyData();
-    fetchEducation();
     fetchUserData();
     fetchPersonData();
+    fetchEducation();
+    fetchCompanyData();
     fetchCompanyJobPost()
-    
  }, []);
 
 
@@ -100,7 +98,13 @@ import SideBar from "../../components/SideBar";
       <div className="pt-5 pr-5 pl-3 overflow-auto">
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
-            <div className="w-28 h-28 bg-black rounded-lg"></div>
+
+            <div className="avatar">
+              <div className="w-24 rounded">
+                <img src={`http://localhost:3000/uploads/prof_pics/${userData.profPic}`} />
+              </div>
+            </div>
+            
             {userRole.roleName === "company" && (
               <h1 className="font-bold text-2xl mt-5">
                 {compData.companyName}
