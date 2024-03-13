@@ -20,7 +20,7 @@ model User{
   zipCode           String
   contactNum        String
   emailAddress      String
-  profPic           Bytes?
+  profPic           String?
   biography         String @db.Text
   verified          Boolean
   role Roles?
@@ -109,7 +109,7 @@ model PersonSkill {
 
 model Skills {
   id           String         @id @default(uuid())
-  skillName    String
+  skillName    String @unique
   personSkill  PersonSkill[]
   jobSkillsReq JobSkillsReq[]
 }
@@ -120,13 +120,13 @@ model PersonLicense {
   personId  String
   license   PRCLicenses @relation(fields: [licenseId], references: [id])
   licenseId String
-  licensePic Bytes?
+  licensePic String?
   licenseValidity DateTime @db.Date
 }
 
 model PRCLicenses {
   id            String          @id @default(uuid())
-  licenseName   String
+  licenseName   String @unique
   personLicense PersonLicense[]
   jobLicenseReq JobLicenseReq[]
 }
@@ -182,7 +182,7 @@ model JobPost {
   companyId         String
   jobTitle          String
   yearsExp          String
-  jobDesc           String
+  jobDesc           String @db.Text
   jobLoc            String
   employmentType    String
   salary            Int
@@ -211,6 +211,7 @@ model ApplicationLetter {
 
 model Application {
   id        String  @id @default(uuid())
+  dateCreated  DateTime   @default(now())
   person    Person  @relation(fields: [personId], references: [id])
   personId  String
   jobPost   JobPost @relation(fields: [jobPostId], references: [id])
