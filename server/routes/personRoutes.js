@@ -7,7 +7,14 @@ const personController = require('../controllers/personController')
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads/prof_pics');
+    
+    const dir=`./uploads/`+file.fieldname;
+    if(file.fieldname === "profPic"){
+      cb(null,dir);
+    }else if(file.fieldname === "idPhoto"){
+      cb(null,dir);
+    }
+
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -18,7 +25,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router.get("/details", personController.getPersonDetails);
-router.post("/create", upload.single('profPic'), personController.createPerson);
+router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'idPhoto' }]), personController.createPerson);
 router.put("/update", upload.single('profPic'), personController.updatePerson);
 
 module.exports = router;
