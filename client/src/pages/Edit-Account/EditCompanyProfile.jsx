@@ -19,7 +19,7 @@ const EditCompanyProfile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/api/getuser');
+            const response = await fetch('http://localhost:3000/user/details');
             const result = await response.json();
 
                 setUsername(result.username);
@@ -38,7 +38,7 @@ const EditCompanyProfile = () => {
         };
         const fetchCompanyData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/api/getcompany');
+            const response = await fetch('http://localhost:3000/company/details');
             const result = await response.json();
             setCompanyName(result.companyName);
             setCompanySize(result.companySize);

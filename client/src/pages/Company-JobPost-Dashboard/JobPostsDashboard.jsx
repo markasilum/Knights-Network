@@ -13,7 +13,7 @@ const JobPostsDashboard = () => {
  useEffect(()=>{
   const fetchUserRole = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/getuserrole");
+      const response = await fetch("http://localhost:3000/user/role");
       const getUserResult = await response.json();
       setUserRole(getUserResult);
     } catch (error) {
@@ -23,7 +23,7 @@ const JobPostsDashboard = () => {
   };
     const fetchCompanyJobPost = async () => {
         try {
-          const response = await fetch("http://localhost:3000/api/getcompanyjobpost");
+          const response = await fetch("http://localhost:3000/jobpost/company/index");
           const getJobRes = await response.json();
           setJobPostData(getJobRes);
         } catch (error) {

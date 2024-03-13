@@ -29,7 +29,7 @@ const EducationForm = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/createeducation",
+        "http://localhost:3000/education/create",
         {
           method: "POST",
           body: formData,

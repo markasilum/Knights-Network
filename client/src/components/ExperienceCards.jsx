@@ -7,7 +7,7 @@ const[experience, setExperience] = useState([])
 useEffect(()=>{
     const fetchExperience = async () =>{
       try {
-        const response = await fetch(`http://localhost:3000/api/getexperience`);
+        const response = await fetch(`http://localhost:3000/experience/person/index`);
         const getUserResult = await response.json();
         setExperience(getUserResult);
         // console.log(getUserResult)
@@ -21,10 +21,14 @@ useEffect(()=>{
   },[]);
 
   return (
-    <div className=''>
+    <div>
         <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
             <span className='font-bold'>Experience</span>
+            <div className='flex gap-3'>
+            <Link to="/expform" className='font-thin underline'>Add</Link>
             <Link to="/expform" className='font-thin underline'>Edit</Link>
+            </div>
+            
         </div>
         
         {experience.map((experience)=>(
@@ -41,7 +45,7 @@ useEffect(()=>{
           </div>
         ))}
         
-      
+
       </div>
   )
 }

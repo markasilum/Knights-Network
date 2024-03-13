@@ -126,7 +126,7 @@ const handleSubmit = async (event) => {
 
   try {
     const response = await fetch(
-      "http://localhost:3000/createjobpost",
+      "http://localhost:3000/jobpost/create",
       {
         method: "POST",
         body: formData,
