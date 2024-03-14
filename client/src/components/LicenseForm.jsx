@@ -24,11 +24,6 @@ const LicenseForm = () => {
     formData.append("licenseName", licenseName);
     formData.append("licenseValidity", licenseValidity);
 
-  //   for (const pair of formData.entries()) {
-  //     console.log(pair[0], pair[1]);
-  // }
-  
-
     try {
       const response = await fetch("http://localhost:3000/license/create", {
         method: "POST",
