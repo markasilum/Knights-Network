@@ -5,7 +5,7 @@ const LicenseCard = () => {
   const[licenses, setLicense] = useState([])
 
 useEffect(()=>{
-    const fetchExperience = async () =>{
+    const fetchLicense = async () =>{
       try {
         const response = await fetch(`http://localhost:3000/license/person/index`);
         const getUserResult = await response.json();
@@ -16,7 +16,7 @@ useEffect(()=>{
       }
     }
 
-    fetchExperience()
+    fetchLicense()
     
   },[]);
   return (
@@ -37,7 +37,7 @@ useEffect(()=>{
               </div>
              
         ))} */}
-        <span className='font-normal'>{licenses}</span>
+        <span className='font-normal'>{licenses.join(", ")}</span>
         {console.log(licenses)}
       </div>
   )

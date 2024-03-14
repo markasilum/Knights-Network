@@ -89,7 +89,7 @@ model Certification {
   personId    String
   certName    String
   certDetails String
-  certPhoto   Bytes
+  certPhoto   String
 }
 
 model PersonVerificationReqs {
