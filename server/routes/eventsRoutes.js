@@ -18,5 +18,7 @@ const eventController = require('../controllers/eventsController')
 
 router.get('/index', eventController.getEventsList)
 router.post('/create',upload.single("eventPhoto"), eventController.createEvent);
+router.get('/details', eventController.getEventDetails)
+
 
 module.exports = router

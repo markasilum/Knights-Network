@@ -1,9 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ButtonNavigator from '../../components/ButtonNavigator'
 import TopBar from '../../components/topbar'
 import SideBar from '../../components/SideBar'
+import DateToWords from '../../components/DateFormatter'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 const EventsDashboard = () => {
+  const[eventsData,setEventsData] = useState([])
+
+    useEffect(()=>{
+          const fetchEventsData = async () => {
+              try {
+                const response = await fetch("http://localhost:3000/events/index");
+                const getEventRes = await response.json();
+                setEventsData(getEventRes);
+              } catch (error) {
+                console.error("Error fetching data:", error);
+              }
+            };
+            fetchEventsData()
+       },[])
   return (
      <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
@@ -16,21 +32,21 @@ const EventsDashboard = () => {
                     <thead>
                     <tr>
                         <th>Event Name</th>
-                        <th>Partners</th>
                         <th>Details</th>
-                        <th>Date Created</th>
+                        <th>Partners</th>
+                        <th>Event Date</th>
                     </tr>
                     </thead>
-                    {/* <tbody>
-                        {applicationData.map((job)=>(
-                        <tr key={job.id} className='p-2  w-full align-center hover'>
-                            <td>{job.jobPost.jobTitle}</td>
-                            <td>{job.jobPost.company.companyName}</td>
-                            <td><Link className="underline" to={`/jobpostdetails/${job.jobPostId}`}  >View Details</Link></td>
-                            <td><DateToWords dateString={job.dateCreated}/></td>
+                    <tbody>
+                        {eventsData.map((event)=>(
+                        <tr key={event.id} className='p-2  w-full align-center hover'>
+                            <td>{event.eventName}</td>
+                            <td><Link className="underline" to={`/eventdetails/${event.id}`}>View Details</Link></td>
+                            <td><Link className="underline" to={`/event/partners/${event.id}`}>View Partners</Link></td>
+                            <td><DateToWords dateString={event.eventDateTime}/></td>
                         </tr>
                         ))}
-                    </tbody> */}
+                    </tbody>
                 </table>
                 <ButtonNavigator text={"New Event"} path={"/createevent"}/>    
                 
