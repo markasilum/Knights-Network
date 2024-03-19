@@ -89,14 +89,14 @@ model Certification {
   personId    String
   certName    String
   certDetails String
-  certPhoto   Bytes
+  certPhoto   String
 }
 
 model PersonVerificationReqs {
   id       String @id @default(uuid())
   person   Person @relation(fields: [personId], references: [id])
   personId String @unique
-  idPhoto  Bytes
+  idPhoto  String
 }
 
 model PersonSkill {
@@ -155,9 +155,9 @@ model CompanyVerificationReqs {
   id              String  @id @default(uuid())
   company         Company @relation(fields: [companyId], references: [id])
   companyId       String  @unique
-  secRegistration Bytes
-  dtiRegistration Bytes
-  businessPermit  Bytes
+  secRegistration String
+  dtiRegistration String
+  businessPermit  String
 }
 
 model CompIndustry {

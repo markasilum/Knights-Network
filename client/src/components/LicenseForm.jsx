@@ -15,12 +15,13 @@ const LicenseForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(startDate);
-
     const formData = new FormData();
 
+    if(licensePic){
+      formData.append("licensePic", licensePic);
+    }
+
     formData.append("licenseName", licenseName);
-    formData.append("licensePic", licensePic);
     formData.append("licenseValidity", licenseValidity);
 
     try {
@@ -35,7 +36,7 @@ const LicenseForm = () => {
         throw new Error(responseData.error);
       }
     } catch (error) {
-      console.error("Error creating education:", error);
+      console.error("Error creating license:", error);
     }
   };
 
@@ -44,6 +45,52 @@ const LicenseForm = () => {
     const start = startDate.toISOString();
     console.log(start);
     setLicenseValidity(start);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+  
+    // Function to reset file input
+    const resetFileInput = () => {
+      event.target.value = null; // This clears the selected file
+      setLicensePic(null);
+      // setImagePreviewUrl(null); // Clear the image preview URL
+    };
+  
+    // Check if file is selected
+    if (!file) {
+      resetFileInput();
+      return;
+    }
+  
+    // Check the file type
+    // const validTypes = ['image/jpeg', 'image/png'];
+    // if (!validTypes.includes(file.type)) {
+    //   setToastMessage('Please upload an image in JPG or PNG format.');
+    //   setShowToast(true);
+    //   setTimeout(() => setShowToast(false), 3000);
+    //   resetFileInput();
+    //   return;
+    // }
+  
+    // Check the file size (3 MB in bytes)
+    // const maxSize = 3 * 1024 * 1024;
+    // if (file.size > maxSize) {
+    //   setToastMessage('File size should be less than 3 MB.');
+    //   setShowToast(true);
+    //   setTimeout(() => setShowToast(false), 3000);
+    //   resetFileInput();
+    //   return;
+    // }
+  
+    // If file is valid, update the image state and set image preview URL
+    setLicensePic(file);
+  };
+
+  const handleRemoveImage = () => {
+    setLicensePic(null);
+    // Resetting the file input if needed
+    document.getElementById('fileInput').value = "";
   };
 
   return (
@@ -64,7 +111,7 @@ const LicenseForm = () => {
               placeholder="License Name"
               className="input input-bordered w-full text-center"
               value={licenseName}
-              onChange={(e) => setSchoolName(e.target.value)}
+              onChange={(e) => setLicenseName(e.target.value)}
             />
 
             <DateTime
@@ -88,9 +135,13 @@ const LicenseForm = () => {
               id="licensepic"
               placeholder="License Pic"
               className="file-input file-input-bordered w-full col-span-2"
-              value={licensePic}
-              onChange={(e) => setDegree(e.target.value)}
+              onChange={handleFileChange}
             />
+            {licensePic && (
+                <button onClick={handleRemoveImage} className="btn btn-error text-white ml-3">
+                  Remove Image
+                </button>
+              )}
           </div>
           <button type="submit" className={`btn btn-primary w-40 mt-5`}>
             Add License
