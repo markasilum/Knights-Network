@@ -104,7 +104,7 @@ const JobPostDetails = () => {
   const handleApplication = async (event) =>{
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/sendapplication', {
+      const response = await fetch('http://localhost:3000/application/create', {
         method: 'POST',
         headers:{
           "Content-Type": "application/json"
