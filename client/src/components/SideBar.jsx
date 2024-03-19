@@ -46,10 +46,21 @@ const SideBar = () => {
       <SidebarButton text={"Logout"} onCick={"/login"} />
     </ul>
   )
+
+  const adminSideBar = (
+    <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
+      <SidebarButton text={"Events"} onCick={"/profile"} />
+      <SidebarButton text={"Users"} onCick={"/home"} />
+      <SidebarButton text={"Calendar"} />
+      <SidebarButton text={"Logout"} onCick={"/login"} />
+    </ul>
+  )
   if(role.roleName == "company"){
     userSideBar = companySidebar
   }else if(role.roleName == "alumni" || role.roleName == "student"){
     userSideBar = alumniSideBar
+  }else if(role.roleName == "admin"){
+    userSideBar = adminSideBar
   }
 
   return (

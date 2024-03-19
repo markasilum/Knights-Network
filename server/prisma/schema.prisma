@@ -251,11 +251,10 @@ model Supervisor {
 model Events {
   id            String          @id @default(uuid())
   eventName     String
-  eventDesc     String
-  eventDate     DateTime        @db.Date
-  eventTime     DateTime        @db.Time()
+  eventDesc     String @db.Text
+  eventDateTime DateTime        
   eventLocation String
-  eventPhoto    Bytes
+  eventPhoto    String 
   companyEvents CompanyEvents[]
 }
 
