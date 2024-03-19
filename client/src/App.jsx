@@ -25,6 +25,7 @@ import ApplicationDashboard from './pages/Applications-Dashboard/ApplicationDash
 import ResumeCard from './components/resumeCard';
 import EventsDashboard from './pages/Events/EventsDashboard';
 import CreateEvent from './pages/Events/CreateEvent';
+import EventDetail from './pages/Events/EventDetail';
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
             <Route path='/jobpostdashboard' element={<JobPostsDashboard/>}/>
             <Route path='/resume' element={<ResumeCard/>}/>
             <Route path='/jobpostdetails/:jobPostId' element={<JobPostDetails/>}/>
+            <Route path='/eventdetails/:eventId' element={<EventDetail/>}/>
             <Route path='/eventslist' element={<EventsDashboard/>}/>
             <Route path='/createevent' element={<CreateEvent/>}/>
           </Routes>

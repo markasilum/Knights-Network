@@ -1,7 +1,23 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const getEventsList = async (req, res) => {};
+const getEventsList = async (req, res) => {
+    try{
+        const jobPosts = await prisma.events.findMany({
+          orderBy:[
+            {
+              eventDateTime: 'desc'
+            }
+          ],
+        })
+        res.json(jobPosts);
+      }catch(error){
+        console.error('Error: ', error)
+        res.status(500).json({ error: 'Internal server error' });
+      }
+
+
+};
 const createEvent = async (req, res) => {
   try {
     const { eventName, eventLocation, eventDesc, eventDateTime } = req.body;
@@ -27,7 +43,29 @@ const createEvent = async (req, res) => {
   }
 };
 
+const getEventDetails = async (req, res) => {
+    try {
+        // Extract the query parameter 'ids' from the request
+        const { id } = req.query;
+        console.log(req.query)
+        // Query the database using Prisma to fetch job post by their IDs
+        const eventDetails = await prisma.events.findUnique({
+            where: {
+                id: id 
+            },
+        });
+        // console.log(jobDetails)
+        res.json(eventDetails);
+    } catch (error) {
+        // If there's an error, send an error response
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+
 module.exports = {
   getEventsList,
   createEvent,
+  getEventDetails
 };
