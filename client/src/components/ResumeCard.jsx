@@ -9,7 +9,7 @@ const ResumeCard = () => {
   const [skills, setSkills] = useState([]);
   const [educData, setEducData] = useState([]);
   const[degree, setDegree] = useState([])
-  const [degreeIds, setDegreeId] = useState([])
+  // const [degreeIds, setDegreeId] = useState([])
   const[certs, setCerts] = useState([])
   const[licenses, setLicense] = useState([])
 
@@ -64,8 +64,25 @@ const ResumeCard = () => {
       try {
         const response = await fetch("http://localhost:3000/education/index");
         const getEducRes = await response.json();
-        setDegreeId(getEducRes.map(educ => educ.degreeId))
+        // setDegreeId(getEducRes.map(educ => educ.degreeId))
         setEducData(getEducRes);
+
+        const degreeIds = getEducRes.map(educ => educ.degreeId)
+        
+        const fetchDegree = async () => {
+            try {
+              const response = await fetch(
+                `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
+              );
+              const getUserResult = await response.json();
+              setDegree(getUserResult);
+              // console.log(getUserResult)
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+          };
+    
+          fetchDegree();
         // console.log(getEducRes)
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -100,24 +117,28 @@ const ResumeCard = () => {
     fetchExperience();
     fetchPersonData();
     fetchUserData();
+    // console.log(degree)
   }, []);
 
-  useEffect(()=>{
-    const fetchDegree = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
-          );
-          const getUserResult = await response.json();
-          setDegree(getUserResult);
-          // console.log(getUserResult)
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
+  // useEffect(()=>{
+  //   const degreeIds = educData.map(educ => educ.degreeId)
+  //   const fetchDegree = async () => {
+  //       try {
+  //         const response = await fetch(
+  //           `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
+  //         );
+  //         const getUserResult = await response.json();
+  //         setDegree(getUserResult);
+  //         // console.log(getUserResult)
+  //       } catch (error) {
+  //         console.error("Error fetching data:", error);
+  //       }
+  //     };
 
-      fetchDegree();
-  },[degreeIds])
+  //     fetchDegree();
+  //     console.log(degreeIds)
+
+  // },[educData])
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
       <TopBar />
@@ -184,13 +205,13 @@ const ResumeCard = () => {
         {educData.map((education)=>(
           <div key={education.id} className='flex flex-col mb-5'>
               <span className='font-semibold'>{education.schoolName}</span>
-              {/* {degree.find((deg) => deg.id === education.degreeId) && (
+              {degree.find((deg) => deg.id === education.degreeId) && (
               <span className=''>
                 {
                   degree.find((deg) => deg.id === education.degreeId).degreeName
                 }
               </span>
-            )} */}
+            )}
               <div className='flex flex-row gap-1'>
               <span className='font-thin'><DateToWords dateString={education.startDate} /></span>
               <span className='font-thin'>-</span>
