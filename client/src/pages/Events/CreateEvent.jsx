@@ -3,19 +3,24 @@ import TopBar from "../../components/topbar";
 import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
+import {Routes, Route, useNavigate} from 'react-router-dom';
+
+
 
 const CreateEvent = () => {
+  const navigate = useNavigate();
   const [eventName, setEventName] = useState("");
-  const [streetAddress, setStreetAdd] = useState("");
-  const [cityName, setCityName] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [countryName, setCountryName] = useState("");
+  const [location, setLocation] = useState("");
   const [date, setDate] = useState(new Date().toISOString());
   const [eventDetails, setEventDetails] = useState("");
   const [image, setImage] = useState(null);
 
 
 
+  const navigateHome = () => {
+    // 👇️ navigate to /
+    navigate('/eventslist');
+  };
   const handleSubmit = async (event) => {
     // setIsSubmitting(true);
     event.preventDefault();
@@ -25,10 +30,7 @@ const CreateEvent = () => {
       formData.append('eventPhoto', image);
     }
     formData.append("eventName", eventName);
-    formData.append(
-      "eventLocation",
-      streetAddress + ", " + cityName + ", " + zipCode + ", " + countryName
-    );
+    formData.append("eventLocation",location);
     formData.append("eventDesc", eventDetails);
     formData.append("eventDateTime", date);
 
@@ -45,6 +47,8 @@ const CreateEvent = () => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
+      }else{
+        navigateHome()
       }
 
       const newArticleId = responseData.id;
@@ -52,6 +56,8 @@ const CreateEvent = () => {
       // setIsSubmitting(false);
       console.error("Error creating person:", error);
     }
+
+    
   };
 
   const handleFileChange = (event) => {
@@ -139,35 +145,11 @@ const CreateEvent = () => {
               <div className="grid grid-cols-2 gap-2 w-full">
                 <input
                   type="text"
-                  id="streetAddress"
-                  placeholder="House #, Street Name"
+                  id="location"
+                  placeholder="ex. Arrupe Hall"
                   className="input input-bordered w-full col-span-2"
-                  value={streetAddress}
-                  onChange={(e) => setStreetAdd(e.target.value)}
-                />
-                <input
-                  type="text"
-                  id="cityName"
-                  placeholder="City Name"
-                  className="input input-bordered w-full "
-                  value={cityName}
-                  onChange={(e) => setCityName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  id="zipCode"
-                  placeholder="Zip Code"
-                  className="input input-bordered w-full"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                />
-                <input
-                  type="text"
-                  id="countryName"
-                  placeholder="Country Name"
-                  className="input input-bordered w-full col-span-2"
-                  value={countryName}
-                  onChange={(e) => setCountryName(e.target.value)}
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
                 />
               </div>
             </div>
@@ -217,7 +199,7 @@ const CreateEvent = () => {
             <textarea
               id="eventdetails"
               placeholder="Details of the event"
-              className="textarea textarea-bordered textarea-md w-full h-40"
+              className="textarea textarea-bordered textarea-md w-full h-60"
               value={eventDetails}
               onChange={(e) => setEventDetails(e.target.value)}
             ></textarea>
