@@ -254,7 +254,7 @@ model Events {
   eventDesc     String @db.Text
   eventDateTime DateTime        
   eventLocation String
-  eventPhoto    String 
+  eventPhoto    String? 
   companyEvents CompanyEvents[]
 }
 

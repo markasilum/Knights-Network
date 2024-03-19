@@ -42,7 +42,7 @@ const EventDetail = () => {
                   {eventData.eventDesc &&
                     eventData.eventDesc
                       .split("\r\n")
-                      .map((line, index) => <li key={index}>{line}</li>)}
+                      .map((line, index) => <li key={index} className="mt-2">{line}</li>)}
                 </ul>
               </div>
 

@@ -21,7 +21,11 @@ const getEventsList = async (req, res) => {
 const createEvent = async (req, res) => {
   try {
     const { eventName, eventLocation, eventDesc, eventDateTime } = req.body;
-    const eventPhoto = req.file.filename
+    let eventPhoto
+
+    if(req.file != null){
+        eventPhoto = req.file.filename
+    }
 
     const newEvent = await prisma.events.create({
       data: {
