@@ -101,7 +101,7 @@ import SideBar from "../../components/SideBar";
 
             <div className="avatar">
               <div className="w-24 rounded">
-                <img src={`http://localhost:3000/uploads/prof_pics/${userData.profPic}`} />
+                <img src={`http://localhost:3000/uploads/profPic/${userData.profPic}`} />
               </div>
             </div>
             

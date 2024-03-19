@@ -25,7 +25,6 @@ const getEducation = async (req, res) => {
 };
 
 const createEducation = async (req, res) => {
-  console.log(req.body);
   try {
     // Extract data from the request body
     const { schoolName, degree, qpi, startDate, endDate, awards } = req.body;
@@ -62,7 +61,6 @@ const createEducation = async (req, res) => {
 
     // Send a response with the newly created person
     res.status(201).json(newEducation);
-    console.log(newEducation);
   } catch (error) {
     console.error("Error creating person:", error);
     res.status(500).json({ error: "Internal Server Error" });

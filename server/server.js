@@ -1,4 +1,3 @@
-const { PrismaClient } = require('@prisma/client');
 const express = require('express');
 const multer  = require('multer');
 const cors = require('cors');
@@ -12,8 +11,9 @@ const degreeRoutes = require('./routes/degreeRoutes')
 const experienceRoutes = require('./routes/experienceRoutes')
 const applicationRoutes = require('./routes/applicationRoutes')
 const licenseRoutes = require('./routes/licenseRoutes')
+const skillsRoutes = require('./routes/skillsRoutes')
+const certificationRoutes = require('./routes/certificationsRoute')
 
-const prisma = new PrismaClient();
 const app = express();
 const port = 3000;
 
@@ -39,7 +39,10 @@ app.use('/degree', degreeRoutes)
 app.use('/experience', experienceRoutes)
 app.use('/jobpost', jobPostRoutes)
 app.use('/application', applicationRoutes)
-// app.use('/license', licenseRoutes)
+app.use('/license',licenseRoutes)
+app.use('/skills', skillsRoutes)
+app.use('/certification',certificationRoutes)
+
 
 app.use('/uploads', express.static('uploads'))
 app.listen(port, () => {

@@ -111,7 +111,7 @@ const EditPersonProfile = () => {
           body: formData
         });
 
-      navigate("/home")
+      navigate("/profile")
       
       } catch (error) {
         setIsSubmitting(false);

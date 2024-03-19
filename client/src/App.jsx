@@ -22,6 +22,7 @@ import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboa
 import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
 import Homepage from './pages/Homepage/Homepage';
 import ApplicationDashboard from './pages/Applications-Dashboard/ApplicationDashboard';
+import ResumeCard from './components/resumeCard';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/skillsform" element={<SkillsForm/>}/>
             <Route path="/certificationform" element={<CertificationsForm/>}/>
             <Route path='/jobpostdashboard' element={<JobPostsDashboard/>}/>
+            <Route path='/resume' element={<ResumeCard/>}/>
             <Route path='/jobpostdetails/:jobPostId' element={<JobPostDetails/>}/>
           </Routes>
       </Router>
