@@ -33,7 +33,7 @@ import Layout3 from './layouts/Layout3.jsx';
 
 
 //alumni
-const ProfileComponent = Layout(ProfilePage, role);
+const ProfileComponent = Layout(ProfilePage);
 const HomePageComponent = Layout(Homepage)
 const JobPostsDashboardComponent = Layout(JobPostsDashboard);
 const JobPostDetailsComponent = Layout(JobPostDetails);
