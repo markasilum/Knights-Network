@@ -36,12 +36,18 @@ const createPerson = async (req, res) => {
       role,
     } = req.body;
 
-    const profPic = req.files["profPic"]
+    let profPic = ""
+    let idPhoto = ""
+    if(req.files != null){
+       profPic = req.files["profPic"]
       ? req.files["profPic"][0].filename
       : null;
-    const idPhoto = req.files["idPhoto"]
+     idPhoto = req.files["idPhoto"]
       ? req.files["idPhoto"][0].filename
       : null;
+    }
+
+
 
     // Create a new person record in the database using Prisma
     const newPerson = await prisma.user.create({
@@ -110,8 +116,11 @@ const updatePerson = async (req, res) => {
       biography,
       personId,
     } = req.body;
+    let profPic;
 
-    const profPic = req.file.filename;
+    if(req.file != null){
+      profPic = req.file.filename;
+    }
 
     const updatePerson = await prisma.user.update({
       where: {

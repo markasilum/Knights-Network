@@ -57,8 +57,6 @@ const ExperienceForm = () => {
     setEndDate(end);
   };
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
       <form onSubmit={handleSubmit} className="w-1/2">
         <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
           <label className="form-control w-full max-w-xs">
@@ -130,7 +128,6 @@ const ExperienceForm = () => {
         </div>
 
       </form>
-    </div>
   )
 }
 
