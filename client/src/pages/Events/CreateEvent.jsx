@@ -112,10 +112,7 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
-
-      <form className="w-2/3" onSubmit={handleSubmit}>
+   <form className="w-2/3" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 bg-base-200 shadow-xl p-10 mt-5 mb-5 rounded-xl gap-2">
           <div className="col-span-2">
             <label className="form-control w-full max-w-xs">
@@ -213,7 +210,6 @@ const CreateEvent = () => {
           </button>
         </div>
       </form>
-    </div>
   );
 };
 

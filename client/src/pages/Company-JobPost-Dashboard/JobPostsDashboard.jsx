@@ -23,13 +23,6 @@ const JobPostsDashboard = () => {
  },[])
 
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      <TopBar />
-
-      <div className="flex flex-row gap-2">
-        <SideBar/>
-
-        <div className="flex flex-col w-9/12  h-screen  bg-neutral">
             <div className="pt-5 pr-5 pl-3 overflow-x-auto">
                 <table className="table bg-white rounded-xl mb-3">
                     <thead>
@@ -47,7 +40,7 @@ const JobPostsDashboard = () => {
                             <td>{job.jobTitle}</td>
                             <td>0</td>
                             <td><input type="checkbox" className="toggle toggle-success"/></td>
-                            <td><Link className="underline" to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
+                            <td><Link className="underline" to={`/job-post-details/${job.id}`}  >View Details</Link></td>
                             <td><DateToWords dateString={job.dateCreated}/></td>
                         </tr>
                         ))}
@@ -55,11 +48,6 @@ const JobPostsDashboard = () => {
                 </table>
                 <ButtonNavigator text={"New Job"} path={"/createjobpost"}/>    
             </div>
-        </div>
-
-
-      </div>
-    </div>
   );
 };
 

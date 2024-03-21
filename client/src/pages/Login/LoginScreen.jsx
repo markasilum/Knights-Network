@@ -27,7 +27,7 @@ const LoginScreen = () => {
             <input type="text" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)}/>
 
             <button className='btn btn-accent w-2/3 text-white text-xl'><Link to="/home">Login</Link></button>
-            <button className='btn btn-secondary w-2/3 text-white text-xl'><Link to="/createaccount">Register</Link></button>
+            <button className='btn btn-secondary w-2/3 text-white text-xl'><Link to="/create-account">Register</Link></button>
         </div>
       </div>
     </div>

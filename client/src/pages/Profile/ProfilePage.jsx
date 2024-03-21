@@ -88,13 +88,6 @@ import SideBar from "../../components/SideBar";
 
 
   return (
-    <div className='w-9/12 bg-neutral  h-screen flex flex-col shadow-xl' >
-      <TopBar/>
-        
-      <div className='flex flex-row gap-2'>
-      <SideBar/>
-
-      <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
       <div className="pt-5 pr-5 pl-3 overflow-auto">
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
@@ -141,9 +134,9 @@ import SideBar from "../../components/SideBar";
 
           <div className="flex flex-col col-span-1 items-end">
             {userRole.roleName == "alumni"&&(
-                  <Link className="underline" to="/editaccount">Edit Profile</Link>
+                  <Link className="underline" to="/edit-account">Edit Profile</Link>
             )}{userRole.roleName == "company"&&(
-              <Link className="underline" to="/editcompprofile">Edit Profile</Link>
+              <Link className="underline" to="/edit-company-profile">Edit Profile</Link>
             )}
             <span>Temp: {data.id}</span>
           </div>
@@ -189,14 +182,6 @@ import SideBar from "../../components/SideBar";
         </div>  
         }
       </div>
-    </div>
-            
-        </div>
-        
-    </div>
-
-
-    
    );
  };
 
