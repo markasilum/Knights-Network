@@ -5,6 +5,7 @@ import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
 import { useParams } from "react-router-dom";
 import SideBar from "../../components/SideBar";
+import SidebarAdmin from "../../components/SidebarAdmin";
 
 const EventDetail = () => {
   const [eventData, setEventData] = useState("");
@@ -30,7 +31,7 @@ const EventDetail = () => {
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
       <div className="flex flex-row gap-2">
-        <SideBar />
+        <SidebarAdmin/>
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className="pt-5 pr-5 pl-3 overflow-auto">
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
