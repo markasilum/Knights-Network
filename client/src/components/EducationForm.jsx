@@ -14,10 +14,10 @@ const EducationForm = () => {
   const [userData, setUserData] = useState([]);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
-    console.log(startDate)
-    
+    console.log(startDate);
+
     const formData = new FormData();
 
     formData.append("schoolName", schoolName);
@@ -28,13 +28,10 @@ const EducationForm = () => {
     formData.append("awards", awards);
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/education/create",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("http://localhost:3000/education/create", {
+        method: "POST",
+        body: formData,
+      });
 
       const responseData = await response.json();
 
@@ -47,9 +44,9 @@ const EducationForm = () => {
   };
 
   const handleStartDateChange = (startDate) => {
-    console.log(startDate)
+    console.log(startDate);
     const start = startDate.toISOString();
-    console.log(start)
+    console.log(start);
     setStartDate(start);
   };
 
@@ -60,10 +57,15 @@ const EducationForm = () => {
   };
 
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
-      <form onSubmit={handleSubmit} className="w-1/2">
-        <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
+    <dialog id="add_education" className="modal">
+      <div className="modal-box max-w-2xl bg-base-200">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit}>
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text font-bold">Education</span>
@@ -131,12 +133,15 @@ const EducationForm = () => {
               onChange={(e) => setAwards(e.target.value)}
             />
           </div>
-          <button type="submit" className={`btn btn-primary w-40 mt-5`}>Create Education</button>
-
-        </div>
-
+          <button type="submit" className={`btn btn-primary w-40 mt-5`}>
+            Create Education
+          </button>
+        </form>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
-    </div>
+    </dialog>
   );
 };
 
