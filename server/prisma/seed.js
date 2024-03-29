@@ -2,32 +2,76 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient()
 
 async function main() {
- await prisma.user.create({
+  // Creating users
+  const user1 = await prisma.user.create({
     data: {
-      username: "smccorp",
-      password: "password123",
-      streetAddress: "40 San Miguel Avenue",
-      cityName: "Mandaluyong City",
-      countryName: "Philippines",
-      zipCode: "1550",
-      contactNum: "(+632) 8-632-2000",
-      emailAddress: "smccorp@example.com",
-      biography: "San Miguel Corporation (SMC) is one of the Philippines’ largest and most diversified conglomerates, with revenues equivalent to about 4% of the country’s GDP in 2020. Originally founded in 1890 as a single product brewery in the Philippines, SMC today has highly integrated operations with ownership in market leading businesses and investments in various sectors, such as beverages, food, packaging, energy, fuel and oil, infrastructure, property development and leasing, cement, car distributorship and banking services. SMC has a portfolio of companies that is interwoven into the economic fabric of the Philippines, benefiting from, as well as contributing to the development and economic progress of the nation.",
+      username: 'user1',
+      password: 'password1',
+      streetAddress: '123 Main St',
+      cityName: 'City1',
+      countryName: 'Country1',
+      zipCode: '12345',
+      contactNum: '123-456-7890',
+      emailAddress: 'user1@example.com',
+      biography: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       verified: true,
-      role: {
-        create: {
-          roleName: "company"
+      person:{
+        create:{
+          firstName: 'John',
+          lastName: 'Doe',
+          middleName: 'Doe',
+          birthdate: new Date('1990-01-01'),
         }
-      },
-      company: {
-        create: {
-          companyName: "San Miguel Corporation",
-          companySize: "10,000+"
-          // Add more fields if needed
-        }
+           
       }
-    }
-  })
+    },
+  });
+
+  // Creating person
+  // const person1 = await prisma.person.create({
+  //   data: {
+  //     userId: user1.id,
+  //     firstName: 'John',
+  //     lastName: 'Doe',
+  //     birthdate: new Date('1990-01-01'),
+  //   },
+  // });
+
+  // Creating supervisor
+  // const supervisor1 = await prisma.supervisor.create({
+  //   data: {
+  //     personId: person1.id,
+  //   },
+  // });
+
+  // console.log('Seed data created successfully');
+
+//  await prisma.user.create({
+//     data: {
+//       username: "smccorp",
+//       password: "password123",
+//       streetAddress: "40 San Miguel Avenue",
+//       cityName: "Mandaluyong City",
+//       countryName: "Philippines",
+//       zipCode: "1550",
+//       contactNum: "(+632) 8-632-2000",
+//       emailAddress: "smccorp@example.com",
+//       biography: "San Miguel Corporation (SMC) is one of the Philippines’ largest and most diversified conglomerates, with revenues equivalent to about 4% of the country’s GDP in 2020. Originally founded in 1890 as a single product brewery in the Philippines, SMC today has highly integrated operations with ownership in market leading businesses and investments in various sectors, such as beverages, food, packaging, energy, fuel and oil, infrastructure, property development and leasing, cement, car distributorship and banking services. SMC has a portfolio of companies that is interwoven into the economic fabric of the Philippines, benefiting from, as well as contributing to the development and economic progress of the nation.",
+//       verified: true,
+//       role: {
+//         create: {
+//           roleName: "company"
+//         }
+//       },
+//       company: {
+//         create: {
+//           companyName: "San Miguel Corporation",
+//           companySize: "10,000+"
+//           // Add more fields if needed
+//         }
+//       }
+//     }
+//   })
 
     // await prisma.education.createMany({
     //     data: [
