@@ -13,6 +13,7 @@ const applicationRoutes = require('./routes/applicationRoutes')
 const licenseRoutes = require('./routes/licenseRoutes')
 const skillsRoutes = require('./routes/skillsRoutes')
 const certificationRoutes = require('./routes/certificationsRoute')
+const eventsRoutes = require('./routes/eventsRoutes')
 
 const app = express();
 const port = 3000;
@@ -42,9 +43,10 @@ app.use('/application', applicationRoutes)
 app.use('/license',licenseRoutes)
 app.use('/skills', skillsRoutes)
 app.use('/certification',certificationRoutes)
-
+app.use('/events', eventsRoutes)
 
 app.use('/uploads', express.static('uploads'))
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });

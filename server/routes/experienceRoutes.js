@@ -6,6 +6,6 @@ const upload = multer();
 const experienceController = require('../controllers/experienceController')
 
 router.get('/person/index', experienceController.getPersonExperience)
-router.post('/create',upload.none(), );
+router.post('/create',upload.none(), experienceController.createExperience);
 
 module.exports = router
