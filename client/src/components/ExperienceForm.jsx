@@ -13,7 +13,7 @@ const ExperienceForm = () => {
   const [userData, setUserData] = useState([]);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     console.log(startDate);
 
@@ -55,7 +55,7 @@ const ExperienceForm = () => {
   };
   return (
     <dialog id="add_experience" className="modal">
-      <div className="modal-box max-w-2xl mt-10">
+      <div className="modal-box max-w-2xl mt-10  bg-base-200">
       <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
