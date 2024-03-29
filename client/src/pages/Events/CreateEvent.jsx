@@ -3,9 +3,7 @@ import TopBar from "../../components/topbar";
 import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
-import {Routes, Route, useNavigate} from 'react-router-dom';
-
-
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -15,22 +13,20 @@ const CreateEvent = () => {
   const [eventDetails, setEventDetails] = useState("");
   const [image, setImage] = useState(null);
 
-
-
   const navigateHome = () => {
     // 👇️ navigate to /
-    navigate('/eventslist');
+    navigate("/eventslist");
   };
   const handleSubmit = async (event) => {
     // setIsSubmitting(true);
-    event.preventDefault();
+    // event.preventDefault();
 
     const formData = new FormData();
     if (image) {
-      formData.append('eventPhoto', image);
+      formData.append("eventPhoto", image);
     }
     formData.append("eventName", eventName);
-    formData.append("eventLocation",location);
+    formData.append("eventLocation", location);
     formData.append("eventDesc", eventDetails);
     formData.append("eventDateTime", date);
 
@@ -47,8 +43,8 @@ const CreateEvent = () => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
-      }else{
-        navigateHome()
+      } else {
+        navigateHome();
       }
 
       const newArticleId = responseData.id;
@@ -56,8 +52,6 @@ const CreateEvent = () => {
       // setIsSubmitting(false);
       console.error("Error creating person:", error);
     }
-
-    
   };
 
   const handleFileChange = (event) => {
@@ -112,11 +106,14 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
-
-      <form className="w-2/3" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 bg-base-200 shadow-xl p-10 mt-5 mb-5 rounded-xl gap-2">
+    <dialog id="my_modal_1" className="modal">
+      <form method="dialog">
+        {/* if there is a button, it will close the modal */}
+         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      
+      <form className="modal-box w-11/12 max-w-5xl" onSubmit={handleSubmit}>
+        <div>
           <div className="col-span-2">
             <label className="form-control w-full max-w-xs">
               <div className="label">
@@ -199,7 +196,7 @@ const CreateEvent = () => {
             <textarea
               id="eventdetails"
               placeholder="Details of the event"
-              className="textarea textarea-bordered textarea-md w-full h-60"
+              className="textarea textarea-bordered textarea-md w-full h-72"
               value={eventDetails}
               onChange={(e) => setEventDetails(e.target.value)}
             ></textarea>
@@ -213,7 +210,10 @@ const CreateEvent = () => {
           </button>
         </div>
       </form>
-    </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   );
 };
 
