@@ -4,6 +4,8 @@ import TopBar from '../../components/topbar'
 import SideBar from '../../components/SideBar'
 import DateToWords from '../../components/DateFormatter'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import CreateEvent from './CreateEvent'
+import ButtonPrimary from '../../components/ButtonPrimary'
 
 const EventsDashboard = () => {
   const[eventsData,setEventsData] = useState([])
@@ -28,6 +30,7 @@ const EventsDashboard = () => {
 
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
             <div className="pt-5 pr-5 pl-3 overflow-x-auto">
+           
                 <table className="table bg-white rounded-xl mb-3">
                     <thead>
                     <tr>
@@ -48,9 +51,11 @@ const EventsDashboard = () => {
                         ))}
                     </tbody>
                 </table>
-                <ButtonNavigator text={"New Event"} path={"/createevent"}/>    
+                <CreateEvent/>
+            <ButtonPrimary text={"New Event"} onClick={()=>document.getElementById('my_modal_1').showModal()}/>
                 
             </div>
+            
         </div>
       </div>
     </div>
