@@ -17,7 +17,7 @@ const LicenseForm = () => {
 
     const formData = new FormData();
 
-    if(licensePic){
+    if (licensePic) {
       formData.append("licensePic", licensePic);
     }
 
@@ -49,20 +49,20 @@ const LicenseForm = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-  
+
     // Function to reset file input
     const resetFileInput = () => {
       event.target.value = null; // This clears the selected file
       setLicensePic(null);
       // setImagePreviewUrl(null); // Clear the image preview URL
     };
-  
+
     // Check if file is selected
     if (!file) {
       resetFileInput();
       return;
     }
-  
+
     // Check the file type
     // const validTypes = ['image/jpeg', 'image/png'];
     // if (!validTypes.includes(file.type)) {
@@ -72,7 +72,7 @@ const LicenseForm = () => {
     //   resetFileInput();
     //   return;
     // }
-  
+
     // Check the file size (3 MB in bytes)
     // const maxSize = 3 * 1024 * 1024;
     // if (file.size > maxSize) {
@@ -82,7 +82,7 @@ const LicenseForm = () => {
     //   resetFileInput();
     //   return;
     // }
-  
+
     // If file is valid, update the image state and set image preview URL
     setLicensePic(file);
   };
@@ -90,65 +90,80 @@ const LicenseForm = () => {
   const handleRemoveImage = () => {
     setLicensePic(null);
     // Resetting the file input if needed
-    document.getElementById('fileInput').value = "";
+    document.getElementById("fileInput").value = "";
   };
 
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
-      <form onSubmit={handleSubmit} className="w-1/2">
-        <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text font-bold">License</span>
-            </div>
-          </label>
+    <dialog id="add_license" className="modal">
+      <div className="modal-box max-w-2xl bg-base-200">
+      <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit}>
+          {/* <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl"> */}
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text font-bold">License</span>
+              </div>
+            </label>
 
-          <div className="grid grid-cols-2 gap-2 w-full">
-            <input
-              type="text"
-              id="licenseName"
-              placeholder="License Name"
-              className="input input-bordered w-full text-center"
-              value={licenseName}
-              onChange={(e) => setLicenseName(e.target.value)}
-            />
+            <div className="grid grid-cols-2 gap-2 w-full">
+              <input
+                type="text"
+                id="licenseName"
+                placeholder="License Name"
+                className="input input-bordered w-full text-center"
+                value={licenseName}
+                onChange={(e) => setLicenseName(e.target.value)}
+              />
 
-            <DateTime
-              id="startdate"
-              dateFormat="YYYY-MM"
-              selected={licenseValidity}
-              timeFormat={false}
-              onChange={handleDateChange}
-              inputProps={{
-                placeholder: "License Validity",
-                className:
-                  "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-              }}
-            /><label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">License Pic</span>
-            </div>
-          </label>
-            <input
-              type="file"
-              id="licensepic"
-              placeholder="License Pic"
-              className="file-input file-input-bordered w-full col-span-2"
-              onChange={handleFileChange}
-            />
-            {licensePic && (
-                <button onClick={handleRemoveImage} className="btn btn-error text-white ml-3">
+              <DateTime
+                className="mb-3"
+                id="startdate"
+                dateFormat="YYYY-MM"
+                selected={licenseValidity}
+                timeFormat={false}
+                onChange={handleDateChange}
+                inputProps={{
+                  placeholder: "License Validity",
+                  className:
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
+                }}
+              />
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">License Pic</span>
+                </div>
+              </label>
+              <input
+                type="file"
+                id="licensepic"
+                placeholder="License Pic"
+                className="file-input file-input-bordered w-full col-span-2"
+                onChange={handleFileChange}
+              />
+              {licensePic && (
+                <button
+                  onClick={handleRemoveImage}
+                  className="btn btn-error text-white ml-3"
+                >
                   Remove Image
                 </button>
               )}
-          </div>
-          <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-            Add License
-          </button>
-        </div>
+            </div>
+            <button type="submit" className={`btn btn-primary w-40 mt-5`}>
+              Add License
+            </button>
+          {/* </div> */}
+        </form>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
-    </div>
+    </dialog>
   );
 };
 
