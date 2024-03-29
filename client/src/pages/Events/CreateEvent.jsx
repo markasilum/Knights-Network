@@ -106,114 +106,116 @@ const CreateEvent = () => {
   };
 
   return (
-    <dialog id="my_modal_1" className="modal">
-     
+    <dialog id="new_event_form" className="modal">
       <div className="modal-box w-11/12 max-w-5xl mt-10">
-      <form method="dialog">
-      {/* if there is a button in form, it will close the modal */}
-      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-      <form  onSubmit={handleSubmit}>
-        <div>
-          <div className="col-span-2">
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text font-semibold">Event Name</span>
-              </div>
-            </label>
-
-            <input
-              type="text"
-              id="eventName"
-              placeholder="Name of Event"
-              className="input input-bordered w-full col-span-2"
-              value={eventName}
-              onChange={(e) => setEventName(e.target.value)}
-            />
-          </div>
-
-          <div className="col-span-2">
-            <div>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text font-semibold">Location</span>
-                </div>
-              </label>
-
-              <div className="grid grid-cols-2 gap-2 w-full">
-                <input
-                  type="text"
-                  id="location"
-                  placeholder="ex. Arrupe Hall"
-                  className="input input-bordered w-full col-span-2"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <DateTime
-              id="date"
-              selected={date}
-              timeFormat={true}
-              onChange={handleDate}
-              onKeyDown={(e) => {
-                e.preventDefault();
-              }}
-              inputProps={{
-                placeholder: "Date of Event",
-                className:
-                  "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center mt-5",
-              }}
-            />
-
-            <div>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text font-bold">Image</span>
-                </div>
-              </label>
-              <input
-                type="file"
-                id="eventPhoto"
-                className="file-input file-input-bordered w-full max-w-xs"
-                onChange={handleFileChange}
-              />
-              {image && (
-                <button
-                  onClick={handleRemoveImage}
-                  className="btn btn-error text-white ml-3"
-                >
-                  Remove Image
-                </button>
-              )}
-            </div>
-
-            <label className="form-control w-full max-w-xs col-span-2">
-              <div className="label">
-                <span className="label-text font-semibold">Event Details</span>
-              </div>
-            </label>
-            <textarea
-              id="eventdetails"
-              placeholder="Details of the event"
-              className="textarea textarea-bordered textarea-md w-full h-72"
-              value={eventDetails}
-              onChange={(e) => setEventDetails(e.target.value)}
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            className={`btn btn-primary w-40 mt-10 col-span-2`}
-          >
-            Create Event
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
           </button>
-        </div>
-      </form>
+        </form>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <div className="col-span-2">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-semibold">Event Name</span>
+                </div>
+              </label>
 
+              <input
+                type="text"
+                id="eventName"
+                placeholder="Name of Event"
+                className="input input-bordered w-full col-span-2"
+                value={eventName}
+                onChange={(e) => setEventName(e.target.value)}
+              />
+            </div>
+
+            <div className="col-span-2">
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-semibold">Location</span>
+                  </div>
+                </label>
+
+                <div className="grid grid-cols-2 gap-2 w-full">
+                  <input
+                    type="text"
+                    id="location"
+                    placeholder="ex. Arrupe Hall"
+                    className="input input-bordered w-full col-span-2"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <DateTime
+                id="date"
+                selected={date}
+                timeFormat={true}
+                onChange={handleDate}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                }}
+                inputProps={{
+                  placeholder: "Date of Event",
+                  className:
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center mt-5",
+                }}
+              />
+
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-bold">Image</span>
+                  </div>
+                </label>
+                <input
+                  type="file"
+                  id="eventPhoto"
+                  className="file-input file-input-bordered w-full max-w-xs"
+                  onChange={handleFileChange}
+                />
+                {image && (
+                  <button
+                    onClick={handleRemoveImage}
+                    className="btn btn-error text-white ml-3"
+                  >
+                    Remove Image
+                  </button>
+                )}
+              </div>
+
+              <label className="form-control w-full max-w-xs col-span-2">
+                <div className="label">
+                  <span className="label-text font-semibold">
+                    Event Details
+                  </span>
+                </div>
+              </label>
+              <textarea
+                id="eventdetails"
+                placeholder="Details of the event"
+                className="textarea textarea-bordered textarea-md w-full h-72"
+                value={eventDetails}
+                onChange={(e) => setEventDetails(e.target.value)}
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              className={`btn btn-primary w-40 mt-10 col-span-2`}
+            >
+              Create Event
+            </button>
+          </div>
+        </form>
       </div>
-      
+
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>

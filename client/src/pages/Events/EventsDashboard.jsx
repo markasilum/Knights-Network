@@ -52,7 +52,7 @@ const EventsDashboard = () => {
                     </tbody>
                 </table>
                 <CreateEvent/>
-            <ButtonPrimary text={"New Event"} onClick={()=>document.getElementById('my_modal_1').showModal()}/>
+              <ButtonPrimary text={"New Event"} onClick={()=>document.getElementById('new_event_form').showModal()}/>
                 
             </div>
             
