@@ -107,12 +107,13 @@ const CreateEvent = () => {
 
   return (
     <dialog id="my_modal_1" className="modal">
+     
+      <div className="modal-box w-11/12 max-w-5xl mt-10">
       <form method="dialog">
-        {/* if there is a button, it will close the modal */}
-         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-      </form>
-      
-      <form className="modal-box w-11/12 max-w-5xl" onSubmit={handleSubmit}>
+      {/* if there is a button in form, it will close the modal */}
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+      <form  onSubmit={handleSubmit}>
         <div>
           <div className="col-span-2">
             <label className="form-control w-full max-w-xs">
@@ -210,6 +211,9 @@ const CreateEvent = () => {
           </button>
         </div>
       </form>
+
+      </div>
+      
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>

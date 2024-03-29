@@ -6,6 +6,7 @@ import DateToWords from '../../components/DateFormatter'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CreateEvent from './CreateEvent'
 import ButtonPrimary from '../../components/ButtonPrimary'
+import SidebarAdmin from '../../components/SidebarAdmin'
 
 const EventsDashboard = () => {
   const[eventsData,setEventsData] = useState([])
@@ -26,8 +27,7 @@ const EventsDashboard = () => {
      <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
       <div className="flex flex-row gap-2">
-        <SideBar/>
-
+        <SidebarAdmin />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
             <div className="pt-5 pr-5 pl-3 overflow-x-auto">
            
