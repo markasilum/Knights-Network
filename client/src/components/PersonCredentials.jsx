@@ -7,6 +7,7 @@ import LicenseCard from './LicenseCard';
 import SkillsCard from './SkillsCard';
 import CertificationsCard from './CertificationsCard';
 import ButtonPrimary from './ButtonPrimary';
+import ButtonNavigator from './ButtonNavigator';
 
 const PersonCredentials = ({educData}) => {
   
@@ -17,8 +18,8 @@ const PersonCredentials = ({educData}) => {
       <LicenseCard/>
       <SkillsCard/>
       <CertificationsCard/>
+      <ButtonNavigator path={`/resume`} text={"Create Resume"}/>
 
-      <ButtonPrimary text={"Create Resume"}/>
 
     </div>
   )
