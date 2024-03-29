@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base{
+    @font-face {
+    font-family: "Trajan-Regular";
+    src: url("../public/fonts/Trajan-Regular.ttf") format('truetype');
+}
+}
+

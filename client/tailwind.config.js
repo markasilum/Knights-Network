@@ -5,13 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        trajan: ["Trajan-Regular", "sans-serif"],
+      },
+    },
   },daisyui: {
     themes: [
       {
         mytheme: {
         "primary": "#2F3590",
-      "secondary": "#444444",
+        "secondary": "#444444",
         "accent": "#1EAEEC",
         "neutral": "#F8F8F8",
         "base-100": "#ffffff",
@@ -21,9 +25,12 @@ export default {
         "error": "#E9222E",
         },
       },
+      
     ],
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+  ],
 
 }
 
