@@ -28,7 +28,7 @@ useEffect(()=>{
             <div className='flex gap-3'>
             {/* <Link to="/expform" className='font-thin underline'>Add</Link> */}
             <button className='font-thin underline' onClick={()=>document.getElementById('add_experience').showModal()}>Add</button>
-            <Link to="/expform" className='font-thin underline'>Edit</Link>
+            <Link to="/experience-edit" className='font-thin underline'>Edit</Link>
             </div>
             
         </div>

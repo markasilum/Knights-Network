@@ -28,6 +28,7 @@ import CreateEvent from './pages/Events/CreateEvent';
 import EventDetail from './pages/Events/EventDetail';
 import EditEducation from './pages/Edit-Credentials/EditEducation';
 import SelectEditEduc from './pages/Edit-Credentials/SelectEditEduc';
+import SelectEditExperience from './pages/Edit-Credentials/SelectEditExperience';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
             <Route path='/createevent' element={<CreateEvent/>}/>
             <Route path='edit-education' element={<EditEducation/>}/>
             <Route path='education-edit' element={<SelectEditEduc/>}/>
+            <Route path='experience-edit' element={<SelectEditExperience/>}/>
           </Routes>
       </Router>
     </div>

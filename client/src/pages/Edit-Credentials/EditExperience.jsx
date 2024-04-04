@@ -1,8 +1,60 @@
-import React from 'react'
+import React, { useState } from 'react'
+import "react-datetime/css/react-datetime.css";
+import DateTime from "react-datetime";
+import DateToWords from '../../components/DateFormatter';
 
 const EditExperience = ({expData}) => {
+    const [expId, setExpId] = useState(expData.id);
+  const [jobTitle, setJobTitle] = useState(expData.jobTitle);
+  const [companyName, setCompanyName] = useState(expData.companyName);
+  const [jobDetails, setJobDetails] = useState(expData.jobDetails);
+  const [startDate, setStartDate] = useState(expData.startDate);
+  const [endDate, setEndDate] = useState(expData.endDate);
+
+  const handleSubmit = async (event) => {
+    // event.preventDefault();
+    
+    console.log(startDate);
+
+    const formData = new FormData();
+
+    formData.append("expId", expId);
+    formData.append("jobTitle", jobTitle);
+    formData.append("companyName", companyName);
+    formData.append("jobDetails", jobDetails);
+    formData.append("startDate", startDate);
+    formData.append("endDate", endDate);
+
+    try {
+      const response = await fetch("http://localhost:3000/experience/update", {
+        method: "PUT",
+        body: formData,
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.error);
+      }
+    } catch (error) {
+      console.error("Error creating education:", error);
+    }
+  };
+
+  const handleStartDateChange = (startDate) => {
+    console.log(startDate);
+    const start = startDate.toISOString();
+    console.log(start);
+    setStartDate(start);
+  };
+
+  // Function to handle changes in the date-time value for end date
+  const handleEndDateChange = (endDate) => {
+    const end = endDate.toISOString();
+    setEndDate(end);
+  };
     return (
-        <dialog id="add_experience" className="modal">
+        <dialog id={expData.id} className="modal">
           <div className="modal-box max-w-2xl mt-10  bg-base-200">
           <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
@@ -49,8 +101,9 @@ const EditExperience = ({expData}) => {
                   <div className="grid grid-cols-2 gap-3">
                     <DateTime
                       id="startdate"
-                      dateFormat="YYYY-MM"
+                      dateFormat="MM-YYYY"
                       selected={startDate}
+                      value={startDate.slice(0,7)}
                       timeFormat={false}
                       onChange={handleStartDateChange}
                       inputProps={{
@@ -59,11 +112,13 @@ const EditExperience = ({expData}) => {
                           "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
                       }}
                     />
+                    
     
                     <DateTime
                       id="enddate"
-                      dateFormat="YYYY-MM"
+                      dateFormat="MM-YYYY"
                       selected={endDate}
+                      value={endDate.slice(0,7)}
                       timeFormat={false}
                       onChange={handleEndDateChange}
                       inputProps={{
@@ -75,7 +130,7 @@ const EditExperience = ({expData}) => {
                   </div>
                 </div>
                 <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-                  Create Experience
+                  Update Experience
                 </button>
               {/* </div> */}
             </form>

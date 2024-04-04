@@ -11,38 +11,6 @@ const EditEducation = ({educationData, degreeData}) => {
   const [endDate, setEndDate] = useState(educationData.endDate);
   const [awards, setAwards] = useState(educationData.awards);
   const [educData, setEducData] = useState(educationData);
-//   useEffect(() => {
-//     const fetchEducation = async () => {
-//       try {
-//         const response = await fetch("http://localhost:3000/education/index");
-//         const getEducRes = await response.json();
-//         // setDegreeId(getEducRes.map(educ => educ.degreeId))
-//         setEducData(getEducRes);
-
-//         const degreeIds = getEducRes.map((educ) => educ.degreeId);
-
-//         const fetchDegree = async () => {
-//           try {
-//             const response = await fetch(
-//               `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
-//             );
-//             const getUserResult = await response.json();
-//             setDegree(getUserResult);
-//             // console.log(getUserResult)
-//           } catch (error) {
-//             console.error("Error fetching data:", error);
-//           }
-//         };
-
-//         fetchDegree();
-
-//         // console.log(getEducRes)
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//       }
-//     };
-//     fetchEducation();
-//   }, []);
 
   const handleSubmit = async (event) => {
     // event.preventDefault();
