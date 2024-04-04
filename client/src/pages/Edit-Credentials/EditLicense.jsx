@@ -3,7 +3,7 @@ import DateTime from "react-datetime";
 
 const EditLicense = ({licenseData}) => {
   const[id, setId] = useState(licenseData.id);
-const [licenseName, setLicenseName] = useState(licenseData.licenseName);
+  const [licenseName, setLicenseName] = useState(licenseData.licenseName);
   const [licensePic, setLicensePic] = useState(licenseData.licensePic);
   const [licenseValidity, setLicenseValidity] = useState(licenseData.licenseValidity);
 
