@@ -15,11 +15,19 @@ const getPersonCerts = async (req, res) => {
         where: {
           personId: personId,
         },select:{
+          id:true,
+          certDetails: true,
+          certPhoto: true,
             certName:true
         }
       });
 
-      const personCerts = certs.map(cert => cert.certName);
+      const personCerts = certs.map(cert =>({
+        id: cert.id,
+        certDetails: cert.certDetails,
+        certPhoto: cert.certPhoto,
+        certName: cert.certName
+      }));
 
       res.json(personCerts);
 
@@ -59,7 +67,38 @@ const createCert = async (req, res) => {
     }
   };
 
+  const updateCert = async (req, res) => {
+    try {
+      // Extract data from the request body
+      const { certId, certName, certDetails } = req.body;
+      let certPhoto
+      if(req.file != null){
+       certPhoto = req.file.filename
+      }
+
+      const newCert = await prisma.certification.update({
+        where:{
+          id: certId
+        },
+        data: {
+            certName,
+            certDetails,
+            certPhoto,
+            
+            },
+      });
+  
+      // Send a response with the newly created person
+      res.status(201).json(newCert);
+    } catch (error) {
+      console.error("Error creating license:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      // console.log(req.body)
+    }
+  };
+
 module.exports = {
     getPersonCerts,
-    createCert
+    createCert,
+    updateCert
 }

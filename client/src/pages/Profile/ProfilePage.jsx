@@ -13,7 +13,6 @@ import SideBar from "../../components/SideBar";
   const [compJobPostData, setCompJobPostData] = useState([]);
   const [userRole, setUserRole] = useState([]);
   const [profileNavButton, setProfileNavButton] = useState("about");
-
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
@@ -95,7 +94,7 @@ import SideBar from "../../components/SideBar";
       <SideBar/>
 
       <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-      <div className="pt-5 pr-5 pl-3 overflow-auto">
+      <div className="pt-5 pr-5 pl-3 overflow-scroll">
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
 

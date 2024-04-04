@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TopBar from "./topbar";
+import TopBar from "../../components/topbar";
 
 const CertificationsForm = () => {
   const [certName, setCertName] = useState("");
@@ -7,11 +7,10 @@ const CertificationsForm = () => {
   const [certPhoto, setCertPhoto] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
 
     const formData = new FormData();
 
-    if(certPhoto){
+    if (certPhoto) {
       formData.append("certPhoto", certPhoto);
     }
 
@@ -19,10 +18,13 @@ const CertificationsForm = () => {
     formData.append("certDetails", certDetails);
 
     try {
-      const response = await fetch("http://localhost:3000/certification/create", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:3000/certification/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const responseData = await response.json();
 
@@ -36,20 +38,20 @@ const CertificationsForm = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-  
+
     // Function to reset file input
     const resetFileInput = () => {
       event.target.value = null; // This clears the selected file
       setCertPhoto(null);
       // setImagePreviewUrl(null); // Clear the image preview URL
     };
-  
+
     // Check if file is selected
     if (!file) {
       resetFileInput();
       return;
     }
-  
+
     // Check the file type
     // const validTypes = ['image/jpeg', 'image/png'];
     // if (!validTypes.includes(file.type)) {
@@ -59,7 +61,7 @@ const CertificationsForm = () => {
     //   resetFileInput();
     //   return;
     // }
-  
+
     // Check the file size (3 MB in bytes)
     // const maxSize = 3 * 1024 * 1024;
     // if (file.size > maxSize) {
@@ -69,7 +71,7 @@ const CertificationsForm = () => {
     //   resetFileInput();
     //   return;
     // }
-  
+
     // If file is valid, update the image state and set image preview URL
     setCertPhoto(file);
   };
@@ -77,15 +79,19 @@ const CertificationsForm = () => {
   const handleRemoveImage = () => {
     setCertPhoto(null);
     // Resetting the file input if needed
-    document.getElementById('fileInput').value = "";
+    document.getElementById("fileInput").value = "";
   };
 
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
-      
-      <form onSubmit={handleSubmit} className="w-1/2">
-        <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
+    <dialog id="add_cert" className="modal">
+      <div className="modal-box max-w-2xl bg-base-200">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit}>
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text font-bold">Certification</span>
@@ -109,7 +115,6 @@ const CertificationsForm = () => {
               value={certDetails}
               onChange={(e) => setCertDetails(e.target.value)}
             />
-
 
             <label className="form-control w-full max-w-xs">
               <div className="label">
@@ -135,9 +140,12 @@ const CertificationsForm = () => {
           <button type="submit" className={`btn btn-primary w-40 mt-5`}>
             Add Certification
           </button>
-        </div>
+        </form>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
-    </div>
+    </dialog>
   );
 };
 

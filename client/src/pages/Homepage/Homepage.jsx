@@ -27,7 +27,7 @@ const Homepage = () => {
         <SideBar/>
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
             <div className="pt-5 pr-5 pl-3 ">
-                <div className="w-full bg-white h-screen p-5 rounded-xl mb-20 overflow-scroll">
+                <div className="w-full bg-white h-screen p-5 rounded-xl mb-20 overflow-y-auto">
                     <JobPostCard jobData={jobPosts}/>
                 </div>
             </div>

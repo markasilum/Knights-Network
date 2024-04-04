@@ -12,7 +12,7 @@ const getDegreeName = async (req, res) => {
   
         // Split the 'ids' string into an array
         const degreeIds = ids.split(',');
-        console.log(degreeIds)
+        // console.log(degreeIds)
         // Query the database using Prisma to fetch degrees by their IDs
         const degrees = await prisma.degree.findMany({
             where: {
@@ -23,7 +23,7 @@ const getDegreeName = async (req, res) => {
         });
         // Send the degrees as JSON response
         res.json(degrees);
-        console.log(degrees)
+        // console.log(degrees)
     } catch (error) {
         // If there's an error, send an error response
         console.error('Error:', error);

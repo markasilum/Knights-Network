@@ -13,10 +13,10 @@ import CreateCompany from './pages/Create-Account/CreateCompany';
 import EditCompanyProfile from './pages/Edit-Account/EditCompanyProfile';
 import CreateJobPost from './pages/Create-Job-Post/CreateJobPost';
 import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
-import ExperienceForm from './components/ExperienceForm';
-import LicenseForm from './components/LicenseForm';
-import SkillsForm from './components/SkillsForm';
-import CertificationsForm from './components/CertificationsForm';
+import ExperienceForm from './pages/Create-Credentials/ExperienceForm';
+import LicenseForm from './pages/Create-Credentials/LicenseForm';
+import SkillsForm from './pages/Create-Credentials/SkillsForm';
+import CertificationsForm from './pages/Create-Credentials/CertificationsForm';
 import ProfilePage from './pages/Profile/ProfilePage';
 import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboard';
 import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
@@ -26,6 +26,12 @@ import ResumeCard from './components/resumeCard';
 import EventsDashboard from './pages/Events/EventsDashboard';
 import CreateEvent from './pages/Events/CreateEvent';
 import EventDetail from './pages/Events/EventDetail';
+import EditEducation from './pages/Edit-Credentials/EditEducation';
+import SelectEditEduc from './pages/Edit-Credentials/SelectEditEduc';
+import SelectEditExperience from './pages/Edit-Credentials/SelectEditExperience';
+import SelectEditLicense from './pages/Edit-Credentials/SelectEditLicense';
+import SelectEditSkills from './pages/Edit-Credentials/SelectEditSkills';
+import SelectEditCerts from './pages/Edit-Credentials/SelectEditCerts';
 
 
 function App() {
@@ -55,6 +61,12 @@ function App() {
             <Route path='/eventdetails/:eventId' element={<EventDetail/>}/>
             <Route path='/eventslist' element={<EventsDashboard/>}/>
             <Route path='/createevent' element={<CreateEvent/>}/>
+            <Route path='edit-education' element={<EditEducation/>}/>
+            <Route path='education-edit' element={<SelectEditEduc/>}/>
+            <Route path='experience-edit' element={<SelectEditExperience/>}/>
+            <Route path='license-edit' element={<SelectEditLicense/>}/>
+            <Route path='skills-edit' element={<SelectEditSkills/>}/>
+            <Route path='certifications-edit' element={<SelectEditCerts/>}/>
           </Routes>
       </Router>
     </div>
