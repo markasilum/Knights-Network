@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
-import CertificationsForm from './CertificationsForm';
+import CertificationsForm from '../pages/Create-Credentials/CertificationsForm';
 const CertificationsCard = () => {
   const[certs, setCerts] = useState([])
 

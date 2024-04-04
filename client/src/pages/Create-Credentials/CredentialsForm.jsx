@@ -1,5 +1,5 @@
 import React from 'react'
-import EducationForm from '../../components/EducationForm'
+import EducationForm from './EducationForm'
 
 const CredentialsForm = () => {
   return (

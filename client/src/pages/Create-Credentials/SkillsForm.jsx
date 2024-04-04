@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import TopBar from "./topbar";
+import TopBar from "../../components/topbar";
 
 const SkillsForm = () => {
   const [skillName, setSkillName] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
 
     const formData = new FormData();
 
