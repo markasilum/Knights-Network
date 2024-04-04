@@ -27,7 +27,7 @@ useEffect(()=>{
             <div className='flex gap-3'>
             <button className='font-thin underline' onClick={()=>document.getElementById('add_license').showModal()}>Add</button>
             {/* {console.log(licenses)} */}
-            <Link to="/license-edit" className='font-thin underline' state={licenses}>Edit</Link>
+            <Link to="/license-edit" className='font-thin underline' state={{licenses}}>Edit</Link>
             </div>
         </div>
         <LicenseForm/>
@@ -37,7 +37,7 @@ useEffect(()=>{
              <span className='font-normal'>{license.licenseName}</span>
           </div>
         ))}
-        {console.log(licenses)}
+        {/* {console.log(licenses)} */}
       </div>
   )
 }
