@@ -32,6 +32,7 @@ import SelectEditExperience from './pages/Edit-Credentials/SelectEditExperience'
 import SelectEditLicense from './pages/Edit-Credentials/SelectEditLicense';
 import SelectEditSkills from './pages/Edit-Credentials/SelectEditSkills';
 import SelectEditCerts from './pages/Edit-Credentials/SelectEditCerts';
+import EventsAll from './pages/Events/EventsAll';
 
 
 function App() {
@@ -61,12 +62,13 @@ function App() {
             <Route path='/eventdetails/:eventId' element={<EventDetail/>}/>
             <Route path='/eventslist' element={<EventsDashboard/>}/>
             <Route path='/createevent' element={<CreateEvent/>}/>
-            <Route path='edit-education' element={<EditEducation/>}/>
+            <Route path='/edit-education' element={<EditEducation/>}/>
             <Route path='education-edit' element={<SelectEditEduc/>}/>
             <Route path='experience-edit' element={<SelectEditExperience/>}/>
             <Route path='license-edit' element={<SelectEditLicense/>}/>
             <Route path='skills-edit' element={<SelectEditSkills/>}/>
             <Route path='certifications-edit' element={<SelectEditCerts/>}/>
+            <Route path='/events' element={<EventsAll/>}/>
           </Routes>
       </Router>
     </div>
