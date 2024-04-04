@@ -9,3 +9,9 @@
 }
 }
 
+@layer components {
+    .overflow-scroll::-webkit-scrollbar { 
+        display: none; 
+    } 
+  }
+

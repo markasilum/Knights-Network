@@ -64,7 +64,7 @@ const EditPersonProfile = () => {
 
       fetchUserData();
       fetchPersonData();
-      console.log(image)
+     
     }, []);
   
   

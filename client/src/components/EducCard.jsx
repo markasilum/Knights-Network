@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
 import EducationForm from './EducationForm';
+import EditEducation from '../pages/Edit-Credentials/EditEducation';
 
 const EducCard = ({educData}) => {
   const[degree, setDegree] = useState([])
@@ -28,7 +29,7 @@ const EducCard = ({educData}) => {
             <span className='font-bold'>Education</span>
             <div className='flex gap-3'>
             <button className='font-thin underline' onClick={()=>document.getElementById('add_education').showModal()}>Add</button>
-            <Link to="/credentials" className='font-thin underline'>Edit</Link>
+            <Link className='font-thin underline' to={"/education-edit"}>Edit</Link>
             </div>
         </div>
         <EducationForm/>
