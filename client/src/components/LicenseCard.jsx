@@ -31,12 +31,13 @@ useEffect(()=>{
             </div>
         </div>
         <LicenseForm/>
-
+        <ul className='font-normal list-disc ml-5'>
         {licenses.map((license)=>(
-          <div key={license.id} >
-             <span className='font-normal'>{license.licenseName}</span>
-          </div>
+         
+             <li key={license.id}>{license.licenseName}</li>
+         
         ))}
+        </ul>
         {/* {console.log(licenses)} */}
       </div>
   )

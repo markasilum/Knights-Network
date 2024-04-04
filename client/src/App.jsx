@@ -30,6 +30,7 @@ import EditEducation from './pages/Edit-Credentials/EditEducation';
 import SelectEditEduc from './pages/Edit-Credentials/SelectEditEduc';
 import SelectEditExperience from './pages/Edit-Credentials/SelectEditExperience';
 import SelectEditLicense from './pages/Edit-Credentials/SelectEditLicense';
+import SelectEditSkills from './pages/Edit-Credentials/SelectEditSkills';
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
             <Route path='education-edit' element={<SelectEditEduc/>}/>
             <Route path='experience-edit' element={<SelectEditExperience/>}/>
             <Route path='license-edit' element={<SelectEditLicense/>}/>
+            <Route path='skills-edit' element={<SelectEditSkills/>}/>
           </Routes>
       </Router>
     </div>

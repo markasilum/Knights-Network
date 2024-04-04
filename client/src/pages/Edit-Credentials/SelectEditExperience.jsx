@@ -34,6 +34,7 @@ const SelectEditExperience = () => {
           <div className="pt-5 pr-5 pl-3 overflow-scroll">
             <div className="w-full bg-white h-fit p-5 rounded-xl mb-2">
               <div className="flex flex-col">
+              <div className='font-semibold mb-5'>Edit Experience</div>
                 <div className="border-b-2 border-dashed border-info"></div>
                 {experience.map((experience) => (
                   <div key={experience.id} className="flex flex-row justify-between items-center border-b-2 border-dashed border-info mt-2">

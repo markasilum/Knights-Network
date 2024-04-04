@@ -33,6 +33,7 @@ const SelectEditLicense = () => {
           <div className="pt-5 pr-5 pl-3 overflow-scroll">
             <div className="w-full bg-white h-fit p-5 rounded-xl mb-2">
               <div className="flex flex-col">
+              <div className='font-semibold mb-5'>Edit License</div>
                 <div className="border-b-2 border-dashed border-info"></div>
                 {/* {console.log(licenses)} */}
                 {licenses.map((license) => (
