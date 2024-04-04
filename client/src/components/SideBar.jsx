@@ -34,7 +34,7 @@ const SideBar = () => {
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
       <SidebarButton text={"Profile"}  onCick={"/profile"} />
       <SidebarButton text={"Job Posts"} onCick={"/jobpostdashboard"} />
-      <SidebarButton text={"Events"} />
+      <SidebarButton text={"Events"} onClick={"/events"}/>
       <SidebarButton text={"Calendar"} />
       <SidebarButton text={"Logout"} onCick={"/login"} />
     </ul>
@@ -45,15 +45,21 @@ const SideBar = () => {
       <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onCick={"/profile"} />
       <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onCick={"/home"} />
       <SidebarButton text={"Applications"} icon={<ContactPageIcon fontSize="large"/>} onCick={"/applications"} />
-      <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/>}/>
+      <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onCick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
       <SidebarButton text={"Logout"} onCick={"/login"} />
     </ul>
   )
 
-  // const adminSideBar = (
+  const adminSideBar = (
+    <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
+    <SidebarButton text={"Events"} onCick={"/eventslist"} />
+    <SidebarButton text={"Users"} onCick={"/userslist"} />
+    <SidebarButton text={"Calendar"} />
+    <SidebarButton text={"Logout"} onCick={"/login"} />
+  </ul>
   
-  // )
+  )
   if(role.roleName == "company"){
     userSideBar = companySidebar
   }else if(role.roleName == "alumni" || role.roleName == "student"){
