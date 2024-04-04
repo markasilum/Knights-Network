@@ -26,6 +26,8 @@ import ResumeCard from './components/resumeCard';
 import EventsDashboard from './pages/Events/EventsDashboard';
 import CreateEvent from './pages/Events/CreateEvent';
 import EventDetail from './pages/Events/EventDetail';
+import EditEducation from './pages/Edit-Credentials/EditEducation';
+import SelectEditEduc from './pages/Edit-Credentials/SelectEditEduc';
 
 
 function App() {
@@ -55,6 +57,8 @@ function App() {
             <Route path='/eventdetails/:eventId' element={<EventDetail/>}/>
             <Route path='/eventslist' element={<EventsDashboard/>}/>
             <Route path='/createevent' element={<CreateEvent/>}/>
+            <Route path='edit-education' element={<EditEducation/>}/>
+            <Route path='education-edit' element={<SelectEditEduc/>}/>
           </Routes>
       </Router>
     </div>

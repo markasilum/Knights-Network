@@ -28,7 +28,7 @@ const createEducation = async (req, res) => {
   try {
     // Extract data from the request body
     const { schoolName, degree, qpi, startDate, endDate, awards } = req.body;
-    console.log("startDate " + startDate);
+    // console.log("startDate " + startDate);
     // Create a new person record in the database using Prisma
     const newEducation = await prisma.education.create({
       data: {

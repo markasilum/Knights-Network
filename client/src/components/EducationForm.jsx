@@ -68,7 +68,7 @@ const EducationForm = () => {
         <form onSubmit={handleSubmit}>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Education</span>
+              <span className="label-text font-bold">Add Education</span>
             </div>
           </label>
 
