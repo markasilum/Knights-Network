@@ -26,13 +26,20 @@ useEffect(()=>{
             <span className='font-bold'>Certifications</span>
             <div className='flex gap-3'>
             <button className='font-thin underline' onClick={()=>document.getElementById('add_cert').showModal()}>Add</button>
-            <Link to="/certificationform" className='font-thin underline'>Edit</Link>
+            <Link to="/certifications-edit" className='font-thin underline'>Edit</Link>
             </div>
            
         </div>
         <CertificationsForm/>
 
-        <span className='font-normal'>{certs.join(', ')}</span>
+        {/* <span className='font-normal'>{certs.join(', ')}</span> */}
+        <ul className='font-normal list-disc ml-5'>
+        {
+          certs.map((cert)=>(
+            <li key={cert.id}>{cert.certName}</li>
+          ))
+        }
+        </ul>
 
       </div>
   )
