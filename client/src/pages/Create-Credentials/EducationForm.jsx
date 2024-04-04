@@ -1,38 +1,37 @@
 import React from "react";
 import DateTime from "react-datetime";
-import { useState } from "react";
-import TopBar from "./topbar";
 import "react-datetime/css/react-datetime.css";
+import { useState } from "react";
+import TopBar from "../../components/topbar";
 import { useEffect } from "react";
-const ExperienceForm = () => {
-  const [jobTitle, setJobTitle] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [jobDetails, setJobDetails] = useState("");
+const EducationForm = () => {
+  const [schoolName, setSchoolName] = useState("");
+  const [degree, setDegree] = useState("");
+  const [qpi, setQpi] = useState("");
   const [startDate, setStartDate] = useState(new Date().toISOString());
   const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [awards, setAwards] = useState("");
   const [userData, setUserData] = useState([]);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
-    console.log(startDate)
-    
+    console.log(startDate);
+
     const formData = new FormData();
 
-    formData.append("jobTitle", jobTitle);
-    formData.append("companyName", companyName);
-    formData.append("jobDetails", jobDetails);
+    formData.append("schoolName", schoolName);
+    formData.append("degree", degree);
+    formData.append("qpi", qpi);
     formData.append("startDate", startDate);
     formData.append("endDate", endDate);
+    formData.append("awards", awards);
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/createexperience",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("http://localhost:3000/education/create", {
+        method: "POST",
+        body: formData,
+      });
 
       const responseData = await response.json();
 
@@ -45,9 +44,9 @@ const ExperienceForm = () => {
   };
 
   const handleStartDateChange = (startDate) => {
-    console.log(startDate)
+    console.log(startDate);
     const start = startDate.toISOString();
-    console.log(start)
+    console.log(start);
     setStartDate(start);
   };
 
@@ -56,45 +55,47 @@ const ExperienceForm = () => {
     const end = endDate.toISOString();
     setEndDate(end);
   };
+
   return (
-    <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
-      <form onSubmit={handleSubmit} className="w-1/2">
-        <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
+    <dialog id="add_education" className="modal">
+      <div className="modal-box max-w-2xl bg-base-200">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <form onSubmit={handleSubmit}>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Work Experience</span>
+              <span className="label-text font-bold">Add Education</span>
             </div>
           </label>
 
           <div className="flex flex-col gap-2 w-full">
-          <div className="grid grid-cols-2 gap-3">
-          <input
+            <input
               type="text"
-              id="jobtitle"
-              placeholder="Job Title"
+              id="schoolName"
+              placeholder="University"
               className="input input-bordered w-full text-center"
-              value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
+              value={schoolName}
+              onChange={(e) => setSchoolName(e.target.value)}
             />
             <input
               type="text"
-              id="companyname"
-              placeholder="Company Name"
+              id="degree"
+              placeholder="Degree"
               className="input input-bordered w-full text-center"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
+              value={degree}
+              onChange={(e) => setDegree(e.target.value)}
             />
-
-          </div>
-            
-            <textarea
+            <input
               type="text"
-              id="jobdetails"
-              placeholder="Job Details"
-              className="textarea textarea-bordered textarea-md w-full"
-              value={jobDetails}
-              onChange={(e) => setJobDetails(e.target.value)}
+              id="qpi"
+              placeholder="Cumulative QPI"
+              className="input input-bordered w-full text-center"
+              value={qpi}
+              onChange={(e) => setQpi(e.target.value)}
             />
             <div className="grid grid-cols-2 gap-3">
               <DateTime
@@ -123,15 +124,25 @@ const ExperienceForm = () => {
                 }}
               />
             </div>
-            
+            <input
+              type="text"
+              id="awards"
+              placeholder="Awards"
+              className="input input-bordered w-full text-center"
+              value={awards}
+              onChange={(e) => setAwards(e.target.value)}
+            />
           </div>
-          <button type="submit" className={`btn btn-primary w-40 mt-5`}>Create Experience</button>
-
-        </div>
-
+          <button type="submit" className={`btn btn-primary w-40 mt-5`}>
+            Create Education
+          </button>
+        </form>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
       </form>
-    </div>
-  )
-}
+    </dialog>
+  );
+};
 
-export default ExperienceForm
+export default EducationForm;

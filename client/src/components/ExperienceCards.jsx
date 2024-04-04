@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
+import ExperienceForm from '../pages/Create-Credentials/ExperienceForm';
 const ExperienceCards = () => {
 const[experience, setExperience] = useState([])
 
@@ -25,11 +26,13 @@ useEffect(()=>{
         <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
             <span className='font-bold'>Experience</span>
             <div className='flex gap-3'>
-            <Link to="/expform" className='font-thin underline'>Add</Link>
-            <Link to="/expform" className='font-thin underline'>Edit</Link>
+            {/* <Link to="/expform" className='font-thin underline'>Add</Link> */}
+            <button className='font-thin underline' onClick={()=>document.getElementById('add_experience').showModal()}>Add</button>
+            <Link to="/experience-edit" className='font-thin underline'>Edit</Link>
             </div>
             
         </div>
+        <ExperienceForm/>
         
         {experience.map((experience)=>(
           <div key={experience.id} className='flex flex-col mb-5'>
@@ -45,7 +48,7 @@ useEffect(()=>{
           </div>
         ))}
         
-
+         
       </div>
   )
 }

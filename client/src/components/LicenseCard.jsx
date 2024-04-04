@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
+import LicenseForm from '../pages/Create-Credentials/LicenseForm';
 const LicenseCard = () => {
   const[licenses, setLicense] = useState([])
 
@@ -24,21 +25,20 @@ useEffect(()=>{
         <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
             <span className='font-bold'>License</span>
             <div className='flex gap-3'>
-            <Link to="/licenseform" className='font-thin underline'>Add</Link> 
-            <Link to="/licenseform" className='font-thin underline'>Edit</Link>
+            <button className='font-thin underline' onClick={()=>document.getElementById('add_license').showModal()}>Add</button>
+            {/* {console.log(licenses)} */}
+            <Link to="/license-edit" className='font-thin underline' state={{licenses}}>Edit</Link>
             </div>
         </div>
-
-        {/* {licenses.map((license)=>(
-          <div key={license.id} className='flex flex-col mb-5'>
-              
-              <p className='font-thin'><DateToWords dateString={license.licenseValidity} /></p>
-        
-              </div>
-             
-        ))} */}
-        <span className='font-normal'>{licenses.join(", ")}</span>
-        {console.log(licenses)}
+        <LicenseForm/>
+        <ul className='font-normal list-disc ml-5'>
+        {licenses.map((license)=>(
+         
+             <li key={license.id}>{license.licenseName}</li>
+         
+        ))}
+        </ul>
+        {/* {console.log(licenses)} */}
       </div>
   )
 }
