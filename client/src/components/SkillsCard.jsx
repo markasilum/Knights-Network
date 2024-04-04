@@ -26,12 +26,19 @@ const SkillsCard = () => {
             <span className='font-bold'>Skills</span>
             <div className='flex gap-3'>
             <button className='font-thin underline' onClick={()=>document.getElementById('add_skill').showModal()}>Add</button>
-            <Link to="/skillsform" className='font-thin underline'>Edit</Link>
+            <Link to="/skills-edit" className='font-thin underline'>Edit</Link>
             </div>
         </div>
         <SkillsForm/>
 
-        <span className='font-normal'>{skills.join(", ")}</span>
+        {/* <span className='font-normal'>{skills.join(", ")}</span> */}
+        <ul className='font-normal list-disc ml-5'>
+        {skills.map((skill)=>(
+          
+             <li key={skill.id} >{skill.skillName}</li>
+          
+        ))}
+        </ul>
 
       </div>
   )

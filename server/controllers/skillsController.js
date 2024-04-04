@@ -15,6 +15,7 @@ const getPersonSkills = async (req, res) => {
         where: {
           personId: personId,
         },select: {
+          id: true,
             skill: {
               select: {
                 skillName: true
@@ -22,7 +23,10 @@ const getPersonSkills = async (req, res) => {
             }
           }
       });
-      const personSkills = skills.map(skill => skill.skill.skillName);
+      const personSkills = skills.map(skill=>({
+        id: skill.id,
+        skillName: skill.skill.skillName
+      }));
       res.json(personSkills);
     } catch (error) {
       console.error("Error getting license:", error);
@@ -68,7 +72,43 @@ const createPersonSkill = async (req, res) => {
     }
   };
 
+  const updatePersonSkill = async (req, res) => {
+    try {
+      // Extract data from the request body
+      const { personSkillId, skillName } = req.body;
+
+      const newSkill = await prisma.personSkill.update({
+        where:{
+          id: personSkillId,
+        },
+        data: {
+          skill: {
+            connectOrCreate: {
+              where: {
+                skillName: skillName,
+              },
+              create: {
+                skillName: skillName,
+              },
+            },
+          },
+        },
+        include: {
+          skill: true,
+        },
+      });
+  
+      // Send a response with the newly created person
+      res.status(201).json(newSkill);
+    } catch (error) {
+      console.error("Error updating license:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      // console.log(req.body)
+    }
+  };
+
 module.exports = {
     createPersonSkill,
-    getPersonSkills
+    getPersonSkills,
+    updatePersonSkill,
 }
