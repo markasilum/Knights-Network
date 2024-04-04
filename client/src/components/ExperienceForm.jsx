@@ -26,7 +26,7 @@ const ExperienceForm = () => {
     formData.append("endDate", endDate);
 
     try {
-      const response = await fetch("http://localhost:3000/createexperience", {
+      const response = await fetch("http://localhost:3000/experience/create", {
         method: "POST",
         body: formData,
       });
@@ -101,7 +101,7 @@ const ExperienceForm = () => {
               <div className="grid grid-cols-2 gap-3">
                 <DateTime
                   id="startdate"
-                  dateFormat="YYYY-MM"
+                  dateFormat="MM-YYYY"
                   selected={startDate}
                   timeFormat={false}
                   onChange={handleStartDateChange}
@@ -114,7 +114,7 @@ const ExperienceForm = () => {
 
                 <DateTime
                   id="enddate"
-                  dateFormat="YYYY-MM"
+                  dateFormat="MM-YYYY"
                   selected={endDate}
                   timeFormat={false}
                   onChange={handleEndDateChange}
