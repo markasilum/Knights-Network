@@ -15,6 +15,7 @@ const getPersonLicenses = async (req, res) => {
         where: {
           personId: personId,
         },select: {
+          id:true,
             license: {
               select: {
                 licenseName: true
@@ -22,7 +23,10 @@ const getPersonLicenses = async (req, res) => {
             }
           }
       });
-      const personLicenses = licenses.map(license => license.license.licenseName);
+      const personLicenses = licenses.map(license => ({
+        id: license.id,
+        licenseName: license.license.licenseName
+      }));
       res.json(personLicenses);
     } catch (error) {
       console.error("Error getting license:", error);

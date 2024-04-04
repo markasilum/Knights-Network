@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
-import EducationForm from './EducationForm';
+import EducationForm from '../pages/Create-Credentials/EducationForm';
 import EditEducation from '../pages/Edit-Credentials/EditEducation';
 
 const EducCard = ({educData}) => {

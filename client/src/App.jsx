@@ -13,10 +13,10 @@ import CreateCompany from './pages/Create-Account/CreateCompany';
 import EditCompanyProfile from './pages/Edit-Account/EditCompanyProfile';
 import CreateJobPost from './pages/Create-Job-Post/CreateJobPost';
 import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
-import ExperienceForm from './components/ExperienceForm';
-import LicenseForm from './components/LicenseForm';
-import SkillsForm from './components/SkillsForm';
-import CertificationsForm from './components/CertificationsForm';
+import ExperienceForm from './pages/Create-Credentials/ExperienceForm';
+import LicenseForm from './pages/Create-Credentials/LicenseForm';
+import SkillsForm from './pages/Create-Credentials/SkillsForm';
+import CertificationsForm from './pages/Create-Credentials/CertificationsForm';
 import ProfilePage from './pages/Profile/ProfilePage';
 import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboard';
 import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
@@ -29,6 +29,7 @@ import EventDetail from './pages/Events/EventDetail';
 import EditEducation from './pages/Edit-Credentials/EditEducation';
 import SelectEditEduc from './pages/Edit-Credentials/SelectEditEduc';
 import SelectEditExperience from './pages/Edit-Credentials/SelectEditExperience';
+import SelectEditLicense from './pages/Edit-Credentials/SelectEditLicense';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
             <Route path='edit-education' element={<EditEducation/>}/>
             <Route path='education-edit' element={<SelectEditEduc/>}/>
             <Route path='experience-edit' element={<SelectEditExperience/>}/>
+            <Route path='license-edit' element={<SelectEditLicense/>}/>
           </Routes>
       </Router>
     </div>

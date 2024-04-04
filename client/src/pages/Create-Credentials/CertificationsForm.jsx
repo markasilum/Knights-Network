@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TopBar from "./topbar";
+import TopBar from "../../components/topbar";
 
 const CertificationsForm = () => {
   const [certName, setCertName] = useState("");
@@ -7,7 +7,6 @@ const CertificationsForm = () => {
   const [certPhoto, setCertPhoto] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
 
     const formData = new FormData();
 
