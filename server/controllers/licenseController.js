@@ -16,6 +16,8 @@ const getPersonLicenses = async (req, res) => {
           personId: personId,
         },select: {
           id:true,
+          licensePic: true,
+          licenseValidity: true,
             license: {
               select: {
                 licenseName: true
@@ -25,6 +27,8 @@ const getPersonLicenses = async (req, res) => {
       });
       const personLicenses = licenses.map(license => ({
         id: license.id,
+        licensePic: license.licensePic,
+        licenseValidity: license.licenseValidity,
         licenseName: license.license.licenseName
       }));
       res.json(personLicenses);
@@ -73,8 +77,49 @@ const createPersonLicense = async (req, res) => {
       // console.log(req.body)
     }
   };
+  const updatePersonLicense = async (req, res) => {
+    console.log(req.body)
+    try {
+      // Extract data from the request body
+      const { licId, licenseValidity, licenseName } = req.body;
+      let licensePic
+      if(req.file != null){
+      licensePic = req.file.filename
+    }
 
+      const updateLicense = await prisma.personLicense.update({
+        where:{
+          id: licId
+        },
+        data: {
+          licenseValidity,
+          licensePic,
+          license: {
+            connectOrCreate: {
+              where: {
+                licenseName: licenseName,
+              },
+              create: {
+                licenseName: licenseName,
+              },
+            },
+          },
+        },
+        include: {
+          license: true,
+        },
+      });
+  
+      // Send a response with the newly created person
+      res.status(201).json(updateLicense);
+    } catch (error) {
+      console.error("Error updating license:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      // console.log(req.body)
+    }
+  };
 module.exports = {
     createPersonLicense,
-    getPersonLicenses
+    getPersonLicenses,
+    updatePersonLicense,
 }

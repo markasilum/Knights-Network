@@ -230,11 +230,11 @@ const ResumeCard = () => {
 
         <div className="pl-5">
           {/* <span className="font-normal">{skills.join(", ")}</span> */}
-          <ul className="font-normal list-disc">
+          {/* <ul className="font-normal list-disc">
             {licenses.map((item, index) => (
                 <li key={index}>{item}</li>
             ))}
-        </ul>
+        </ul> */}
         </div>
 
         <div className="flex flex-row justify-center border-b-2 border-solid border-black mb-2">

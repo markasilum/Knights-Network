@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useState } from 'react'
 import DateTime from "react-datetime";
-import { useState } from "react";
-import TopBar from "../../components/topbar";
-import "react-datetime/css/react-datetime.css";
-import { useEffect } from "react";
 
-const LicenseForm = () => {
-  const [licenseName, setLicenseName] = useState("");
-  const [licensePic, setLicensePic] = useState("");
-  const [licenseValidity, setLicenseValidity] = useState(new Date().toISOString());
+const EditLicense = ({licenseData}) => {
+  const[id, setId] = useState(licenseData.id);
+const [licenseName, setLicenseName] = useState(licenseData.licenseName);
+  const [licensePic, setLicensePic] = useState(licenseData.licensePic);
+  const [licenseValidity, setLicenseValidity] = useState(licenseData.licenseValidity);
 
   const handleSubmit = async (event) => {
     const formData = new FormData();
@@ -16,13 +13,14 @@ const LicenseForm = () => {
     if (licensePic) {
       formData.append("licensePic", licensePic);
     }
-
+    formData.append("licId", id);
     formData.append("licenseName", licenseName);
     formData.append("licenseValidity", licenseValidity);
 
     try {
-      const response = await fetch("http://localhost:3000/license/create", {
-        method: "POST",
+        
+      const response = await fetch("http://localhost:3000/license/update", {
+        method: "PUT",
         body: formData,
       });
 
@@ -88,9 +86,8 @@ const LicenseForm = () => {
     // Resetting the file input if needed
     document.getElementById("fileInput").value = "";
   };
-
   return (
-    <dialog id="add_license" className="modal">
+    <dialog id={licenseData.id} className="modal">
       <div className="modal-box max-w-2xl bg-base-200">
       <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
@@ -102,7 +99,7 @@ const LicenseForm = () => {
           {/* <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl"> */}
             <label className="form-control w-full max-w-xs">
               <div className="label">
-                <span className="label-text font-bold">License</span>
+                <span className="label-text font-bold">Edit License</span>
               </div>
             </label>
 
@@ -119,8 +116,9 @@ const LicenseForm = () => {
               <DateTime
                 className="mb-3"
                 id="startdate"
-                dateFormat="YYYY-MM"
+                dateFormat="MM-YYYY"
                 selected={licenseValidity}
+                value={licenseValidity.slice(0,7)}
                 timeFormat={false}
                 onChange={handleDateChange}
                 inputProps={{
@@ -134,24 +132,29 @@ const LicenseForm = () => {
                   <span className="label-text">License Pic</span>
                 </div>
               </label>
-              <input
+              {!licensePic &&(
+                <input
                 type="file"
                 id="licensepic"
                 placeholder="License Pic"
                 className="file-input file-input-bordered w-full col-span-2"
                 onChange={handleFileChange}
               />
-              {licensePic && (
-                <button
-                  onClick={handleRemoveImage}
-                  className="btn btn-error text-white ml-3"
-                >
-                  Remove Image
-                </button>
+              
               )}
+              {
+                licensePic &&(
+                   <div className='col-span-2 flex flex-row items-center'>
+                         <img className='col-span-2 max-w-96' src={`http://localhost:3000/uploads/licensePic/${licenseData.licensePic}`}/>
+                         
+                         <button onClick={handleRemoveImage} className="btn btn-error text-white ml-3 w-48">Remove Image</button>
+                   </div>
+                )
+              }
+             
             </div>
             <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-              Add License
+              Update License
             </button>
           {/* </div> */}
         </form>
@@ -160,7 +163,7 @@ const LicenseForm = () => {
         <button>close</button>
       </form>
     </dialog>
-  );
-};
+  )
+}
 
-export default LicenseForm;
+export default EditLicense
