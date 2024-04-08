@@ -4,11 +4,12 @@ import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
 import { Routes, Route, useNavigate } from "react-router-dom";
-const EventEdit = () => {
-  const [eventName, setEventName] = useState("");
-  const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
-  const [eventDetails, setEventDetails] = useState("");
+const EventEdit = ({eventData}) => {
+  const [eventId, setEventId] = useState(eventData.id);
+  const [eventName, setEventName] = useState(eventData.eventName);
+  const [location, setLocation] = useState(eventData.eventLocation);
+  const [date, setDate] = useState(eventData.eventDateTime);
+  const [eventDetails, setEventDetails] = useState(eventData.eventDesc);
   const [image, setImage] = useState(null);
 
   const handleSubmit = async (event) => {
@@ -19,6 +20,7 @@ const EventEdit = () => {
     if (image) {
       formData.append("eventPhoto", image);
     }
+    formData.append("eventId", eventId);
     formData.append("eventName", eventName);
     formData.append("eventLocation", location);
     formData.append("eventDesc", eventDetails);
@@ -28,8 +30,8 @@ const EventEdit = () => {
       console.log(value);
     }
     try {
-      const response = await fetch("http://localhost:3000/events/create", {
-        method: "POST",
+      const response = await fetch("http://localhost:3000/events/update", {
+        method: "PUT",
         body: formData,
       });
 
@@ -101,7 +103,17 @@ const EventEdit = () => {
 
 
   return (
+    <dialog id={eventData.id} className="modal">  
+   
+      <div className="modal-box w-11/12 max-w-5xl mt-10">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
         <form onSubmit={handleSubmit}>
+            {/* {console.log(eve)} */}
           <div>
             <div className="col-span-2">
               <label className="form-control w-full max-w-xs">
@@ -112,6 +124,7 @@ const EventEdit = () => {
 
               <input
                 type="text"
+                // ref={eventName}
                 id="eventName"
                 placeholder="Name of Event"
                 className="input input-bordered w-full col-span-2"
@@ -197,10 +210,17 @@ const EventEdit = () => {
               type="submit"
               className={`btn btn-primary w-40 mt-10 col-span-2`}
             >
-              Create Event
+              Update Event
             </button>
           </div>
         </form>
+      </div>
+
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+      
+    </dialog>
   )
 }
 
