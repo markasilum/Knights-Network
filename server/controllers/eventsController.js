@@ -56,7 +56,7 @@ const updateEvent = async (req, res) => {
         eventPhoto = req.file.filename
     }
 
-    const newEvent = await prisma.events.create({
+    const newEvent = await prisma.events.update({
       where:{
         id: eventId,
       },

@@ -38,11 +38,12 @@ const EventDetail = () => {
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
                 <div className="w-full flex flex-row justify-between">
                 <div className="font-semibold text-2xl">{eventData.eventName}</div>
-                {/* <Link to={"/event-edit"} state={eventData}>Edit</Link> */}
-                {/* <button className='font-thin underline' onClick={()=>document.getElementById(eventData.id).showModal()}>Edit</button> */}
+                <button className='font-thin underline' onClick={()=>document.getElementById(eventData.id).showModal()}>Edit</button>
                 </div>
                 {/* {console.log(eventData)} */}
-                {/* <EventEdit eventData={eventData}/> */}
+                {eventData &&(
+                  <EventEdit eventData={eventData}/>
+                ) }
 
                 
                 <div className="font-thin flex flex-col mt-3">
