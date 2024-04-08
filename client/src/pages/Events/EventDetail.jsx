@@ -3,9 +3,10 @@ import TopBar from "../../components/topbar";
 import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SideBar from "../../components/SideBar";
 import SidebarAdmin from "../../components/SidebarAdmin";
+import EventEdit from "./EventEdit";
 
 const EventDetail = () => {
   const [eventData, setEventData] = useState("");
@@ -35,7 +36,14 @@ const EventDetail = () => {
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className="pt-5 pr-5 pl-3 overflow-auto">
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
+                <div className="w-full flex flex-row justify-between">
                 <div className="font-semibold text-2xl">{eventData.eventName}</div>
+                {/* <Link to={"/event-edit"} state={eventData}>Edit</Link> */}
+                {/* <button className='font-thin underline' onClick={()=>document.getElementById(eventData.id).showModal()}>Edit</button> */}
+                </div>
+                {/* {console.log(eventData)} */}
+                {/* <EventEdit eventData={eventData}/> */}
+
                 
                 <div className="font-thin flex flex-col mt-3">
                 <p className="font-semibold">Event Details</p>
@@ -56,7 +64,7 @@ const EventDetail = () => {
                 <p className="font-semibold">Event Time</p>
                 <p className="font-thin">{eventData.eventDateTime}</p>
               </div>
-
+               
 
 
             </div>
