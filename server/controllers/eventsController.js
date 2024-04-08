@@ -90,7 +90,7 @@ const getEventDetails = async (req, res) => {
                 id: id 
             },
         });
-        // console.log(jobDetails)
+        console.log(eventDetails)
         res.json(eventDetails);
     } catch (error) {
         // If there's an error, send an error response

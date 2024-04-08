@@ -33,6 +33,7 @@ import SelectEditLicense from './pages/Edit-Credentials/SelectEditLicense';
 import SelectEditSkills from './pages/Edit-Credentials/SelectEditSkills';
 import SelectEditCerts from './pages/Edit-Credentials/SelectEditCerts';
 import EventsAll from './pages/Events/EventsAll';
+import EventEdit from './pages/Events/EventEdit';
 
 
 function App() {
@@ -69,6 +70,9 @@ function App() {
             <Route path='skills-edit' element={<SelectEditSkills/>}/>
             <Route path='certifications-edit' element={<SelectEditCerts/>}/>
             <Route path='/events' element={<EventsAll/>}/>
+            <Route path='/event-edit' element={<EventEdit/>}/>
+
+
           </Routes>
       </Router>
     </div>
