@@ -18,6 +18,7 @@ const eventController = require('../controllers/eventsController')
 
 router.get('/index', eventController.getEventsList)
 router.post('/create',upload.single("eventPhoto"), eventController.createEvent);
+router.put('/update',upload.single("eventPhoto"), eventController.updateEvent);
 router.get('/details', eventController.getEventDetails)
 
 

@@ -17,6 +17,8 @@ const getPersonExperience = async (req, res) => {
           personId:personId,
         },
       });
+
+      console.log(data)
   
       res.json(data);
       
