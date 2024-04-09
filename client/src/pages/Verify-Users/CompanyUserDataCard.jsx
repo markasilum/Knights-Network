@@ -1,50 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from 'react'
 import { useNavigate } from "react-router-dom";
 
-const PersonUserDataCard = ({ userData }) => {
-  const navigate = useNavigate();
+const CompanyUserDataCard = ({userData}) => {
+    const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    try {
-      const response = await fetch(`http://localhost:3000/user/verify?id=${userData.id}`, {
-        method: "GET",
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.error);
-      }else{
-        console.log("sucess")
-        
+    const handleSubmit = async (event) => {
+        try {
+          const response = await fetch(`http://localhost:3000/user/verify?id=${userData.id}`, {
+            method: "GET",
+          });
+    
+          const responseData = await response.json();
+    
+          if (!response.ok) {
+            throw new Error(responseData.error);
+          }
+        } catch (error) {
+          console.error("Error verifying user:", error);
+        }
+    
+        navigate(0)
       }
-    } catch (error) {
-      console.error("Error verifying user:", error);
-    }
-
-    navigate(0)
-  }
   return (
-    <div className="w-2/3 border-2 rounded-lg h-fit max-h-[90%] p-3 bg-neutral">
+    <div className="w-2/3 border-2 rounded-lg h-fit max-h-[90%] p-3">
       {/* {userData &&(
         console.log(userData.id)
       )} */}
       {userData &&
-        userData.person.map((person) => (
-          <div key={person.id}>
+        userData.company.map((company) => (
+          <div key={company.id}>
             <span className="font-semibold">
-              Full Name:{" "}
+              Company Name:{" "}
               <span className="font-normal">
-                {person.firstName} {person.middleName} {person.lastName}
+                {company.companyName}
               </span>
             </span>
-
-            {/* <span className="font-semibold">
-              Full Name:{" "}
-              <span className="font-normal">
-                {person.firstName} {person.middleName} {person.lastName}
-              </span>
-            </span> */}
           </div>
         ))}
 
@@ -72,13 +62,13 @@ const PersonUserDataCard = ({ userData }) => {
               <div className="bg-success h-fit justify-center flex p-3 rounded-lg w-32 text-white cursor-not-allowed">Verified</div>
             )}
             {userData.verified === false && (
-              <button className="btn btn-primary h-fit p-0 w-32" onClick={handleSubmit}>Verify User</button>
+              <button className="btn btn-primary w-32" onClick={handleSubmit}>Verify User</button>
             )}
           </div>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default PersonUserDataCard;
+export default CompanyUserDataCard

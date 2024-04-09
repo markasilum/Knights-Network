@@ -13,10 +13,6 @@ const CreateEvent = () => {
   const [eventDetails, setEventDetails] = useState("");
   const [image, setImage] = useState(null);
 
-  const navigateHome = () => {
-    // 👇️ navigate to /
-    navigate("/eventslist");
-  };
   const handleSubmit = async (event) => {
     // setIsSubmitting(true);
     // event.preventDefault();
@@ -43,11 +39,9 @@ const CreateEvent = () => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
-      } else {
-        navigateHome();
       }
 
-      const newArticleId = responseData.id;
+      navigate(0)
     } catch (error) {
       // setIsSubmitting(false);
       console.error("Error creating person:", error);
