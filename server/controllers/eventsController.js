@@ -47,6 +47,38 @@ const createEvent = async (req, res) => {
   }
 };
 
+const updateEvent = async (req, res) => {
+  try {
+    const { eventId, eventName, eventLocation, eventDesc, eventDateTime } = req.body;
+    let eventPhoto
+
+    if(req.file != null){
+        eventPhoto = req.file.filename
+    }
+
+    const newEvent = await prisma.events.update({
+      where:{
+        id: eventId,
+      },
+      data: {
+        eventName,
+        eventPhoto,
+        eventLocation,
+        eventDesc,
+        eventDateTime,
+      },
+    });
+
+    // Send a response with the newly created person
+    res.status(201).json(newEvent);
+    // console.log(newEducation);
+  } catch (error) {
+    console.error("Error updating event:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+    // console.log(req.body)
+  }
+};
+
 const getEventDetails = async (req, res) => {
     try {
         // Extract the query parameter 'ids' from the request
@@ -58,7 +90,7 @@ const getEventDetails = async (req, res) => {
                 id: id 
             },
         });
-        // console.log(jobDetails)
+        console.log(eventDetails)
         res.json(eventDetails);
     } catch (error) {
         // If there's an error, send an error response
@@ -71,5 +103,6 @@ const getEventDetails = async (req, res) => {
 module.exports = {
   getEventsList,
   createEvent,
-  getEventDetails
+  getEventDetails,
+  updateEvent,
 };
