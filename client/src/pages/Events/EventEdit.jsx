@@ -3,12 +3,16 @@ import TopBar from "../../components/topbar";
 import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
+import DatePicker from "react-datepicker";
 import { Routes, Route, useNavigate } from "react-router-dom";
-const EventEdit = ({eventData}) => {
+import "react-datepicker/dist/react-datepicker.css";
+import DateConverter from "../../components/DateConverter";
+
+const EventEdit = ({ eventData }) => {
   const [eventId, setEventId] = useState(eventData.id);
   const [eventName, setEventName] = useState(eventData.eventName);
   const [location, setLocation] = useState(eventData.eventLocation);
-  const [date, setDate] = useState(eventData.eventDateTime);
+  const [date, setDate] = useState(new Date(eventData.eventDateTime));
   const [eventDetails, setEventDetails] = useState(eventData.eventDesc);
   const [image, setImage] = useState(null);
 
@@ -101,10 +105,8 @@ const EventEdit = ({eventData}) => {
     setDate(end);
   };
 
-
   return (
-    <dialog id={eventData.id} className="modal">  
-   
+    <dialog id={eventData.id} className="modal">
       <div className="modal-box w-11/12 max-w-5xl mt-10">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
@@ -113,7 +115,7 @@ const EventEdit = ({eventData}) => {
           </button>
         </form>
         <form onSubmit={handleSubmit}>
-            {/* {console.log(eve)} */}
+          {/* {console.log(eve)} */}
           <div>
             <div className="col-span-2">
               <label className="form-control w-full max-w-xs">
@@ -153,8 +155,17 @@ const EventEdit = ({eventData}) => {
                 </div>
               </div>
 
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-semibold">
+                    Date and Time
+                  </span>
+                </div>
+              </label>
+
               <DateTime
                 id="date"
+                dateFormat="MM-DD-YYYY"
                 selected={date}
                 timeFormat={true}
                 onChange={handleDate}
@@ -162,11 +173,12 @@ const EventEdit = ({eventData}) => {
                   e.preventDefault();
                 }}
                 inputProps={{
-                  placeholder: "Date of Event",
+                  placeholder: date,
                   className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center mt-5",
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center placeholder-black",
                 }}
               />
+             
 
               <div>
                 <label className="form-control w-full max-w-xs">
@@ -219,9 +231,8 @@ const EventEdit = ({eventData}) => {
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
-      
     </dialog>
-  )
-}
+  );
+};
 
-export default EventEdit
+export default EventEdit;

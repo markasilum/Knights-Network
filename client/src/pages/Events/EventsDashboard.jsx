@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CreateEvent from './CreateEvent'
 import ButtonPrimary from '../../components/ButtonPrimary'
 import SidebarAdmin from '../../components/SidebarAdmin'
+import DateConverter from '../../components/DateConverter'
 
 const EventsDashboard = () => {
   const[eventsData,setEventsData] = useState([])
@@ -37,7 +38,7 @@ const EventsDashboard = () => {
                         <th>Event Name</th>
                         <th>Details</th>
                         <th>Partners</th>
-                        <th>Event Date</th>
+                        <th>Event Date and Time</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,7 +47,7 @@ const EventsDashboard = () => {
                             <td>{event.eventName}</td>
                             <td><Link className="underline" to={`/eventdetails/${event.id}`}>View Details</Link></td>
                             <td><Link className="underline" to={`/event/partners/${event.id}`}>View Partners</Link></td>
-                            <td><DateToWords dateString={event.eventDateTime}/></td>
+                            <td><DateConverter isoString={event.eventDateTime}/></td>
                         </tr>
                         ))}
                     </tbody>

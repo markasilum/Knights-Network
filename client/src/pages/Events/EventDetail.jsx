@@ -7,18 +7,25 @@ import { Link, useParams } from "react-router-dom";
 import SideBar from "../../components/SideBar";
 import SidebarAdmin from "../../components/SidebarAdmin";
 import EventEdit from "./EventEdit";
+import DateToWords from "../../components/DateFormatter";
+import DateConverter from "../../components/DateConverter";
 
 const EventDetail = () => {
   const [eventData, setEventData] = useState("");
+  const [date, setDate] = useState(new Date(eventData.eventDateTime));
+  const [date2, setDate2] = useState("");
+
   const { eventId } = useParams();
 
   useEffect(() => {
+   
     const fetchEventDetails = async () => {
       try {
         const response = await fetch(
           `http://localhost:3000/events/details?id=${eventId}`
         );
         const getEventRes = await response.json();
+        setDate(getEventRes.eventDateTime)
         setEventData(getEventRes);
         // console.log(getEducRes)
       } catch (error) {
@@ -27,6 +34,7 @@ const EventDetail = () => {
     };
 
     fetchEventDetails();
+    // setDate2(date.getFullYear())
   }, []);
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
@@ -63,7 +71,7 @@ const EventDetail = () => {
 
               <div className="mt-5">
                 <p className="font-semibold">Event Time</p>
-                <p className="font-thin">{eventData.eventDateTime}</p>
+                <span className="font-thin">{<DateConverter isoString={eventData.eventDateTime}/>}</span>
               </div>
                
 
