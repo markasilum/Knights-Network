@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TopBar from '../../components/topbar'
 import SidebarAdmin from '../../components/SidebarAdmin'
 import { Link } from 'react-router-dom';
-
-const VerifyUsers = () => {
+const VerifyStudents = () => {
     const [users, setUsers] = useState([]);
     const[userData, setUserData] = useState(null)
     
@@ -11,7 +10,7 @@ const VerifyUsers = () => {
 
     const fetchUsers = async () => {
         try {
-          const response = await fetch("http://localhost:3000/user/index/alumni");
+          const response = await fetch("http://localhost:3000/user/index/students");
           const getUsersResult = await response.json();
           setUserData(getUsersResult[0].user)
           setUsers(getUsersResult);
@@ -38,13 +37,13 @@ const VerifyUsers = () => {
           <div className="pt-3 pr-3 pl-1 overflow-x-auto">
             <div className="w-full bg-white h-screen min-h-80 mb-20 flex flex-col pl-3 pr-3 pb-3">
               <div className="h-fit p-2 flex gap-5">
-                <Link className="font-semibold text-accent" to={"/alumni"}>
+                <Link className="font-semibold " to={"/verify-users/alumni"}>
                   {"Alumni"}
                 </Link>
-                <Link className="font-semibold" to={"/students"}>
+                <Link className="font-semibold text-accent" to={"/verify-users/students"}>
                   {"Students"}
                 </Link>
-                <Link className="font-semibold" to={"/companies"}>
+                <Link className="font-semibold" to={"/verify-users/companies"}>
                   {"Companies"}
                 </Link>
               </div>
@@ -85,4 +84,4 @@ const VerifyUsers = () => {
   );
 }
 
-export default VerifyUsers
+export default VerifyStudents
