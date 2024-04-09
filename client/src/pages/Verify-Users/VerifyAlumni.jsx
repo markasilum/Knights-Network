@@ -3,7 +3,8 @@ import TopBar from '../../components/topbar'
 import SidebarAdmin from '../../components/SidebarAdmin'
 import { Link, useNavigate } from 'react-router-dom';
 import PersonUserDataCard from './PersonUserDataCard';
-const VerifyAlumni = () => {const [users, setUsers] = useState([]);
+const VerifyAlumni = () => {
+    const [users, setUsers] = useState([]);
     const[userData, setUserData] = useState(null)
     
     
@@ -31,13 +32,12 @@ const VerifyAlumni = () => {const [users, setUsers] = useState([]);
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      {/* {console.log(userData)} */}
       <TopBar />
       <div className="flex flex-row gap-2">
         <SidebarAdmin />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
-          <div className="pt-3 pr-3 pl-1 overflow-x-auto">
-            <div className="w-full bg-white h-screen min-h-80 mb-20 flex flex-col pl-3 pr-3  justify-between">
+          <div className="pt-3 pr-3 pl-1 h-full">
+            <div className="w-full bg-white h-[95%] min-h-80 mb-20 flex flex-col pl-3 pr-3  justify-between">
               <div className=' h-full'>
               <div className="h-fit p-2 flex gap-5">
                 <Link className="font-semibold text-accent" to={"/verify-users/alumni"}>{"Alumni"}</Link>
@@ -68,9 +68,6 @@ const VerifyAlumni = () => {const [users, setUsers] = useState([]);
 
               </div>
               </div>
-              {/* <div className="h-10 bg-white">
-
-              </div> */}
             </div>
           </div>
         </div>
