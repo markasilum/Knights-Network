@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import TopBar from '../../components/topbar'
 import SidebarAdmin from '../../components/SidebarAdmin'
 import { Link } from 'react-router-dom';
-
-const VerifyUsers = () => {
+import CompanyUserDataCard from './CompanyUserDataCard';
+const VerifyCompanies = () => {
+  
     const [users, setUsers] = useState([]);
     const[userData, setUserData] = useState(null)
     
@@ -11,7 +12,7 @@ const VerifyUsers = () => {
 
     const fetchUsers = async () => {
         try {
-          const response = await fetch("http://localhost:3000/user/index/alumni");
+          const response = await fetch("http://localhost:3000/user/index/companies");
           const getUsersResult = await response.json();
           setUserData(getUsersResult[0].user)
           setUsers(getUsersResult);
@@ -30,53 +31,42 @@ const VerifyUsers = () => {
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      {/* {console.log(userData)} */}
       <TopBar />
       <div className="flex flex-row gap-2">
         <SidebarAdmin />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
-          <div className="pt-3 pr-3 pl-1 overflow-x-auto">
-            <div className="w-full bg-white h-screen min-h-80 mb-20 flex flex-col pl-3 pr-3 pb-3">
+          <div className="pt-3 pr-3 pl-1 h-full">
+            <div className="w-full bg-white h-[95%] min-h-80 mb-20 flex flex-col pl-3 pr-3  justify-between">
+              <div className=' h-full'>
               <div className="h-fit p-2 flex gap-5">
-                <Link className="font-semibold text-accent" to={"/alumni"}>
-                  {"Alumni"}
-                </Link>
-                <Link className="font-semibold" to={"/students"}>
-                  {"Students"}
-                </Link>
-                <Link className="font-semibold" to={"/companies"}>
-                  {"Companies"}
-                </Link>
+                <Link className="font-semibold " to={"/verify-users/alumni"}>{"Alumni"}</Link>
+                <Link className="font-semibold" to={"/verify-users/students"}>{"Students"}</Link>
+                <Link className="font-semibold text-accent" to={"/verify-users/companies"}>{"Companies"}</Link>
               </div>
 
-              <div className='flex flex-row'>
+              <div className='flex flex-row h-full'>
                 <div className="flex flex-col w-1/3">
                     {users &&
-                    users.map((alumni) => (
+                    users.map((company) => (
                         <button
-                        key={alumni.id}
+                        key={company.id}
                         className="border-t border-solid border-info p-2 w-full bg-white text-left hover:bg-neutral "
-                        onClick={() => handleClick(alumni.user)}
+                        onClick={() => handleClick(company.user)}
                         >
-                        {alumni.user.person.map(
-                            (person) =>
-                            `${person.firstName} ${person.middleName} ${person.lastName}`
+                        {company.user.company.map(
+                            (company) =>
+                            `${company.companyName}`
                         )}
                         </button>
                     ))}
                 </div>
-                <div className="divider divider-horizontal"></div>
-                <div className='w-2/3 border-2 rounded-lg min-h-96 p-3'>
-                    {userData&&(
-                       <div>{ userData.username}</div>
-                    )}
+                <div className="divider divider-horizontal h-[90%]"></div>
 
-                </div>
+                <CompanyUserDataCard userData={userData}/>
+
 
               </div>
-
-              
-
+              </div>
             </div>
           </div>
         </div>
@@ -85,4 +75,4 @@ const VerifyUsers = () => {
   );
 }
 
-export default VerifyUsers
+export default VerifyCompanies

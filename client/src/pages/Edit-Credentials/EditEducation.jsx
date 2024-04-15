@@ -15,7 +15,7 @@ const EditEducation = ({educationData, degreeData}) => {
   const handleSubmit = async (event) => {
     // event.preventDefault();
 
-    console.log(startDate);
+    // console.log(startDate);
 
     const formData = new FormData();
 
