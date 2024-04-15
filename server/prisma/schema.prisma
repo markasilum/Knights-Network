@@ -175,7 +175,6 @@ model Industry {
 }
 
 //Job Posting Module Tables
-
 model JobPost {
   id                String              @id @default(uuid())
   company           Company             @relation(fields: [companyId], references: [id])
@@ -212,6 +211,7 @@ model ApplicationLetter {
 model Application {
   id        String  @id @default(uuid())
   dateCreated  DateTime   @default(now())
+  isAccepted Boolean
   person    Person  @relation(fields: [personId], references: [id])
   personId  String
   jobPost   JobPost @relation(fields: [jobPostId], references: [id])

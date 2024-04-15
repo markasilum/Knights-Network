@@ -2,25 +2,56 @@ import React, { useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
 import ButtonNavigator from "../../components/ButtonNavigator";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, useNavigate} from "react-router-dom";
 import DateToWords from "../../components/DateFormatter";
 
 const JobPostsDashboard = () => {
+  const navigate = useNavigate();
  const[jobPostData,setJobPostData] = useState([])
 
+ const fetchCompanyJobPost = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/jobpost/company/index");
+    const getJobRes = await response.json();
+    setJobPostData(getJobRes);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 
  useEffect(()=>{
-    const fetchCompanyJobPost = async () => {
-        try {
-          const response = await fetch("http://localhost:3000/jobpost/company/index");
-          const getJobRes = await response.json();
-          setJobPostData(getJobRes);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchCompanyJobPost()
+      fetchCompanyJobPost()  
  },[])
+
+
+ const handleStatusChange = async (jobId, status) => {
+
+  const formData = new FormData();
+
+  formData.append('id', jobId)
+  formData.append('isOpen', status)
+
+   try {
+    const response = await fetch('http://localhost:3000/jobpost/set-status', {
+        method: 'POST',
+        body: formData
+      });
+
+      fetchCompanyJobPost()  
+
+   } catch (error) {
+    console.error('Error updating status:', error);
+
+    
+   }
+ 
+ 
+
+ }
+
+ 
+
+ //get request with parameter 
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
@@ -46,7 +77,7 @@ const JobPostsDashboard = () => {
                         <tr key={job.id} className='p-2  w-full align-center hover'>
                             <td>{job.jobTitle}</td>
                             <td>0</td>
-                            <td><input type="checkbox" className="toggle toggle-success"/></td>
+                            <td> <input type="checkbox" className="toggle toggle-success" checked={job.isOpen} onChange={(e) => {handleStatusChange(job.id, !job.isOpen)}}/></td>
                             <td><Link className="underline" to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
                             <td><DateToWords dateString={job.dateCreated}/></td>
                         </tr>
