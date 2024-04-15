@@ -26,7 +26,108 @@ const role = async (req, res) => {
     res.json(data);
   }
 
+  const userIndexAlumni =  async (req, res) => {
+    try {
+      const data = await prisma.roles.findMany({
+        where:{
+          roleName: "alumni"
+        },
+        include:{
+          user:{
+            include:{
+              person: {
+                include: {
+                  verifiReq: true
+                }
+              }
+            }
+          }
+        }
+      });
+      res.status(201).json(data);
+      // console.log(data)
+      
+    } catch (error) {
+      console.error("Error getting alumni index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  const userIndexStudents =  async (req, res) => {
+    try {
+      const data = await prisma.roles.findMany({
+        where:{
+          roleName: "student"
+        },
+        include:{
+          user:{
+            include:{
+              person: true
+            }
+          }
+        }
+      });
+      res.status(201).json(data);
+      // console.log(data)
+      
+    } catch (error) {
+      console.error("Error getting student index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  const userIndexCompany =  async (req, res) => {
+    try {
+      const data = await prisma.roles.findMany({
+        where:{
+          roleName: "company"
+        },
+        include:{
+          user:{
+            include:{
+              company: true
+            }
+          }
+        }
+      });
+      res.status(201).json(data);
+      // console.log(data)
+      
+    } catch (error) {
+      console.error("Error getting company index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  const verifyUser =  async (req, res) => {
+    console.log(req.query)
+    try {
+      const { id } = req.query;
+      const data = await prisma.user.update({
+        where:{
+          id: id
+        },
+        data:{
+          verified: true
+        }
+      });
+      res.status(201).json(data);
+      
+      
+    } catch (error) {
+      console.error("Error getting company index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+
+
+
 module.exports ={
     role,
-    userDetails
+    userDetails,
+    userIndexAlumni,
+    userIndexStudents,
+    userIndexCompany,
+    verifyUser,
 }

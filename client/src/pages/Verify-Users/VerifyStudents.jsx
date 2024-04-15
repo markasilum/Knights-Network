@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import TopBar from '../../components/topbar'
 import SidebarAdmin from '../../components/SidebarAdmin'
 import { Link } from 'react-router-dom';
-
-const VerifyUsers = () => {
+import PersonUserDataCard from './PersonUserDataCard';
+const VerifyStudents = () => {
     const [users, setUsers] = useState([]);
     const[userData, setUserData] = useState(null)
     
@@ -35,21 +35,16 @@ const VerifyUsers = () => {
       <div className="flex flex-row gap-2">
         <SidebarAdmin />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
-          <div className="pt-3 pr-3 pl-1 overflow-x-auto">
-            <div className="w-full bg-white h-screen min-h-80 mb-20 flex flex-col pl-3 pr-3 pb-3">
+          <div className="pt-3 pr-3 pl-1 h-full">
+            <div className="w-full bg-white h-[95%] min-h-80 mb-20 flex flex-col pl-3 pr-3  justify-between">
+              <div className=' h-full'>
               <div className="h-fit p-2 flex gap-5">
-                <Link className="font-semibold text-accent" to={"/alumni"}>
-                  {"Alumni"}
-                </Link>
-                <Link className="font-semibold" to={"/students"}>
-                  {"Students"}
-                </Link>
-                <Link className="font-semibold" to={"/companies"}>
-                  {"Companies"}
-                </Link>
+                <Link className="font-semibold" to={"/verify-users/alumni"}>{"Alumni"}</Link>
+                <Link className="font-semibold text-accent" to={"/verify-users/students"}>{"Students"}</Link>
+                <Link className="font-semibold" to={"/verify-users/companies"}>{"Companies"}</Link>
               </div>
 
-              <div className='flex flex-row'>
+              <div className='flex flex-row h-full'>
                 <div className="flex flex-col w-1/3">
                     {users &&
                     users.map((alumni) => (
@@ -65,18 +60,14 @@ const VerifyUsers = () => {
                         </button>
                     ))}
                 </div>
-                <div className="divider divider-horizontal"></div>
-                <div className='w-2/3 border-2 rounded-lg min-h-96 p-3'>
-                    {userData&&(
-                       <div>{ userData.username}</div>
-                    )}
+                <div className="divider divider-horizontal h-[90%]"></div>
 
-                </div>
+                <PersonUserDataCard userData={userData}/>
+          
+
 
               </div>
-
-              
-
+              </div>
             </div>
           </div>
         </div>
@@ -85,4 +76,4 @@ const VerifyUsers = () => {
   );
 }
 
-export default VerifyUsers
+export default VerifyStudents

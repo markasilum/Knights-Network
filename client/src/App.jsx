@@ -34,6 +34,10 @@ import SelectEditSkills from './pages/Edit-Credentials/SelectEditSkills';
 import SelectEditCerts from './pages/Edit-Credentials/SelectEditCerts';
 import EventsAll from './pages/Events/EventsAll';
 import EventEdit from './pages/Events/EventEdit';
+import VerifyUsers from './pages/Verify-Users/VerifyUsers';
+import VerifyAlumni from './pages/Verify-Users/VerifyAlumni';
+import VerifyStudents from './pages/Verify-Users/VerifyStudents';
+import VerifyCompanies from './pages/Verify-Users/VerifyCompanies';
 
 
 function App() {
@@ -71,6 +75,9 @@ function App() {
             <Route path='certifications-edit' element={<SelectEditCerts/>}/>
             <Route path='/events' element={<EventsAll/>}/>
             <Route path='/event-edit' element={<EventEdit/>}/>
+            <Route path='/verify-users/alumni' element={<VerifyAlumni/>}/>
+            <Route path='/verify-users/students' element={<VerifyStudents/>}/>
+            <Route path='/verify-users/companies' element={<VerifyCompanies/>}/>
 
 
           </Routes>

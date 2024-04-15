@@ -7,8 +7,8 @@ import DatePicker from "react-datepicker";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import DateConverter from "../../components/DateConverter";
-
 const EventEdit = ({ eventData }) => {
+  const navigate = useNavigate();
   const [eventId, setEventId] = useState(eventData.id);
   const [eventName, setEventName] = useState(eventData.eventName);
   const [location, setLocation] = useState(eventData.eventLocation);
@@ -43,11 +43,9 @@ const EventEdit = ({ eventData }) => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
-      } else {
-        navigateHome();
       }
-
-      const newArticleId = responseData.id;
+      
+      navigate(0)
     } catch (error) {
       // setIsSubmitting(false);
       console.error("Error creating person:", error);
