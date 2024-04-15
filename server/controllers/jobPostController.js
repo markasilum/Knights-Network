@@ -42,6 +42,37 @@ const jobPostIndex = async (req, res) => {
   
   }
 
+const updateJobPostStatus = async (req, res) =>{
+  try {
+    let{id, isOpen} = req.body
+
+    let booleanValue
+
+    if (isOpen == 'true') {
+        booleanValue = true;
+    } else  if (isOpen == 'false') {
+        booleanValue = false;
+    } 
+
+    console.log(id, booleanValue)
+
+
+    const data = await prisma.jobPost.update({
+      where:{
+        id: id
+      },
+      data:{
+        isOpen: booleanValue
+      }
+    })
+
+    res.status(201).json(data);
+  } catch (error) {
+    console.error("Error updating job post status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 const companyJobPostIndex = async (req, res) => {
     try {
       const data = await prisma.jobPost.findMany({
@@ -273,5 +304,6 @@ module.exports = {
     getJobDetails,
     jobReqSkill,
     jobReqLicense,
-    jobReqDegree
+    jobReqDegree,
+    updateJobPostStatus
 }
