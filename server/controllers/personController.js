@@ -10,7 +10,7 @@ let personUserId2 = "bdb007b8-917f-4c93-ac85-2186970525d7";
 const getPersonDetails = async (req, res) => {
   const data = await prisma.person.findUnique({
     where: {
-      id: personId,
+      id: personId2,
     },
   });
   res.json(data);

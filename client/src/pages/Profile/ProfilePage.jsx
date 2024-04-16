@@ -88,6 +88,7 @@ import SideBar from "../../components/SideBar";
 
   return (
     <div className='w-9/12 bg-neutral  h-screen flex flex-col shadow-xl' >
+      {console.log(userData)}
       <TopBar/>
         
       <div className='flex flex-row gap-2'>

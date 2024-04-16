@@ -22,6 +22,10 @@ const role = async (req, res) => {
       where: {
         id: userId,
       },
+      include:{
+        person: {},
+        company: true,
+      }
     });
     res.json(data);
   }

@@ -211,7 +211,7 @@ model ApplicationLetter {
 model Application {
   id        String  @id @default(uuid())
   dateCreated  DateTime   @default(now())
-  isAccepted Boolean
+  status String
   person    Person  @relation(fields: [personId], references: [id])
   personId  String
   jobPost   JobPost @relation(fields: [jobPostId], references: [id])
