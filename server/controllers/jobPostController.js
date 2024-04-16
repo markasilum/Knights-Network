@@ -79,6 +79,9 @@ const companyJobPostIndex = async (req, res) => {
         where: {
           companyId: companyId,
         },
+        include:{
+          application: true
+        }
       });
       res.json(data);
     } catch (error) {
