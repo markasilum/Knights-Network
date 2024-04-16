@@ -15,6 +15,38 @@ const getPersonDetails = async (req, res) => {
   });
   res.json(data);
 };
+const getPersonCredentials = async (req, res) => {
+  const { id } = req.query;
+
+  // console.log(id)
+
+  const data = await prisma.person.findUnique({
+    where: {
+      id: id,
+    },
+    include:{
+      user: true,
+      education: {
+        include:{
+          degree: true
+        }
+      },
+      experience: true,
+      certification:true,
+      skills: {
+        include:{
+          skill: true
+        }
+      },
+      personLicense: {
+        include:{
+          license:true
+        }
+      }
+    }
+  });
+  res.json(data);
+};
 
 const createPerson = async (req, res) => {
   try {
@@ -159,4 +191,5 @@ module.exports = {
   getPersonDetails,
   createPerson,
   updatePerson,
+  getPersonCredentials,
 };

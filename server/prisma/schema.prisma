@@ -24,8 +24,8 @@ model User{
   biography         String @db.Text
   verified          Boolean
   role Roles?
-  person Person[]
-  company Company[]
+  person Person?
+  company Company?
 }
 
 
@@ -33,7 +33,7 @@ model User{
 model Person {
   id                String                  @id @default(uuid())
   user     User   @relation(fields: [userId], references: [id])
-  userId   String
+  userId   String @unique
   firstName         String
   middleName        String
   lastName          String
@@ -44,7 +44,7 @@ model Person {
   supervison Supervisor[]
   education         Education[]
   experience        Experience[]
-  certificaiton     Certification[]
+  certification     Certification[]
   verifiReq         PersonVerificationReqs?
   skills            PersonSkill[]
   personLicense     PersonLicense[]
@@ -142,7 +142,7 @@ model Roles {
 model Company {
   id            String                   @id @default(uuid())
   user     User   @relation(fields: [userId], references: [id])
-  userId   String
+  userId   String @unique
   companyName   String
   companySize   String
   verifiReq     CompanyVerificationReqs?

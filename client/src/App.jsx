@@ -19,7 +19,7 @@ import SkillsForm from './pages/Create-Credentials/SkillsForm';
 import CertificationsForm from './pages/Create-Credentials/CertificationsForm';
 import ProfilePage from './pages/Profile/ProfilePage';
 import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboard';
-import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
+import JobPostDetails from './pages/JobPosts/JobPostDetails';
 import Homepage from './pages/Homepage/Homepage';
 import ApplicationDashboard from './pages/Applications-Dashboard/ApplicationDashboard';
 import ResumeCard from './components/resumeCard';
@@ -38,6 +38,8 @@ import VerifyUsers from './pages/Verify-Users/VerifyUsers';
 import VerifyAlumni from './pages/Verify-Users/VerifyAlumni';
 import VerifyStudents from './pages/Verify-Users/VerifyStudents';
 import VerifyCompanies from './pages/Verify-Users/VerifyCompanies';
+import JobPostApplicants from './pages/JobPosts/JobPostApplicants';
+import ResumeView from './components/ResumeView';
 
 function App() {
 
@@ -60,25 +62,25 @@ function App() {
             <Route path="/licenseform" element={<LicenseForm/>}/>
             <Route path="/skillsform" element={<SkillsForm/>}/>
             <Route path="/certificationform" element={<CertificationsForm/>}/>
-            <Route path='/jobpostdashboard' element={<JobPostsDashboard/>}/>
+            <Route path='/jobpost/dashboard' element={<JobPostsDashboard/>}/>
             <Route path='/resume' element={<ResumeCard/>}/>
             <Route path='/jobpostdetails/:jobPostId' element={<JobPostDetails/>}/>
             <Route path='/eventdetails/:eventId' element={<EventDetail/>}/>
             <Route path='/eventslist' element={<EventsDashboard/>}/>
             <Route path='/createevent' element={<CreateEvent/>}/>
             <Route path='/edit-education' element={<EditEducation/>}/>
-            <Route path='education-edit' element={<SelectEditEduc/>}/>
-            <Route path='experience-edit' element={<SelectEditExperience/>}/>
-            <Route path='license-edit' element={<SelectEditLicense/>}/>
-            <Route path='skills-edit' element={<SelectEditSkills/>}/>
-            <Route path='certifications-edit' element={<SelectEditCerts/>}/>
+            <Route path='/education-edit' element={<SelectEditEduc/>}/>
+            <Route path='/experience-edit' element={<SelectEditExperience/>}/>
+            <Route path='/license-edit' element={<SelectEditLicense/>}/>
+            <Route path='/skills-edit' element={<SelectEditSkills/>}/>
+            <Route path='/certifications-edit' element={<SelectEditCerts/>}/>
             <Route path='/events' element={<EventsAll/>}/>
             <Route path='/event-edit' element={<EventEdit/>}/>
             <Route path='/verify-users/alumni' element={<VerifyAlumni/>}/>
             <Route path='/verify-users/students' element={<VerifyStudents/>}/>
             <Route path='/verify-users/companies' element={<VerifyCompanies/>}/>
-
-
+            <Route path='/jobpost/applicants/:jobPostId' element={<JobPostApplicants/>}/>
+            <Route path='/jobpost/applicants/resume/:personId' element={<ResumeView/>}/>
           </Routes>
       </Router>
     </div>

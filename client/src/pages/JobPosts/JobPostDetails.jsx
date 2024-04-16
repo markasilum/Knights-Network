@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
-import {
-  BrowserRouter as Router,
-  Link,
-  Route,
-  Routes,
-  useParams,
-} from "react-router-dom";
+import {useParams} from "react-router-dom";
+
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonSuccess from "../../components/ButtonSuccess";
 const JobPostDetails = () => {
