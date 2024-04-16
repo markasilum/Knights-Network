@@ -223,6 +223,34 @@ const companyJobPostIndex = async (req, res) => {
     }
   }
 
+  const getJobApplicants = async (req, res) => {
+    try {
+        // Extract the query parameter 'ids' from the request
+        const { id } = req.query;
+        // console.log(id)
+        // Query the database using Prisma to fetch job post by their IDs
+        const jobDetails = await prisma.jobPost.findUnique({
+            where: {
+                id: id 
+            },
+            include:{
+              company: true,
+              application:{
+                include:{
+                  person: true
+                }
+              }
+            }
+        });
+        // console.log(jobDetails)
+        res.json(jobDetails);
+    } catch (error) {
+        // If there's an error, send an error response
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
   const jobReqSkill = async (req, res) => {
     try {
         const { id } = req.query;
@@ -308,5 +336,6 @@ module.exports = {
     jobReqSkill,
     jobReqLicense,
     jobReqDegree,
-    updateJobPostStatus
+    updateJobPostStatus,
+    getJobApplicants
 }

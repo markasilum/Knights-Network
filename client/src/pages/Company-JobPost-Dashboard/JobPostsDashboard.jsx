@@ -55,9 +55,9 @@ const JobPostsDashboard = () => {
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      {jobPostData&&(
+      {/* {jobPostData&&(
         console.log(jobPostData)
-      )}
+      )} */}
       <TopBar />
 
       <div className="flex flex-row gap-2">
@@ -79,9 +79,9 @@ const JobPostsDashboard = () => {
                         {jobPostData.map((job)=>(
                         <tr key={job.id} className='p-2  w-full align-center hover'>
                             <td>{job.jobTitle}</td>
-                            <td>{job.application.length}</td>
+                            <td><Link className="underline" to={`/jobpost/applicants/${job.id}`}>{job.application.length}</Link></td>
                             <td> <input type="checkbox" className="toggle toggle-success" checked={job.isOpen} onChange={(e) => {handleStatusChange(job.id, !job.isOpen)}}/></td>
-                            <td><Link className="underline" to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
+                            <td><Link to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
                             <td><DateToWords dateString={job.dateCreated}/></td>
                         </tr>
                         ))}
