@@ -106,8 +106,30 @@ const apply = async (req, res) => {
   
     }
   }
+
+  const setStatus = async (req, res) => {
+    console.log(req.body)
+    try{    
+      const {id, status} = req.body
+      const data = await prisma.application.update({
+        where:{
+          id: id,
+        },data:{
+          status: status
+        }
+      });
+      
+      res.status(201).json(data);
+    }catch(error){
+      console.error('Error getting application:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      console.log(req.body)
+  
+    }
+  }
 module.exports ={
-apply,
-getListOfApplications,
-checkIfApplied
+  apply,
+  getListOfApplications,
+  checkIfApplied,
+  setStatus
 }

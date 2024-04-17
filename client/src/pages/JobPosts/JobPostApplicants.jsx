@@ -6,25 +6,48 @@ const JobPostApplicants = () => {
   const { jobPostId } = useParams();
   const [jobData, setJobData] = useState([]);
 
+  const fetchJobPostApplicants = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/applicants?id=${jobPostId}`
+      );
+      const getJobRes = await response.json();
+      setJobData(getJobRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchJobPostApplicants = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/applicants?id=${jobPostId}`
-        );
-        const getJobRes = await response.json();
-        setJobData(getJobRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchJobPostApplicants();
   }, []);
 
+  const handleStatusChange = async (appId, status) => {
+    // console.log(appId+ " "+status)
+
+    const formData = new FormData();
+
+    formData.append("id", appId);
+    formData.append("status", status);
+
+    try {
+      const response = await fetch(
+        "http://localhost:3000/application/set-status",
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      {console.log(jobData)}
+      {/* {console.log(jobData)} */}
       <TopBar />
 
       <div className="flex flex-row gap-2">
@@ -55,16 +78,49 @@ const JobPostApplicants = () => {
                               {applicant.person.middleName}{" "}
                               {applicant.person.lastName}
                             </div>
-                            <select
-                              className="select select-bordered select-xs w-24 mt-2 max-w-xs"
-                              defaultValue={applicant.status}
-                            >
-                              <option disabled value={applicant.status}>{applicant.status}</option>
-                              {applicant.status === "pending"&&(
-                                <option value="accepted">accepted</option>
+                            <div className="flex flex-row gap-3 items-center">
+                              <div className="font-thin">Status: </div>
+                              {applicant.status == "pending" && (
+                                <select
+                                  className="select select-bordered select-xs w-24 mt-2 max-w-xs font-thin"
+                                  defaultValue={applicant.status}
+                                  onChange={(e) => {
+                                    handleStatusChange(
+                                      applicant.id,
+                                      e.target.value
+                                    );
+                                  }}
+                                >
+                                  <option value={applicant.status}>
+                                    {applicant.status}
+                                  </option>
+                                  <option value="accepted">accepted</option>
+                                  <option value="rejected">rejected</option>
+                                </select>
                               )}
-                              <option value="rejected">rejected</option>
-                            </select>
+                              {applicant.status != "pending" && (
+                                <select
+                                  className="select select-bordered select-xs w-24 mt-2 max-w-xs font-thin"
+                                  defaultValue={applicant.status}
+                                  onChange={(e) => {
+                                    handleStatusChange(
+                                      applicant.id,
+                                      e.target.value
+                                    );
+                                  }}
+                                >
+                                  <option value={applicant.status}>
+                                    {applicant.status}
+                                  </option>
+                                  {applicant.status == "accepted"&&(
+                                    <option value="rejected">rejected</option>
+                                  )}
+                                  {applicant.status == "rejected"&&(
+                                    <option value="accepted">accepted</option>
+                                  )}
+                                </select>
+                              )}
+                            </div>
                           </div>
                           <div className="h-full flex items-center">
                             <Link
@@ -76,22 +132,29 @@ const JobPostApplicants = () => {
                           </div>
                         </div>
                       ))}
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
-                    <div>data</div>
+                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
+                      data
+                    </div>
+                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
+                      data
+                    </div>
+                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
+                      data
+                    </div>
+                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
+                      data
+                    </div>
+                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
+                      data
+                    </div>
+                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
+                      data
+                    </div>
                   </div>
                 </div>
 
                 <div className="w-full h-full ">
-                  <h1 className="h-5 font-semibold text-lg">Recommended</h1>
+                  <h1 className="h-5 font-semibold text-lg mb-3">Recommended</h1>
                   <div className="flex flex-col gap-3 h-full max-h-[150%] overflow-scroll">
                     <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
                       data
