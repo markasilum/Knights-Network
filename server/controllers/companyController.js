@@ -67,6 +67,7 @@ const getCompanyDetails = async (req, res) => {
 
   const updateCompany = async (req, res) => {
     //to do: include id in the request body
+    console.log(req.file)
     try {
       // Extract data from the request body
       const {
@@ -82,7 +83,11 @@ const getCompanyDetails = async (req, res) => {
         emailAddress,
         biography,
       } = req.body;
-      // Construct the full street address
+
+      let profPic
+      if(req.file != null){
+        profPic = req.file.filename;
+      }
   
       const updateUser = await prisma.user.update({
         where: {
@@ -97,6 +102,7 @@ const getCompanyDetails = async (req, res) => {
           countryName,
           emailAddress,
           contactNum,
+          profPic,
           biography,
           company: {
             update: {
@@ -120,7 +126,6 @@ const getCompanyDetails = async (req, res) => {
     } catch (error) {
       console.error("Error creating person:", error);
       res.status(500).json({ error: "Internal Server Error" });
-      console.log(req.body);
     }
   }
 module.exports = {
