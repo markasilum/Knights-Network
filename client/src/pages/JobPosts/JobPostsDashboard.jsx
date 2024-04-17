@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
 import ButtonNavigator from "../../components/ButtonNavigator";
-import { BrowserRouter as Router, Route, Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import DateToWords from "../../components/DateFormatter";
 
 const JobPostsDashboard = () => {
-  const navigate = useNavigate();
  const[jobPostData,setJobPostData] = useState([])
 
  const fetchCompanyJobPost = async () => {
@@ -41,12 +40,7 @@ const JobPostsDashboard = () => {
 
    } catch (error) {
     console.error('Error updating status:', error);
-
-    
    }
- 
- 
-
  }
 
  
@@ -79,9 +73,9 @@ const JobPostsDashboard = () => {
                         {jobPostData.map((job)=>(
                         <tr key={job.id} className='p-2  w-full align-center hover'>
                             <td>{job.jobTitle}</td>
-                            <td><Link className="underline" to={`/jobpost/applicants/${job.id}`}>{job.application.length}</Link></td>
+                            <td className=""><Link className="underline" to={`/jobpost/applicants/${job.id}`}>{job.application.length}</Link></td>
                             <td> <input type="checkbox" className="toggle toggle-success" checked={job.isOpen} onChange={(e) => {handleStatusChange(job.id, !job.isOpen)}}/></td>
-                            <td><Link to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
+                            <td><Link className="underline" to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
                             <td><DateToWords dateString={job.dateCreated}/></td>
                         </tr>
                         ))}
