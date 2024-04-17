@@ -99,6 +99,11 @@ import SideBar from "../../components/SideBar";
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
 
+            {/* <div className="avatar">
+              <div className="w-24 rounded">
+                <img src={`http://localhost:3000/uploads/profPic/${userData.profPic}`} />
+              </div>
+            </div> */}
             <div className="avatar">
               <div className="w-24 rounded">
                 <img src={`http://localhost:3000/uploads/profPic/${userData.profPic}`} />

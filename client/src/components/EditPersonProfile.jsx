@@ -165,47 +165,6 @@ const EditPersonProfile = () => {
       document.getElementById('fileInput').value = "";
     };
   
-    const handleFileChangeId = (event) => {
-      const file = event.target.files[0];
-    
-      // Function to reset file input
-      const resetFileInput = () => {
-        event.target.value = null; // This clears the selected file
-        setImage(null);
-        setImagePreviewUrl(null); // Clear the image preview URL
-      };
-    
-      // Check if file is selected
-      if (!file) {
-        resetFileInput();
-        return;
-      }
-    
-      // Check the file type
-      const validTypes = ['image/jpeg', 'image/png'];
-      if (!validTypes.includes(file.type)) {
-        setToastMessage('Please upload an image in JPG or PNG format.');
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-        resetFileInput();
-        return;
-      }
-    
-      // Check the file size (3 MB in bytes)
-      const maxSize = 3 * 1024 * 1024;
-      if (file.size > maxSize) {
-        setToastMessage('File size should be less than 3 MB.');
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-        resetFileInput();
-        return;
-      }
-    
-      // If file is valid, update the image state and set image preview URL
-      setImage(file);
-    };
-  
-   
     return (
       <div className='w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto'>
         <TopBar/>

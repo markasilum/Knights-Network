@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SidebarButton from "./SidebarButton";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import CreateAccount from "../pages/Create-Account/CreateAccount";
@@ -8,27 +8,11 @@ import FeedIcon from '@mui/icons-material/Feed';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import EventIcon from '@mui/icons-material/Event';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { RoleContext } from "../App";
 const SideBar = () => {
-  const [role, setUserRole] = useState([]);
+  
+  const {role} = useContext(RoleContext)
   let userSideBar
-
-
-  useEffect(()=>{
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/user/role");
-        const getUserResult = await response.json();
-        setUserRole(getUserResult);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-
-    };
-    fetchUserRole();
-
-
-  },[])
-
 
   const companySidebar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">

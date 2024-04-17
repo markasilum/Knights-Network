@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
@@ -9,12 +9,14 @@ import SidebarAdmin from "../../components/SidebarAdmin";
 import EventEdit from "./EventEdit";
 import DateToWords from "../../components/DateFormatter";
 import DateConverter from "../../components/DateConverter";
+import { RoleContext } from "../../App";
 
 const EventDetail = () => {
   const [eventData, setEventData] = useState("");
   const [date, setDate] = useState(new Date(eventData.eventDateTime));
   const [date2, setDate2] = useState("");
 
+  const{role} = useContext(RoleContext)
   const { eventId } = useParams();
 
   useEffect(() => {
@@ -46,7 +48,9 @@ const EventDetail = () => {
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
                 <div className="w-full flex flex-row justify-between">
                 <div className="font-semibold text-2xl">{eventData.eventName}</div>
-                <button className='font-thin underline' onClick={()=>document.getElementById(eventData.id).showModal()}>Edit</button>
+                {role.roleName=="admin"&&(
+                    <button className='font-thin underline' onClick={()=>document.getElementById(eventData.id).showModal()}>Edit</button>
+                )}
                 </div>
                 {/* {console.log(eventData)} */}
                 {eventData &&(

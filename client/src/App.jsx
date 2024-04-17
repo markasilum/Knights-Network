@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import './App.css'
 import {
   BrowserRouter as Router,
@@ -11,7 +11,7 @@ import EditAccount from './pages/Edit-Account/EditAccount';
 import LoginScreen from './pages/Login/LoginScreen';
 import CreateCompany from './pages/Create-Account/CreateCompany';
 import EditCompanyProfile from './pages/Edit-Account/EditCompanyProfile';
-import CreateJobPost from './pages/Create-Job-Post/CreateJobPost';
+import CreateJobPost from './pages/JobPosts/CreateJobPost';
 import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
 import ExperienceForm from './pages/Create-Credentials/ExperienceForm';
 import LicenseForm from './pages/Create-Credentials/LicenseForm';
@@ -41,11 +41,29 @@ import VerifyCompanies from './pages/Verify-Users/VerifyCompanies';
 import JobPostApplicants from './pages/JobPosts/JobPostApplicants';
 import ResumeView from './components/ResumeView';
 
+export const RoleContext = createContext();
 function App() {
+
+  const [role, setUserRole] = useState({});
+  
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/user/role");
+        const getUserResult = await response.json();
+        setUserRole(getUserResult);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchUserRole();
+  }, []);
 
   return (
     <div className='className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	'>
       <Router>
+      <RoleContext.Provider value={{ role }}>
           <Routes>
             <Route index element={<ProfilePage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
@@ -82,6 +100,7 @@ function App() {
             <Route path='/jobpost/applicants/:jobPostId' element={<JobPostApplicants/>}/>
             <Route path='/jobpost/applicants/resume/:personId' element={<ResumeView/>}/>
           </Routes>
+          </RoleContext.Provider>
       </Router>
     </div>
   )
