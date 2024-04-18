@@ -10,8 +10,10 @@ import EventEdit from "./EventEdit";
 import DateToWords from "../../components/DateFormatter";
 import DateConverter from "../../components/DateConverter";
 import { RoleContext } from "../../App";
+import ButtonPrimary from "../../components/ButtonPrimary";
 
 const EventDetail = () => {
+  
   const [eventData, setEventData] = useState("");
   const [date, setDate] = useState(new Date(eventData.eventDateTime));
   const [date2, setDate2] = useState("");
@@ -77,8 +79,12 @@ const EventDetail = () => {
                 <p className="font-semibold">Event Time</p>
                 <span className="font-thin">{<DateConverter isoString={eventData.eventDateTime}/>}</span>
               </div>
-               
-
+             
+               {role.roleName === "company"&&(
+                <div className="w-full flex justify-end">
+                  <ButtonPrimary text={"Join"}/>      
+                </div> 
+               )}
 
             </div>
           </div>
