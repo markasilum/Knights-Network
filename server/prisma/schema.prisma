@@ -9,39 +9,39 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-//User model
-model User{
-  id String @id @default(uuid())
-  username          String 
-  password          String
-  streetAddress     String
-  cityName          String
-  countryName       String
-  zipCode           String
-  contactNum        String
-  emailAddress      String
-  profPic           String?
-  biography         String @db.Text
-  verified          Boolean
-  role Roles?
-  person Person?
-  company Company?
-}
 
+//User model
+model User {
+  id            String   @id @default(uuid())
+  username      String
+  password      String
+  streetAddress String
+  cityName      String
+  countryName   String
+  zipCode       String
+  contactNum    String
+  emailAddress  String
+  profPic       String?
+  biography     String   @db.Text
+  verified      Boolean
+  role          Roles?
+  person        Person?
+  company       Company?
+}
 
 //Profiling Module and Resume Module Tables
 model Person {
   id                String                  @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String @unique
+  user              User                    @relation(fields: [userId], references: [id])
+  userId            String                  @unique
   firstName         String
   middleName        String
   lastName          String
   suffix            String?
   maindenLastName   String?
   maritalStatus     String?
-  birthdate         DateTime?                @db.Date
-  supervison Supervisor[]
+  birthdate         DateTime?               @db.Date
+  supervison        Supervisor[]
   education         Education[]
   experience        Experience[]
   certification     Certification[]
@@ -53,21 +53,21 @@ model Person {
 }
 
 model Education {
-  id         String   @id @default(uuid())
-  person     Person   @relation(fields: [personId], references: [id])
+  id         String    @id @default(uuid())
+  person     Person    @relation(fields: [personId], references: [id])
   personId   String
   schoolName String
   awards     String?
   qpi        String?
   startDate  DateTime? @db.Date
   endDate    DateTime? @db.Date
-  degree     Degree   @relation(fields: [degreeId], references: [id])
+  degree     Degree    @relation(fields: [degreeId], references: [id])
   degreeId   String
 }
 
 model Degree {
   id           String         @id @default(uuid())
-  degreeName   String @unique
+  degreeName   String         @unique
   education    Education[]
   jobDegreeReq JobDegreeReq[]
 }
@@ -77,7 +77,7 @@ model Experience {
   person      Person   @relation(fields: [personId], references: [id])
   personId    String
   jobTitle    String
-  jobDetails  String @db.Text
+  jobDetails  String   @db.Text
   companyName String
   startDate   DateTime @db.Date
   endDate     DateTime @db.Date
@@ -109,40 +109,39 @@ model PersonSkill {
 
 model Skills {
   id           String         @id @default(uuid())
-  skillName    String @unique
+  skillName    String         @unique
   personSkill  PersonSkill[]
   jobSkillsReq JobSkillsReq[]
 }
 
 model PersonLicense {
-  id        String      @id @default(uuid())
-  person    Person      @relation(fields: [personId], references: [id])
-  personId  String
-  license   PRCLicenses @relation(fields: [licenseId], references: [id])
-  licenseId String
-  licensePic String?
-  licenseValidity DateTime @db.Date
+  id              String      @id @default(uuid())
+  person          Person      @relation(fields: [personId], references: [id])
+  personId        String
+  license         PRCLicenses @relation(fields: [licenseId], references: [id])
+  licenseId       String
+  licensePic      String?
+  licenseValidity DateTime    @db.Date
 }
 
 model PRCLicenses {
   id            String          @id @default(uuid())
-  licenseName   String @unique
+  licenseName   String          @unique
   personLicense PersonLicense[]
   jobLicenseReq JobLicenseReq[]
 }
 
 model Roles {
-  id           String     @id @default(uuid())
+  id       String @id @default(uuid())
   user     User   @relation(fields: [userId], references: [id])
   userId   String @unique
-  roleName     String
- 
+  roleName String
 }
 
 model Company {
   id            String                   @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String @unique
+  user          User                     @relation(fields: [userId], references: [id])
+  userId        String                   @unique
   companyName   String
   companySize   String
   verifiReq     CompanyVerificationReqs?
@@ -181,7 +180,7 @@ model JobPost {
   companyId         String
   jobTitle          String
   yearsExp          String
-  jobDesc           String @db.Text
+  jobDesc           String              @db.Text
   jobLoc            String
   employmentType    String
   salary            Int
@@ -209,13 +208,13 @@ model ApplicationLetter {
 }
 
 model Application {
-  id        String  @id @default(uuid())
-  dateCreated  DateTime   @default(now())
-  status String
-  person    Person  @relation(fields: [personId], references: [id])
-  personId  String
-  jobPost   JobPost @relation(fields: [jobPostId], references: [id])
-  jobPostId String
+  id          String   @id @default(uuid())
+  dateCreated DateTime @default(now())
+  status      String
+  person      Person   @relation(fields: [personId], references: [id])
+  personId    String
+  jobPost     JobPost  @relation(fields: [jobPostId], references: [id])
+  jobPostId   String
 }
 
 model JobSkillsReq {
@@ -243,23 +242,24 @@ model JobDegreeReq {
 }
 
 model Supervisor {
-  id           String @id @default(uuid())
-  person     Person   @relation(fields: [personId], references: [id])
-  personId   String
+  id       String @id @default(uuid())
+  person   Person @relation(fields: [personId], references: [id])
+  personId String
 }
 
 model Events {
   id            String          @id @default(uuid())
   eventName     String
-  eventDesc     String @db.Text
-  eventDateTime DateTime        
+  eventDesc     String          @db.Text
+  eventDateTime DateTime
   eventLocation String
-  eventPhoto    String? 
+  eventPhoto    String?
   companyEvents CompanyEvents[]
 }
 
 model CompanyEvents {
   id        String  @id @default(uuid())
+  status    String?
   event     Events  @relation(fields: [eventId], references: [id])
   eventId   String
   company   Company @relation(fields: [companyId], references: [id])
