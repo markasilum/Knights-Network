@@ -61,7 +61,10 @@ const JobPostApplicants = () => {
               )}
               <div className="font-normal">{jobData.jobLoc}</div>
 
-              <div className="w-fill h-96  mt-5 flex flex-row gap-3">
+              <div className="border border-b border-info mt-3"></div>
+
+
+              <div className="w-fill h-96  mt-3 flex flex-row gap-3">
                 <div className="w-full h-full">
                   <h1 className="h-5 font-semibold text-lg mb-3">Applicants</h1>
 
