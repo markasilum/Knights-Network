@@ -10,7 +10,7 @@ import { RoleContext } from '../App';
 const TopBar = () => {
   const{role} = useContext(RoleContext)
   return (
-    <div className='navbar bg-primary text-base-100 text-2xl justify-between max-h-14'>
+    <div className='navbar bg-primary text-base-100 text-2xl justify-between max-h-14 '>
     <div className='flex flex-row'>
       <img src={UniversitySealWhite} className="h-12 w-12 m-3"/>
       {role.roleName =="alumni" &&(

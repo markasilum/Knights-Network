@@ -38,7 +38,7 @@ const SideBar = () => {
   const adminSideBar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
     <SidebarButton text={"Events"} onClick={"/eventslist"} />
-    <SidebarButton text={"Users"} onClick={"/verify-users"} />
+    <SidebarButton text={"Users"} onClick={"/verify-users/alumni"} />
     <SidebarButton text={"Calendar"} />
     <SidebarButton text={"Logout"} onClick={"/login"} />
   </ul>

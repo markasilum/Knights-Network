@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ViewDocumentModal from "./ViewDocumentModel";
 
 const PersonUserDataCard = ({ userData }) => {
   const navigate = useNavigate();
@@ -30,23 +31,15 @@ const PersonUserDataCard = ({ userData }) => {
         console.log(userData.id)
       )} */}
       {userData &&
-        userData.person.map((person) => (
-          <div key={person.id}>
+        
             <span className="font-semibold">
               Full Name:{" "}
               <span className="font-normal">
-                {person.firstName} {person.middleName} {person.lastName}
+                {userData.person.firstName} {userData.person.middleName} {userData.person.lastName}
               </span>
             </span>
 
-            {/* <span className="font-semibold">
-              Full Name:{" "}
-              <span className="font-normal">
-                {person.firstName} {person.middleName} {person.lastName}
-              </span>
-            </span> */}
-          </div>
-        ))}
+        }
 
       {userData && (
         <div key={userData.id} className="flex flex-col">
@@ -66,6 +59,19 @@ const PersonUserDataCard = ({ userData }) => {
             Email Address:{" "}
             <span className="font-normal">{userData.emailAddress}</span>
           </span>
+
+          
+
+          {userData.person.verifiReq &&(
+            <div className='flex flex-col font-semibold mt-5'>
+            <span> Valid ID:</span>
+            <button><img className="w-72 h-auto" onClick={()=>document.getElementById(userData.person.verifiReq.idPhoto).showModal()} src={`http://localhost:3000/uploads/idPhoto/${userData.person.verifiReq.idPhoto}`} /></button>
+            <ViewDocumentModal docId={userData.person.verifiReq.idPhoto} documentPath={`http://localhost:3000/uploads/idPhoto/${userData.person.verifiReq.idPhoto}`}/>
+          </div>
+
+          )}
+
+          
 
           <div className="flex flex-row justify-end w-full">
             {userData.verified === true && (
