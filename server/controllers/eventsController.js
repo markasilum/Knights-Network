@@ -151,10 +151,56 @@ const getEventDetails = async (req, res) => {
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
       console.log(req.body)
-  
     }
   }
 
+  const getPartners = async (req, res) => {
+    try{    
+      const {id} = req.query
+      const data = await prisma.events.findUnique({
+        where:{
+          id: id,
+        },
+        include:{
+          companyEvents:{
+            include:{
+              company: true
+            }
+          }
+        }
+      });
+
+      console.log(data)
+      
+      res.json(data);
+      
+    }catch(error){
+      console.error('Error getting event partners:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      console.log(req.body)
+    }
+  }
+
+  const setStatus = async (req, res) => {
+    console.log(req.body)
+    try{    
+      const {id, status} = req.body
+      const data = await prisma.companyEvents.update({
+        where:{
+          id: id,
+        },data:{
+          status: status
+        }
+      });
+      
+      res.status(201).json(data);
+    }catch(error){
+      console.error('Error setting company event status:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      console.log(req.body)
+  
+    }
+  }
 
 module.exports = {
   getEventsList,
@@ -162,5 +208,7 @@ module.exports = {
   getEventDetails,
   updateEvent,
   joinEvent,
-  checkIfJoined
+  checkIfJoined,
+  getPartners,
+  setStatus
 };

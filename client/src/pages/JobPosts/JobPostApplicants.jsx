@@ -47,9 +47,7 @@ const JobPostApplicants = () => {
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      {/* {console.log(jobData)} */}
       <TopBar />
-
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">

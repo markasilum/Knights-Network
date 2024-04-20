@@ -22,6 +22,8 @@ router.post('/join', eventController.joinEvent);
 router.put('/update',upload.single("eventPhoto"), eventController.updateEvent);
 router.get('/details', eventController.getEventDetails)
 router.get('/check', eventController.checkIfJoined)
+router.get('/partners', eventController.getPartners)
+router.put('/set-status', upload.none(), eventController.setStatus)
 
 
 
