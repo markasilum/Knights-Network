@@ -49,7 +49,7 @@ const role = async (req, res) => {
         }
       });
       res.status(201).json(data);
-      // console.log(data)
+      console.log(data)
       
     } catch (error) {
       console.error("Error getting alumni index:", error);
@@ -66,7 +66,11 @@ const role = async (req, res) => {
         include:{
           user:{
             include:{
-              person: true
+              person: {
+                include:{
+                  verifiReq: true
+                }
+              }
             }
           }
         }
@@ -89,7 +93,11 @@ const role = async (req, res) => {
         include:{
           user:{
             include:{
-              company: true
+              company: {
+                include:{
+                  verifiReq:true
+                }
+              }
             }
           }
         }
