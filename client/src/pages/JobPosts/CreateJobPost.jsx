@@ -18,10 +18,9 @@ const [workModel, setWorkModel] = useState('');
 const [numOfPosition, setNumOfPosition] = useState('');
 const [validity, setValidity] = useState(new Date().toISOString());
 const [isOpen, setIsOpen] = useState(true);
-const [degree, setDegree] = useState('');
 const [yearsExp, setYearExp] = useState('');
+const [degree, setDegree] = useState([{degreeName:""}]);
 const [licenseName, setLicenseName] = useState([{licenseName:""}]);
-// const [certification, setCertification] = useState([{certName:""}]);
 const [skills, setSkill] = useState([{skillName:""}]);
 const [isAppLetterReq, setIsAppLetterReq] = useState(false);
 const [dateCreated, setDateCreated] = useState(new Date().toISOString());
@@ -37,8 +36,8 @@ const handleAddLicense = () => {
   setLicenseName([...licenseName,{licenseName:""}]);
 };
 
-const handleAddCert = () => {
-  setCertification([...certification,{certName:""}]);
+const handleAddDegree = () => {
+  setDegree([...degree,{degreeName:""}]);
 };
 
 const handleChange = (event, index) => {
@@ -56,13 +55,13 @@ const handleChangeLicense = (event, index) => {
   onChangeValue[index].licenseName = value;
   setLicenseName(onChangeValue);
 };
-// const handleChangeCert = (event, index) => {
-//   event.preventDefault();
-//   let { name, value } = event.target;
-//   let onChangeValue = [...certification];
-//   onChangeValue[index].certName = value;
-//   setCertification(onChangeValue);
-// };
+const handleChangeDegree = (event, index) => {
+  event.preventDefault();
+  let { name, value } = event.target;
+  let onChangeValue = [...degree];
+  onChangeValue[index].degreeName = value;
+  setDegree(onChangeValue);
+};
 
 const handleDeleteInput = (index) => {
   const newArray = [...skills];
@@ -76,11 +75,11 @@ const handleDeleteInputLicense = (index) => {
   setLicenseName(newArray);
 };
 
-// const handleDeleteInputCert = (index) => {
-//   const newArray = [...certification];
-//   newArray.splice(index, 1);
-//   setCertification(newArray);
-// };
+const handleDeleteInputDegree = (index) => {
+  const newArray = [...degree];
+  newArray.splice(index, 1);
+  setDegree(newArray);
+};
 
 const handleCheckboxChange = () => {
   // Toggle the boolean value when checkbox is clicked
@@ -107,10 +106,14 @@ const handleSubmit = async (event) => {
   formData.append('numOfPosition', numOfPosition);
   formData.append('validity', validity);
   formData.append('isOpen', isOpen);
-  formData.append('degree', degree);
+  // formData.append('degree', degree);
   formData.append('yearsExp', yearsExp);
   formData.append('isAppLetterReq', isAppLetterReq);
-  
+
+
+  degree.forEach((item, index) => {
+    formData.append(`degree[${index}][degreeName]`, item.degreeName);
+  });
   skills.forEach((item, index) => {
     formData.append(`skill[${index}][skillName]`, item.skillName);
   });
@@ -118,10 +121,10 @@ const handleSubmit = async (event) => {
     formData.append(`license[${index}][licenseName]`, item.licenseName);
   });
   
-  console.log("Form Data");
-  for (let sk of skills) {
-    console.log(sk);
-    }
+  // console.log("Form Data");
+  // for (let sk of skills) {
+  //   console.log(sk);
+  //   }
     
 
   try {
@@ -168,8 +171,34 @@ const handleValidity = (endDate) => {
             <div className='col-span-2'>
                  <span className="label-text font-bold">Qualifications</span>
             </div>
-            <InputFields id={"degree"} labelText={"Degree"} placeholder={"ex: BS Information Technology"} value={degree} onChange={(e) => setDegree(e.target.value)} />
+            {/* <InputFields id={"degree"} labelText={"Degree"} placeholder={"ex: BS Information Technology"} value={degree} onChange={(e) => setDegree(e.target.value)} /> */}
             <InputFields id={"yearsExp"} labelText={"Years of Experience"} placeholder={"ex: 2 years of experience"} value={yearsExp} onChange={(e) => setYearExp(e.target.value)} />
+
+            <div className='col-span-2'>
+                 <span className="label-text">Degree</span>
+            </div>
+            <div className='col-span-2 flex flex-col gap-2'>
+              
+              {degree.map((item, index) => (
+              
+                <div className="grid grid-cols-4 gap-3 place-items-center" key={index}>
+                  
+                  <input type="text" id={"certification"} className="input input-bordered w-full col-span-2" name={"certification"} value={item.degreeName} placeholder={"ex: BS Information Technology"} onChange={(event) => handleChangeDegree(event, index)}/>
+
+                  {index === degree.length - 1 && (
+                    <button className={`btn btn-success btn-sm text-white w-full `} onClick={() => handleAddDegree()}>Add</button>
+                  )}
+
+                  {degree.length > 1 && (
+                    <button className={`btn btn-info btn-sm text-white items-center w-full`} onClick={() => handleDeleteInputDegree(index)}>Delete</button>
+                  )}
+                  
+                </div>
+              
+              ))}
+              
+
+            </div>
             
             <div className='col-span-2'>
                  <span className="label-text">Skills</span>
@@ -178,16 +207,16 @@ const handleValidity = (endDate) => {
               
               {skills.map((item, index) => (
               
-                <div className="grid grid-cols-4 gap-3" key={index}>
+                <div className="grid grid-cols-4 gap-3 place-items-center" key={index}>
                   
                   <input type="text" id={"skill"} className="input input-bordered w-full col-span-2" name={"skill"} value={item.skillName} placeholder={"ex: Project Management"} onChange={(event) => handleChange(event, index)}/>
 
                   {index === skills.length - 1 && (
-                    <button className={`btn btn-success text-white `} onClick={() => handleAddSkill()}>Add</button>
+                    <button className={`btn btn-success  btn-sm text-white w-full `} onClick={() => handleAddSkill()}>Add</button>
                   )}
 
                   {skills.length > 1 && (
-                    <button className={`btn btn-info text-white`} onClick={() => handleDeleteInput(index)}>Delete</button>
+                    <button className={`btn btn-info btn-sm text-white items-center w-full`} onClick={() => handleDeleteInput(index)}>Delete</button>
                   )}
                   {/* {console.log(index)} */}
                 </div>
@@ -204,16 +233,16 @@ const handleValidity = (endDate) => {
             <div className='col-span-2 flex flex-col gap-2'>
               {licenseName.map((item, index) => (
               
-                <div className="grid grid-cols-4 gap-3" key={index}>
+                <div className="grid grid-cols-4 gap-3 place-items-center" key={index}>
                   
                   <input type="text" id={"license"} className="input input-bordered w-full col-span-2" name={"license"} value={item.licenseName} placeholder={"ex: Chemical Engineer"} onChange={(event) => handleChangeLicense(event, index)}/>
 
                   {index === licenseName.length - 1 && (
-                    <button className={`btn btn-success text-white `} onClick={() => handleAddLicense()}>Add</button>
+                    <button className={`btn btn-success  btn-sm text-white w-full`} onClick={() => handleAddLicense()}>Add</button>
                   )}
 
                   {licenseName.length > 1 && (
-                    <button className={`btn btn-info text-white`} onClick={() => handleDeleteInputLicense(index)}>Delete</button>
+                    <button className={`btn btn-info btn-sm text-white items-center w-full`} onClick={() => handleDeleteInputLicense(index)}>Delete</button>
                   )}
                   {/* {console.log(item.skillName)} */}
                 </div>
@@ -222,31 +251,7 @@ const handleValidity = (endDate) => {
             </div>
 
 
-            {/* <div className='col-span-2'>
-                 <span className="label-text">Certifications</span>
-            </div>
-            <div className='col-span-2 flex flex-col gap-2'>
-              
-              {certification.map((item, index) => (
-              
-                <div className="grid grid-cols-4 gap-3" key={index}>
-                  
-                  <input type="text" id={"certification"} className="input input-bordered w-full col-span-2" name={"certification"} value={item.certName} placeholder={"ex: CCNA"} onChange={(event) => handleChangeCert(event, index)}/>
-
-                  {index === certification.length - 1 && (
-                    <button className={`btn btn-success text-white `} onClick={() => handleAddCert()}>Add</button>
-                  )}
-
-                  {certification.length > 1 && (
-                    <button className={`btn btn-info text-white`} onClick={() => handleDeleteInputCert(index)}>Delete</button>
-                  )}
-                  
-                </div>
-              
-              ))}
-              
-
-            </div> */}
+            
             <div className="flex flex-row gap-5 mt-3">
                 <span className="label-text font-bold">Require Application Letter?</span> 
                 <input type="checkbox" className="toggle toggle-success"  checked={isAppLetterReq}  onChange={handleCheckboxChange}/>
