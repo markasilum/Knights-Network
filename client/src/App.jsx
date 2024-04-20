@@ -40,6 +40,7 @@ import VerifyStudents from './pages/Verify-Users/VerifyStudents';
 import VerifyCompanies from './pages/Verify-Users/VerifyCompanies';
 import JobPostApplicants from './pages/JobPosts/JobPostApplicants';
 import ResumeView from './components/ResumeView';
+import EventPartners from './pages/Events/EventPartners';
 
 export const RoleContext = createContext();
 function App() {
@@ -94,6 +95,7 @@ function App() {
             <Route path='/certifications-edit' element={<SelectEditCerts/>}/>
             <Route path='/events' element={<EventsAll/>}/>
             <Route path='/event-edit' element={<EventEdit/>}/>
+            <Route path='/event/partners/:eventId' element={<EventPartners/>}/>
             <Route path='/verify-users/alumni' element={<VerifyAlumni/>}/>
             <Route path='/verify-users/students' element={<VerifyStudents/>}/>
             <Route path='/verify-users/companies' element={<VerifyCompanies/>}/>
