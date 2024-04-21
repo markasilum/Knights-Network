@@ -15,7 +15,9 @@ const getPersonExperience = async (req, res) => {
       const data = await prisma.experience.findMany({
         where:{
           personId:personId,
-        },
+        },orderBy:{
+          endDate:"desc"
+        }
       });
 
       // console.log(data)

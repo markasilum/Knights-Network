@@ -11,6 +11,8 @@ const getEducation = async (req, res) => {
       },
       include:{
         degree:true
+      },orderBy:{
+        endDate:"desc"
       }
     });
 
