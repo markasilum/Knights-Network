@@ -390,6 +390,8 @@ const updateJobPost = async (req, res) => {
         });
       }
     }
+
+    //get skillName
     
 
   } catch (error) {
