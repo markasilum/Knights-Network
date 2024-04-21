@@ -251,9 +251,8 @@ const updateJobPost = async (req, res) => {
           },
         },
       }})
-    
-    const degreeNamesArray = degree.map(degree => degree.degreeName);
 
+    const degreeNamesArray = degree.map(degree => degree.degreeName);
 
     const jobDegreeReqIds= await prisma.jobDegreeReq.findMany({
       where:{
@@ -264,42 +263,135 @@ const updateJobPost = async (req, res) => {
       }
     })
 
-  
+    if (degreeNamesArray.length > jobDegreeReqIds.length) {
+      console.log("added new item");
+      //if naa new item, create the item.
+      //compare name sa new item sa names inside sa jobDegreeReq
+      //ang name na wala match ang new added item
 
+      for (const item of degreeNamesArray) {
+        if (!jobDegreeReqIds.some((req) => req.degree.degreeName === item)) {
+          // Item not found in jobDegreeReqIds, return it or perform any desired action
+          await prisma.jobDegreeReq.create({
+            data: {
+              jobPost: {
+                connect: {
+                  id: id,
+                },
+              },
+              degree: {
+                connectOrCreate: {
+                  create: {
+                    degreeName: item,
+                  },
+                  where: {
+                    degreeName: item,
+                  },
+                },
+              },
+            },
+          });
+        }
 
+        for (const [index, jobDegreeReq] of jobDegreeReqIds.entries()) {
+          // Get the degreeName from the provided array
+          const degreeNameValue = degreeNamesArray[index];
+          // console.log(jobDegreeReq.id)
 
-    for (const [index, jobDegreeReq] of jobDegreeReqIds.entries()) {
-      // Get the degreeName from the provided array
-      const degreeNameValue = degreeNamesArray[index];
-      console.log(jobDegreeReq.id)
-  
-      await prisma.jobDegreeReq.update({
+          await prisma.jobDegreeReq.update({
+            where: {
+              id: jobDegreeReq.id,
+            },
+            data: {
+              degree: {
+                connectOrCreate: {
+                  where: {
+                    degreeName: degreeNameValue,
+                  },
+                  create: {
+                    degreeName: degreeNameValue,
+                  },
+                },
+              },
+            },
+            include: {
+              degree: true,
+            },
+          });
+        }
+      }
+    } else if (degreeNamesArray.length < jobDegreeReqIds.length) {
+      console.log("removed items");
+
+      let removedItem = jobDegreeReqIds.filter(req => !degreeNamesArray.includes(req.degree.degreeName))
+      let removedItemName = removedItem.map(req => req.degree.degreeName);
+      console.log(removedItemName)
+      await prisma.jobDegreeReq.deleteMany({
+        where: {
+          degree:{
+            degreeName: {
+              in: removedItemName
+            }
+          }
+        },
+      })
+
+      for (const item of degreeNamesArray) {
+        if (!jobDegreeReqIds.some((req) => req.degree.degreeName === item)) {
+          // Item not found in jobDegreeReqIds, return it or perform any desired action
+          await prisma.jobDegreeReq.create({
+            data: {
+              jobPost: {
+                connect: {
+                  id: id,
+                },
+              },
+              degree: {
+                connectOrCreate: {
+                  create: {
+                    degreeName: item,
+                  },
+                  where: {
+                    degreeName: item,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+    } else {
+      console.log("number of items the same");
+      for (const [index, jobDegreeReq] of jobDegreeReqIds.entries()) {
+        // Get the degreeName from the provided array
+        const degreeNameValue = degreeNamesArray[index];
+        // console.log(jobDegreeReq.id)
+
+        await prisma.jobDegreeReq.update({
           where: {
-              id: jobDegreeReq.id
+            id: jobDegreeReq.id,
           },
           data: {
-              degree: {
-                  connectOrCreate: {
-                      where: {
-                          degreeName: degreeNameValue
-                      },
-                      create: {
-                          degreeName: degreeNameValue
-                      }
-                  }
-              }
+            degree: {
+              connectOrCreate: {
+                where: {
+                  degreeName: degreeNameValue,
+                },
+                create: {
+                  degreeName: degreeNameValue,
+                },
+              },
+            },
           },
           include: {
-              degree: true
-          }
-      });
-  }
+            degree: true,
+          },
+        });
+      }
+    }
+    
 
-   
-    // res.status(201).json(updatedDegrees);
-    // console.log(degreeNamesArray);
-    // console.log(u)
-    res.json({ success: true, message: 'Job degree requirements updated successfully.' });
   } catch (error) {
     console.error("Error creating job post:", error);
     res.status(500).json({ error: "Internal Server Error" });
