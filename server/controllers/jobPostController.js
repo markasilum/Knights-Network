@@ -264,7 +264,7 @@ const updateJobPost = async (req, res) => {
     })
 
     if (degreeNamesArray.length > jobDegreeReqIds.length) {
-      console.log("added new item");
+      // console.log("added new item");
       //if naa new item, create the item.
       //compare name sa new item sa names inside sa jobDegreeReq
       //ang name na wala match ang new added item
@@ -321,11 +321,11 @@ const updateJobPost = async (req, res) => {
         }
       }
     } else if (degreeNamesArray.length < jobDegreeReqIds.length) {
-      console.log("removed items");
+      // console.log("removed items");
 
       let removedItem = jobDegreeReqIds.filter(req => !degreeNamesArray.includes(req.degree.degreeName))
       let removedItemName = removedItem.map(req => req.degree.degreeName);
-      console.log(removedItemName)
+      // console.log(removedItemName)
       await prisma.jobDegreeReq.deleteMany({
         where: {
           degree:{
@@ -362,7 +362,7 @@ const updateJobPost = async (req, res) => {
       }
 
     } else {
-      console.log("number of items the same");
+      // console.log("number of items the same");
       for (const [index, jobDegreeReq] of jobDegreeReqIds.entries()) {
         // Get the degreeName from the provided array
         const degreeNameValue = degreeNamesArray[index];
@@ -391,7 +391,283 @@ const updateJobPost = async (req, res) => {
       }
     }
 
-    //get skillName
+    //SKILLS UPDATE
+    //get skillName from skillObject
+    const skillNamesArray = skill.map(skill => skill.skillName);
+
+    //get jobSkillsReq
+    const jobSkillsReq= await prisma.jobSkillsReq.findMany({
+      where:{
+        jobPostId:id
+      },
+      include:{
+        skill:true
+      }
+    })
+
+    if(skillNamesArray.length > jobSkillsReq.length){
+      //added new skills
+      for (const item of skillNamesArray) {
+        if (!jobSkillsReq.some((req) => req.skill.skillName === item)) {
+          // Item not found in jobDegreeReqIds, return it or perform any desired action
+          await prisma.jobSkillsReq.create({
+            data: {
+              jobPost: {
+                connect: {
+                  id: id,
+                },
+              },
+              skill: {
+                connectOrCreate: {
+                  create: {
+                    skillName: item,
+                  },
+                  where: {
+                    skillName: item,
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        for (const [index, jobSkillsReqItem] of jobSkillsReq.entries()) {
+          // Get the degreeName from the provided array
+          const skillNameValue = skillNamesArray[index];
+          // console.log(jobDegreeReq.id)
+
+          await prisma.jobSkillsReq.update({
+            where: {
+              id: jobSkillsReqItem.id,
+            },
+            data: {
+              skill: {
+                connectOrCreate: {
+                  where: {
+                    skillName: skillNameValue,
+                  },
+                  create: {
+                    skillName: skillNameValue,
+                  },
+                },
+              },
+            },
+            include: {
+              skill: true,
+            },
+          });
+        }
+      }
+    }else if(skillNamesArray.length < jobSkillsReq.length){
+      //deleted some skills
+
+      let removedItem = jobSkillsReq.filter(req => !skillNamesArray.includes(req.skill.skillName))
+      let removedItemName = removedItem.map(req => req.skill.skillName);
+      // console.log(removedItemName)
+      await prisma.jobSkillsReq.deleteMany({
+        where: {
+          skill:{
+            skillName: {
+              in: removedItemName
+            }
+          }
+        },
+      })
+
+      for (const item of skillNamesArray) {
+        if (!jobSkillsReq.some((req) => req.skill.skillName === item)) {
+          // Item not found in jobDegreeReqIds, return it or perform any desired action
+          await prisma.jobSkillsReq.create({
+            data: {
+              jobPost: {
+                connect: {
+                  id: id,
+                },
+              },
+              skill: {
+                connectOrCreate: {
+                  create: {
+                    skillName: item,
+                  },
+                  where: {
+                    skillName: item,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+    }else{
+      //update the skills. no add no delete
+      for (const [index, jobSkillsReqItem] of jobSkillsReq.entries()) {
+        // Get the degreeName from the provided array
+        const skillNameValue = skillNamesArray[index];
+        // console.log(jobDegreeReq.id)
+
+        await prisma.jobSkillsReq.update({
+          where: {
+            id: jobSkillsReqItem.id,
+          },
+          data: {
+            skill: {
+              connectOrCreate: {
+                where: {
+                  skillName: skillNameValue,
+                },
+                create: {
+                  skillName: skillNameValue,
+                },
+              },
+            },
+          },
+          include: {
+            skill: true,
+          },
+        });
+      }
+    }
+
+    //LICENSE UPDATE
+    //get licenseName from license object
+    const licenseNamesArray = license.map(license => license.licenseName)
+    //get jobLicenseReq
+    const jobLicenseReq= await prisma.jobLicenseReq.findMany({
+      where:{
+        jobPostId:id
+      },
+      include:{
+        license:true
+      }
+    })
+
+    if(licenseNamesArray.length > jobLicenseReq.length){
+      //added skill
+      for (const item of licenseNamesArray) {
+        if (!jobLicenseReq.some((req) => req.license.licenseName === item)) {
+          // Item not found in jobDegreeReqIds, return it or perform any desired action
+          await prisma.jobLicenseReq.create({
+            data: {
+              jobPost: {
+                connect: {
+                  id: id,
+                },
+              },
+              license: {
+                connectOrCreate: {
+                  create: {
+                    licenseName: item,
+                  },
+                  where: {
+                    licenseName: item,
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        for (const [index, jobLicenseReqItem] of jobLicenseReq.entries()) {
+          // Get the degreeName from the provided array
+          const licenseNameValue = licenseNamesArray[index];
+          // console.log(jobDegreeReq.id)
+
+          await prisma.jobLicenseReq.update({
+            where: {
+              id: jobLicenseReqItem.id,
+            },
+            data: {
+              license: {
+                connectOrCreate: {
+                  where: {
+                    licenseName: licenseNameValue,
+                  },
+                  create: {
+                    licenseName: licenseNameValue,
+                  },
+                },
+              },
+            },
+            include: {
+              license: true,
+            },
+          });
+        }
+      }
+
+    }else if(licenseNamesArray.length < jobLicenseReq.length){
+      //deleted skill
+      let removedItem = jobLicenseReq.filter(req => !licenseNamesArray.includes(req.license.licenseName))
+      let removedItemName = removedItem.map(req => req.license.licenseName);
+      // console.log(removedItemName)
+      await prisma.jobLicenseReq.deleteMany({
+        where: {
+          license:{
+            licenseName: {
+              in: removedItemName
+            }
+          }
+        },
+      })
+
+      for (const item of licenseNamesArray) {
+        if (!jobLicenseReq.some((req) => req.license.licenseName === item)) {
+          // Item not found in jobDegreeReqIds, return it or perform any desired action
+          await prisma.jobLicenseReq.create({
+            data: {
+              jobPost: {
+                connect: {
+                  id: id,
+                },
+              },
+              license: {
+                connectOrCreate: {
+                  create: {
+                    licenseName: item,
+                  },
+                  where: {
+                    licenseName: item,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+    }else{
+      //updated skill
+      for (const [index, jobLicenseReqItem] of jobLicenseReq.entries()) {
+        // Get the degreeName from the provided array
+        const licenseNameValue = licenseNamesArray[index];
+        // console.log(jobDegreeReq.id)
+
+        await prisma.jobLicenseReq.update({
+          where: {
+            id: jobLicenseReqItem.id,
+          },
+          data: {
+            license: {
+              connectOrCreate: {
+                where: {
+                  licenseName: licenseNameValue,
+                },
+                create: {
+                  licenseName: licenseNameValue,
+                },
+              },
+            },
+          },
+          include: {
+            license: true,
+          },
+        });
+      }
+    }
+
+
+    console.log(jobLicenseReq)
     
 
   } catch (error) {
