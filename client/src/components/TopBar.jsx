@@ -8,7 +8,7 @@ const TopBar = () => {
   const { role } = useContext(RoleContext);
   return (
     <div className="navbar bg-primary text-base-100 text-2xl max-h-14 flex flex-row w-full">
-      <div className="flex flex-row w-1/3">
+      <div className="flex flex-row w-[38%]">
         <img src={UniversitySealWhite} className="h-12 w-12 m-3" />
         {role.roleName == "alumni" && (
           <Link to="/home">
@@ -31,7 +31,7 @@ const TopBar = () => {
           </Link>
         )}
       </div>
-      <div className="form-control w-full flex flex-row justify-start ml-10 text-black ">
+      <div className="form-control w-full flex flex-row justify-start text-black ">
         <select className="select select-bordered w-36 max-w-xs rounded-tl rounded-bl  rounded-none outline-none focus:outline-none focus-within:outline-none"    defaultValue={"Job Posts"}>
           <option value={"jobPost"}>Job Posts</option>
           <option value={"Companies"}>Companies</option>
