@@ -41,6 +41,7 @@ import VerifyCompanies from './pages/Verify-Users/VerifyCompanies';
 import JobPostApplicants from './pages/JobPosts/JobPostApplicants';
 import ResumeView from './components/ResumeView';
 import EventPartners from './pages/Events/EventPartners';
+import PersonUserSetting from './pages/Profile/PersonUserSetting';
 
 export const RoleContext = createContext();
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Routes>
             <Route index element={<ProfilePage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
+            <Route path="/settings" element={<PersonUserSetting/>}/>
             <Route path="/home" element={<Homepage/>}/>
             <Route path="/applications" element={<ApplicationDashboard/>}/>
             <Route path="/createaccount" element={<CreateAccount/>}/>
