@@ -210,7 +210,7 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
                     <button className={`btn btn-success btn-sm text-white w-full `} onClick={() => handleAddDegree()}>Add</button>
                   )}
 
-                  {degree.length > 1 && (
+                  {degree.length >= 1 && (
                     <button className={`btn btn-info btn-sm text-white items-center w-full`} onClick={() => handleDeleteInputDegree(index)}>Delete</button>
                   )}
                   
@@ -236,7 +236,7 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
                     <button className={`btn btn-success  btn-sm text-white w-full `} onClick={() => handleAddSkill()}>Add</button>
                   )}
 
-                  {skills.length > 1 && (
+                  {skills.length >= 1 && (
                     <button className={`btn btn-info btn-sm text-white items-center w-full`} onClick={() => handleDeleteInput(index)}>Delete</button>
                   )}
                 </div>
@@ -261,7 +261,7 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
                     <button className={`btn btn-success  btn-sm text-white w-full`} onClick={() => handleAddLicense()}>Add</button>
                   )}
 
-                  {licenseName.length > 1 && (
+                  {licenseName.length >= 1 && (
                     <button className={`btn btn-info btn-sm text-white items-center w-full`} onClick={() => handleDeleteInputLicense(index)}>Delete</button>
                   )}
                 </div>
