@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
+import ViewDocumentModal from './ViewDocumentModel';
 
 const CompanyUserDataCard = ({userData}) => {
     const navigate = useNavigate();
@@ -22,21 +23,20 @@ const CompanyUserDataCard = ({userData}) => {
         navigate(0)
       }
   return (
-    <div className="w-2/3 border-2 rounded-lg h-fit max-h-[90%] p-3">
-      {/* {userData &&(
-        console.log(userData.id)
-      )} */}
+    <div className="w-2/3 border-2 rounded-lg h-fit max-h-[90%] p-3 overflow-scroll">
+      {userData &&(
+        console.log(userData)
+      )}
       {userData &&
-        userData.company.map((company) => (
-          <div key={company.id}>
+        
             <span className="font-semibold">
               Company Name:{" "}
               <span className="font-normal">
-                {company.companyName}
+                {userData.company.companyName}
               </span>
             </span>
-          </div>
-        ))}
+         
+      }
 
       {userData && (
         <div key={userData.id} className="flex flex-col">
@@ -56,6 +56,30 @@ const CompanyUserDataCard = ({userData}) => {
             Email Address:{" "}
             <span className="font-normal">{userData.emailAddress}</span>
           </span>
+
+          <span className='font-semibold mt-5'>Verification Requirements</span>
+
+          {userData.company.verifiReq &&(
+          <div className="flex flex-col gap-3 w-full">
+            <div className='flex flex-col'>
+              <span>SEC Registration</span>
+              <button><img className="w-72 h-auto" onClick={()=>document.getElementById(userData.company.verifiReq.secRegistration).showModal()} src={`http://localhost:3000/uploads/secRegistration/${userData.company.verifiReq.secRegistration}`} /></button>
+              <ViewDocumentModal docId={userData.company.verifiReq.secRegistration} documentPath={`http://localhost:3000/uploads/secRegistration/${userData.company.verifiReq.secRegistration}`}/>
+            </div>
+            <div className='flex flex-col'>
+              <span>DTI Registration</span>
+              <button><img className="w-72 h-auto" onClick={()=>document.getElementById(userData.company.verifiReq.dtiRegistration).showModal()} src={`http://localhost:3000/uploads/dtiRegistration/${userData.company.verifiReq.dtiRegistration}`} /></button>
+              <ViewDocumentModal docId={userData.company.verifiReq.dtiRegistration} documentPath={`http://localhost:3000/uploads/dtiRegistration/${userData.company.verifiReq.dtiRegistration}`}/>
+            </div>
+            <div className='flex flex-col'>
+              <span>Business Permit</span>
+              <button><img className="w-72 h-auto" onClick={()=>document.getElementById(userData.company.verifiReq.businessPermit).showModal()} src={`http://localhost:3000/uploads/businessPermit/${userData.company.verifiReq.businessPermit}`} /></button>
+              <ViewDocumentModal docId={userData.company.verifiReq.businessPermit} documentPath={`http://localhost:3000/uploads/businessPermit/${userData.company.verifiReq.businessPermit}`}/>
+            </div>
+           
+            
+          </div>
+        )}
 
           <div className="flex flex-row justify-end w-full">
             {userData.verified === true && (

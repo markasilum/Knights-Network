@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import './App.css'
 import {
   BrowserRouter as Router,
@@ -11,18 +11,18 @@ import EditAccount from './pages/Edit-Account/EditAccount';
 import LoginScreen from './pages/Login/LoginScreen';
 import CreateCompany from './pages/Create-Account/CreateCompany';
 import EditCompanyProfile from './pages/Edit-Account/EditCompanyProfile';
-import CreateJobPost from './pages/Create-Job-Post/CreateJobPost';
+import CreateJobPost from './pages/JobPosts/CreateJobPost';
 import CredentialsForm from './pages/Create-Credentials/CredentialsForm';
 import ExperienceForm from './pages/Create-Credentials/ExperienceForm';
 import LicenseForm from './pages/Create-Credentials/LicenseForm';
 import SkillsForm from './pages/Create-Credentials/SkillsForm';
 import CertificationsForm from './pages/Create-Credentials/CertificationsForm';
 import ProfilePage from './pages/Profile/ProfilePage';
-import JobPostsDashboard from './pages/Company-JobPost-Dashboard/JobPostsDashboard';
-import JobPostDetails from './pages/JobPostDetails/JobPostDetails';
+import JobPostsDashboard from './pages/JobPosts/JobPostsDashboard';
+import JobPostDetails from './pages/JobPosts/JobPostDetails';
 import Homepage from './pages/Homepage/Homepage';
 import ApplicationDashboard from './pages/Applications-Dashboard/ApplicationDashboard';
-import ResumeCard from './components/resumeCard';
+import ResumeCard from './components/ResumeCard';
 import EventsDashboard from './pages/Events/EventsDashboard';
 import CreateEvent from './pages/Events/CreateEvent';
 import EventDetail from './pages/Events/EventDetail';
@@ -38,13 +38,33 @@ import VerifyUsers from './pages/Verify-Users/VerifyUsers';
 import VerifyAlumni from './pages/Verify-Users/VerifyAlumni';
 import VerifyStudents from './pages/Verify-Users/VerifyStudents';
 import VerifyCompanies from './pages/Verify-Users/VerifyCompanies';
+import JobPostApplicants from './pages/JobPosts/JobPostApplicants';
+import ResumeView from './components/ResumeView';
+import EventPartners from './pages/Events/EventPartners';
 
-
+export const RoleContext = createContext();
 function App() {
+
+  const [role, setUserRole] = useState({});
+  
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/user/role");
+        const getUserResult = await response.json();
+        setUserRole(getUserResult);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchUserRole();
+  }, []);
 
   return (
     <div className='className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	'>
       <Router>
+      <RoleContext.Provider value={{ role }}>
           <Routes>
             <Route index element={<ProfilePage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
@@ -61,26 +81,28 @@ function App() {
             <Route path="/licenseform" element={<LicenseForm/>}/>
             <Route path="/skillsform" element={<SkillsForm/>}/>
             <Route path="/certificationform" element={<CertificationsForm/>}/>
-            <Route path='/jobpostdashboard' element={<JobPostsDashboard/>}/>
+            <Route path='/jobpost/dashboard' element={<JobPostsDashboard/>}/>
             <Route path='/resume' element={<ResumeCard/>}/>
             <Route path='/jobpostdetails/:jobPostId' element={<JobPostDetails/>}/>
             <Route path='/eventdetails/:eventId' element={<EventDetail/>}/>
             <Route path='/eventslist' element={<EventsDashboard/>}/>
             <Route path='/createevent' element={<CreateEvent/>}/>
             <Route path='/edit-education' element={<EditEducation/>}/>
-            <Route path='education-edit' element={<SelectEditEduc/>}/>
-            <Route path='experience-edit' element={<SelectEditExperience/>}/>
-            <Route path='license-edit' element={<SelectEditLicense/>}/>
-            <Route path='skills-edit' element={<SelectEditSkills/>}/>
-            <Route path='certifications-edit' element={<SelectEditCerts/>}/>
+            <Route path='/education-edit' element={<SelectEditEduc/>}/>
+            <Route path='/experience-edit' element={<SelectEditExperience/>}/>
+            <Route path='/license-edit' element={<SelectEditLicense/>}/>
+            <Route path='/skills-edit' element={<SelectEditSkills/>}/>
+            <Route path='/certifications-edit' element={<SelectEditCerts/>}/>
             <Route path='/events' element={<EventsAll/>}/>
             <Route path='/event-edit' element={<EventEdit/>}/>
+            <Route path='/event/partners/:eventId' element={<EventPartners/>}/>
             <Route path='/verify-users/alumni' element={<VerifyAlumni/>}/>
             <Route path='/verify-users/students' element={<VerifyStudents/>}/>
             <Route path='/verify-users/companies' element={<VerifyCompanies/>}/>
-
-
+            <Route path='/jobpost/applicants/:jobPostId' element={<JobPostApplicants/>}/>
+            <Route path='/jobpost/applicants/resume/:personId' element={<ResumeView/>}/>
           </Routes>
+          </RoleContext.Provider>
       </Router>
     </div>
   )
