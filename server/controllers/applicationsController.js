@@ -102,7 +102,7 @@ const apply = async (req, res) => {
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
+      // console.log(req.body)
   
     }
   }

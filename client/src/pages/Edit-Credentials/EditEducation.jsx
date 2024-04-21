@@ -3,6 +3,7 @@ import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const EditEducation = ({educationData, degreeData}) => {
   const [schoolName, setSchoolName] = useState(educationData.schoolName);
   const [degree, setDegree] = useState(degreeData);
@@ -11,9 +12,10 @@ const EditEducation = ({educationData, degreeData}) => {
   const [endDate, setEndDate] = useState(educationData.endDate);
   const [awards, setAwards] = useState(educationData.awards);
   const [educData, setEducData] = useState(educationData);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    // event.preventDefault();
+    event.preventDefault();
 
     // console.log(startDate);
 
@@ -37,6 +39,7 @@ const EditEducation = ({educationData, degreeData}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      navigate(0)
     } catch (error) {
       console.error("Error creating education:", error);
     }

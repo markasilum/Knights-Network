@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 
 const EditSkills = ({skillsData}) => {
     const [skillName, setSkillName] = useState(skillsData.skillName);
     const [personSkillId, setPersonSkillId] = useState(skillsData.id);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
   
@@ -21,6 +23,7 @@ const EditSkills = ({skillsData}) => {
         if (!response.ok) {
           throw new Error(responseData.error);
         }
+        navigate(0)
       } catch (error) {
         console.error("Error updating skill:", error);
       }
