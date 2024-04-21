@@ -246,7 +246,7 @@ const updateJobPost = async (req, res) => {
         isAppLetterReq: appLettrBool,
         company: {
           connect: {
-            id: companyId,
+            userId: userIdCookie
           },
         },
       }})
