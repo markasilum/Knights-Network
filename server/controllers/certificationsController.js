@@ -4,16 +4,15 @@ const prisma = new PrismaClient();
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 
-let userId = personUserId;
-
-let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
-let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
+let userIdCookie = personUserId
 
 const getPersonCerts = async (req, res) => {
     try {
       const certs = await prisma.certification.findMany({
         where: {
-          personId: personId,
+          person:{
+            userId:userIdCookie
+          }
         },select:{
           id:true,
           certDetails: true,
@@ -44,15 +43,15 @@ const createCert = async (req, res) => {
 
       const newCert = await prisma.certification.create({
         data: {
-            certName,
-            certDetails,
-            certPhoto,
-            person: {
-                connect: {
-                id: personId,
-                },
+          certName,
+          certDetails,
+          certPhoto,
+          person: {
+            connect: {
+            userId: userIdCookie
             },
-            },
+          },
+        },
         include: {
           person: true,
         },
