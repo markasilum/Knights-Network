@@ -3,6 +3,7 @@ import TopBar from '../../components/topbar'
 import SidebarAdmin from '../../components/SidebarAdmin'
 import { Link, useNavigate } from 'react-router-dom';
 import PersonUserDataCard from './PersonUserDataCard';
+import SideBar from '../../components/SideBar';
 const VerifyAlumni = () => {
     const [users, setUsers] = useState([]);
     const[userData, setUserData] = useState(null)
@@ -34,7 +35,7 @@ const VerifyAlumni = () => {
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
       <div className="flex flex-row gap-2">
-        <SidebarAdmin />
+        <SideBar/>
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
           <div className="pt-3 pr-3 pl-1 h-full">
             <div className="w-full bg-white h-[95%] min-h-80 mb-20 flex flex-col pl-3 pr-3  justify-between">
@@ -46,20 +47,20 @@ const VerifyAlumni = () => {
               </div>
 
               <div className='flex flex-row h-full'>
+                {console.log(users)}
                 <div className="flex flex-col w-1/3">
-                    {users &&
-                    users.map((alumni) => (
+                    {users &&(
+                      users.map((alumni) => (
                         <button
                         key={alumni.id}
                         className="border-t border-solid border-info p-2 w-full bg-white text-left hover:bg-neutral "
                         onClick={() => handleClick(alumni.user)}
                         >
-                        {alumni.user.person.map(
-                            (person) =>
-                            `${person.firstName} ${person.middleName} ${person.lastName}`
-                        )}
+                        {alumni.user.person.firstName} {alumni.user.person.middleName} {alumni.user.person.lastName}
                         </button>
-                    ))}
+                    ))
+                    )
+                    }
                 </div>
                 <div className="divider divider-horizontal h-[90%]"></div>
 

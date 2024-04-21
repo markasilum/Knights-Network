@@ -2,6 +2,8 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
+let personId2 = "cd8dbd9b-6ac3-4bbf-8d55-c4ceb339dac8";
+
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 
 let userId = personUserId;
@@ -13,7 +15,7 @@ const getEducation = async (req, res) => {
   try {
     const data = await prisma.education.findMany({
       where: {
-        personId: personId,
+        personId: personId2,
       },
     });
 

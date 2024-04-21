@@ -6,6 +6,7 @@ const upload = multer();
 const applicationController = require('../controllers/applicationsController')
 
 router.post('/create', applicationController.apply);
+router.put('/set-status', upload.none(),applicationController.setStatus);
 router.get('/person/index', applicationController.getListOfApplications)
 router.get('/check', applicationController.checkIfApplied)
 

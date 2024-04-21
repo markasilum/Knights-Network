@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SidebarButton from "./SidebarButton";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import CreateAccount from "../pages/Create-Account/CreateAccount";
@@ -8,55 +8,39 @@ import FeedIcon from '@mui/icons-material/Feed';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import EventIcon from '@mui/icons-material/Event';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { RoleContext } from "../App";
 const SideBar = () => {
-  const [role, setUserRole] = useState([]);
+  
+  const {role} = useContext(RoleContext)
   let userSideBar
-
-
-  useEffect(()=>{
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/user/role");
-        const getUserResult = await response.json();
-        setUserRole(getUserResult);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-
-    };
-    fetchUserRole();
-
-
-  },[])
-
 
   const companySidebar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-      <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onCick={"/profile"} />
-      <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onCick={"/jobpostdashboard"} />
+      <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onClick={"/profile"} />
+      <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/jobpost/dashboard"} />
       <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
-      <SidebarButton text={"Logout"} onCick={"/login"} />
+      <SidebarButton text={"Logout"} onClick={"/login"} />
     </ul>
   )
 
   const alumniSideBar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-      <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onCick={"/profile"} />
-      <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onCick={"/home"} />
-      <SidebarButton text={"Applications"} icon={<ContactPageIcon fontSize="large"/>} onCick={"/applications"} />
-      <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onCick={"/events"}/>
+      <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onClick={"/profile"} />
+      <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/home"} />
+      <SidebarButton text={"Applications"} icon={<ContactPageIcon fontSize="large"/>} onClick={"/applications"} />
+      <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
-      <SidebarButton text={"Logout"} onCick={"/login"} />
+      <SidebarButton text={"Logout"} onClick={"/login"} />
     </ul>
   )
 
   const adminSideBar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-    <SidebarButton text={"Events"} onCick={"/eventslist"} />
-    <SidebarButton text={"Users"} onCick={"/verify-users"} />
+    <SidebarButton text={"Events"} onClick={"/eventslist"} />
+    <SidebarButton text={"Users"} onClick={"/verify-users/alumni"} />
     <SidebarButton text={"Calendar"} />
-    <SidebarButton text={"Logout"} onCick={"/login"} />
+    <SidebarButton text={"Logout"} onClick={"/login"} />
   </ul>
   
   )

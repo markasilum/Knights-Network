@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
@@ -9,14 +9,32 @@ import SidebarAdmin from "../../components/SidebarAdmin";
 import EventEdit from "./EventEdit";
 import DateToWords from "../../components/DateFormatter";
 import DateConverter from "../../components/DateConverter";
+import { RoleContext } from "../../App";
+import ButtonPrimary from "../../components/ButtonPrimary";
+import ButtonSuccess from "../../components/ButtonSuccess";
 
 const EventDetail = () => {
+  
   const [eventData, setEventData] = useState("");
   const [date, setDate] = useState(new Date(eventData.eventDateTime));
-  const [date2, setDate2] = useState("");
+  const [partners, setPartners] = useState([]);
 
+  const{role} = useContext(RoleContext)
   const { eventId } = useParams();
 
+  const fetchEventPartners = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/events/check?id=${eventId}`
+      );
+      const getApplicationData = await response.json();
+      setPartners(getApplicationData);
+      // console.log(getApplicationData)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
   useEffect(() => {
    
     const fetchEventDetails = async () => {
@@ -34,33 +52,68 @@ const EventDetail = () => {
     };
 
     fetchEventDetails();
-    // setDate2(date.getFullYear())
+    fetchEventPartners();
   }, []);
+
+  const handleJoinEvent = async (event) =>{
+    event.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/events/join', {
+        method: 'POST',
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({'id':eventId})
+      });
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.error);
+      }else{
+        console.log("Event Joined")
+        fetchEventPartners();
+
+      }
+      
+    } catch (error) {
+      console.error('Error joining event:', error);
+    }
+  }
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
       <div className="flex flex-row gap-2">
-       <SideBar/>
+        <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className="pt-5 pr-5 pl-3 overflow-auto">
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
-                <div className="w-full flex flex-row justify-between">
-                <div className="font-semibold text-2xl">{eventData.eventName}</div>
-                <button className='font-thin underline' onClick={()=>document.getElementById(eventData.id).showModal()}>Edit</button>
+              <div className="w-full flex flex-row justify-between">
+                <div className="font-semibold text-2xl">
+                  {eventData.eventName}
                 </div>
-                {/* {console.log(eventData)} */}
-                {eventData &&(
-                  <EventEdit eventData={eventData}/>
-                ) }
+                {role.roleName == "admin" && (
+                  <button
+                    className="font-thin underline"
+                    onClick={() =>
+                      document.getElementById(eventData.id).showModal()
+                    }
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
+              {/* {console.log(eventData)} */}
+              {eventData && <EventEdit eventData={eventData} />}
 
-                
-                <div className="font-thin flex flex-col mt-3">
+              <div className="font-thin flex flex-col mt-3">
                 <p className="font-semibold">Event Details</p>
                 <ul className="ml-6">
                   {eventData.eventDesc &&
-                    eventData.eventDesc
-                      .split("\r\n")
-                      .map((line, index) => <li key={index} className="mt-2">{line}</li>)}
+                    eventData.eventDesc.split("\r\n").map((line, index) => (
+                      <li key={index} className="mt-2">
+                        {line}
+                      </li>
+                    ))}
                 </ul>
               </div>
 
@@ -71,11 +124,25 @@ const EventDetail = () => {
 
               <div className="mt-5">
                 <p className="font-semibold">Event Time</p>
-                <span className="font-thin">{<DateConverter isoString={eventData.eventDateTime}/>}</span>
+                <span className="font-thin">
+                  {<DateConverter isoString={eventData.eventDateTime} />}
+                </span>
               </div>
-               
+              {partners.length != 0 && console.log(partners[0].status)}
 
+              {role.roleName === "company" && partners.length == 0 && (
+                <div className="w-full flex justify-end">
+                  <ButtonPrimary onClick={handleJoinEvent} text={"Join"} />
+                </div>
+              )}
 
+              {partners.length != 0 &&
+                role.roleName === "company" &&
+                partners[0].status === "pending" && (
+                  <div className="w-full flex justify-end">
+                    <ButtonSuccess text={"Pending"} />
+                  </div>
+                )}
             </div>
           </div>
         </div>

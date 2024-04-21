@@ -3,7 +3,7 @@ import React from 'react'
 const InputFields = ({labelText,id,placeholder,value,onChange, name}) => {
   return (
     <div>
-      <label className="form-control w-full max-w-xs col-span-2">
+      <label className="form-control w-full max-w-xs col-span-2" htmlFor={id}>
           <div className="label">
                 <span className="label-text font-normal">{labelText}</span>
             </div>
