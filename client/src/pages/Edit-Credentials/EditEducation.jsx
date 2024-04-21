@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const EditEducation = ({educationData, degreeData}) => {
+  const [id, setId] = useState(educationData.id);
   const [schoolName, setSchoolName] = useState(educationData.schoolName);
-  const [degree, setDegree] = useState(degreeData);
+  const [degree, setDegree] = useState(educationData.degree.degreeName);
   const [qpi, setQpi] = useState(educationData.qpi);
   const [startDate, setStartDate] = useState(educationData.startDate);
   const [endDate, setEndDate] = useState(educationData.endDate);
@@ -15,12 +16,9 @@ const EditEducation = ({educationData, degreeData}) => {
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // console.log(startDate);
-
     const formData = new FormData();
 
+    formData.append("id", id);
     formData.append("schoolName", schoolName);
     formData.append("degree", degree);
     formData.append("qpi", qpi);
@@ -39,6 +37,7 @@ const EditEducation = ({educationData, degreeData}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      
       navigate(0)
     } catch (error) {
       console.error("Error creating education:", error);
@@ -46,9 +45,9 @@ const EditEducation = ({educationData, degreeData}) => {
   };
 
   const handleStartDateChange = (startDate) => {
-    console.log(startDate);
+    // console.log(startDate);
     const start = startDate.toISOString();
-    console.log(start);
+    // console.log(start);
     setStartDate(start);
   };
 
@@ -84,21 +83,16 @@ const EditEducation = ({educationData, degreeData}) => {
                   value={schoolName}
                   onChange={(e) => setSchoolName(e.target.value)}
                 />
-                {console.log(degreeData)}
-                {degreeData.find((deg) => deg.id === educData.degreeId) && (
+               
                   <input
                     type="text"
                     id="degree"
                     placeholder="Degree"
                     className="input input-bordered w-full text-center"
-                    value={
-                      degreeData.find((deg) => deg.id === educData.degreeId)
-                        .degreeName
-                    }
+                     value={degree}
                     onChange={(e) => setDegree(e.target.value)}
                   />
-                )}
-
+                
                 <input
                   type="text"
                   id="qpi"
