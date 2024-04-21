@@ -106,9 +106,7 @@ const updateCompany = async (req, res) => {
 
     const updateUser = await prisma.user.update({
       where: {
-        company:{
-          userId: userIdCookie
-        }
+        id: userIdCookie
       },
       data: {
         username,
@@ -124,7 +122,7 @@ const updateCompany = async (req, res) => {
         company: {
           update: {
             where: {
-              id: companyId,
+              userId: userIdCookie
             },
             data: {
               companyName,

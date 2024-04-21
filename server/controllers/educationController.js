@@ -1,7 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
 let userIdCookie = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be"
 
 const getEducation = async (req, res) => {

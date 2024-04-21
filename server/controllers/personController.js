@@ -146,9 +146,7 @@ const updatePerson = async (req, res) => {
 
     const updatePerson = await prisma.user.update({
       where: {
-       person:{
-        userId: userIdCookie
-       }
+       id:userIdCookie
       },
       data: {
         username,
