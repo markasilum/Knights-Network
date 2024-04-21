@@ -24,6 +24,7 @@ model User {
   profPic       String?
   biography     String   @db.Text
   verified      Boolean
+  isArchived  Boolean? @default(false)
   setting AccountSettings?
   role          Roles?
   person        Person?

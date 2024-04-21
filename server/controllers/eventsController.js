@@ -4,10 +4,7 @@ const prisma = new PrismaClient();
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 
-let userId = personUserId;
-
-let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
-let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
+let userIdCookie = companyUserId
 const getEventsList = async (req, res) => {
     try{
         const jobPosts = await prisma.events.findMany({
@@ -115,7 +112,7 @@ const getEventDetails = async (req, res) => {
             status: "pending",
             company:{
               connect:{
-                id: companyId
+                userId: userIdCookie
               },
             },
             event:{
@@ -139,7 +136,9 @@ const getEventDetails = async (req, res) => {
       const data = await prisma.companyEvents.findMany({
         where:{
           eventId: id,
-          companyId: companyId
+          company:{
+            userId: userIdCookie
+          }
         }
       });
 

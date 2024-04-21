@@ -1,16 +1,15 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
-let personId2 = "cd8dbd9b-6ac3-4bbf-8d55-c4ceb339dac8";
-
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let personUserId2 = "bdb007b8-917f-4c93-ac85-2186970525d7";
+let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+
+let userIdCookie = personUserId
 
 const getPersonDetails = async (req, res) => {
   const data = await prisma.person.findUnique({
     where: {
-      id: personId2,
+      userId: userIdCookie
     },
   });
   res.json(data);
@@ -22,7 +21,7 @@ const getPersonCredentials = async (req, res) => {
 
   const data = await prisma.person.findUnique({
     where: {
-      id: id,
+      userId: userIdCookie
     },
     include:{
       user: true,
@@ -147,7 +146,9 @@ const updatePerson = async (req, res) => {
 
     const updatePerson = await prisma.user.update({
       where: {
-        id: personUserId,
+       person:{
+        userId: userIdCookie
+       }
       },
       data: {
         username,
