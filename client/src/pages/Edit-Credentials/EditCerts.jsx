@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EditCerts = ({certData}) => {
     const [certName, setCertName] = useState(certData.certName);
     const [certDetails, setCertDetails] = useState(certData.certDetails);
     const [certPhoto, setCertPhoto] = useState(certData.certPhoto);
     const [certId, setCertId] = useState(certData.id);
-  
+    const navigate = useNavigate();
+    
     const handleSubmit = async (event) => {
   
       const formData = new FormData();
@@ -31,6 +33,8 @@ const EditCerts = ({certData}) => {
         if (!response.ok) {
           throw new Error(responseData.error);
         }
+
+        navigate(0)
       } catch (error) {
         console.error("Error creating license:", error);
       }

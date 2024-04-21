@@ -18,7 +18,7 @@ const getPersonExperience = async (req, res) => {
         },
       });
 
-      console.log(data)
+      // console.log(data)
   
       res.json(data);
       
@@ -84,7 +84,7 @@ const updateExperience = async (req, res) => {
 
     // Send a response with the newly created person
     res.status(201).json(updateExperience);
-    console.log(updateExperience)
+    // console.log(updateExperience)
 
   }catch{
     console.error('Error updating experience:', error);
