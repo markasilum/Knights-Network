@@ -1,10 +1,13 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
 
-let userIdCookie = companyUserId
+  return decodedToken.id;
+};
 const getEventsList = async (req, res) => {
     try{
         const jobPosts = await prisma.events.findMany({
@@ -105,6 +108,8 @@ const getEventDetails = async (req, res) => {
   }
 
   const joinEvent = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req)
+
     try {
         const { id } = req.body;
 
@@ -132,6 +137,8 @@ const getEventDetails = async (req, res) => {
   }
 
   const checkIfJoined = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req)
+
     try{    
       const {id} = req.query
       const data = await prisma.companyEvents.findMany({

@@ -8,7 +8,7 @@ const EditCompanyProfile = () => {
   const [companyName, setCompanyName] = useState("");
   const [companySize, setCompanySize] = useState("");
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("fakepassword");
   const [streetAddress, setStreetAdd] = useState("");
   const [cityName, setCityName] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -28,7 +28,6 @@ const EditCompanyProfile = () => {
         const result = await response.json();
 
         setUsername(result.username);
-        setPassword(result.password);
         setStreetAdd(result.streetAddress);
         setCityName(result.cityName);
         setZipCode(result.zipCode);
@@ -196,7 +195,7 @@ const EditCompanyProfile = () => {
                 </div>
               </label>
               <input
-                type="text"
+                type="password"
                 id="password"
                 placeholder="Password"
                 className="input input-bordered w-full "

@@ -162,7 +162,6 @@ import SideBar from "../../components/SideBar";
             )}{userRole.roleName == "company"&&(
               <Link className="underline" to="/editcompprofile">Edit Profile</Link>
             )}
-            <span>Temp: {data.id}</span>
           </div>
 
           <div className="mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 col-span-2">

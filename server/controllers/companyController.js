@@ -1,16 +1,22 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
 
-let userIdCookie = companyUserId
+  return decodedToken.id;
+};
 
 const getCompanyDetails = async (req, res) => {
+
+  const userId = getUserIdFromJWT(req)
+
   const data = await prisma.company.findUnique({
     where: {
-      userId: userIdCookie
+      userId: userId
     },
   });
 
@@ -82,6 +88,8 @@ const createCompany = async (req, res) => {
 };
 
 const updateCompany = async (req, res) => {
+  const userId = getUserIdFromJWT(req)
+
   try {
     // Extract data from the request body
     const {
@@ -108,7 +116,7 @@ const updateCompany = async (req, res) => {
 
     const updateUser = await prisma.user.update({
       where: {
-        id: userIdCookie
+        id: userId
       },
       data: {
         username,
@@ -124,7 +132,7 @@ const updateCompany = async (req, res) => {
         company: {
           update: {
             where: {
-              userId: userIdCookie
+              userId: userId
             },
             data: {
               companyName,

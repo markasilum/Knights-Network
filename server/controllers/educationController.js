@@ -1,9 +1,17 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-let userIdCookie = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be"
+const jwt = require("jsonwebtoken");
+
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+
+  return decodedToken.id;
+};
 
 const getEducation = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
   try {
     const data = await prisma.education.findMany({
       where: {
@@ -28,6 +36,7 @@ const getEducation = async (req, res) => {
 };
 
 const createEducation = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
   try {
     // Extract data from the request body
     const { schoolName, degree, qpi, startDate, endDate, awards } = req.body;
@@ -72,6 +81,7 @@ const createEducation = async (req, res) => {
 };
 
 const updateEducation = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
   try {
     // Extract data from the request body
     const { id, schoolName, degree, qpi, startDate, endDate, awards } = req.body;
