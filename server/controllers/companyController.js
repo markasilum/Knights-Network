@@ -1,10 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 
-let userIdCookie = companyUserId
+let userIdCookie = "49c8d7fb-666b-42e0-9710-5e23a275b481"
 
 const getCompanyDetails = async (req, res) => {
   const data = await prisma.company.findUnique({
@@ -44,11 +45,11 @@ const createCompany = async (req, res) => {
     ? req.files["businessPermit"][0].filename
     : null;
 
-  console.log(req.files)
+    const hashPass = await bcrypt.hash(password,10)
   await prisma.user.create({
     data: {
       username,
-      password,
+      password: hashPass,
       streetAddress,
       cityName,
       zipCode,
@@ -81,8 +82,6 @@ const createCompany = async (req, res) => {
 };
 
 const updateCompany = async (req, res) => {
-  //to do: include id in the request body
-  console.log(req.file);
   try {
     // Extract data from the request body
     const {
@@ -104,13 +103,16 @@ const updateCompany = async (req, res) => {
       profPic = req.file.filename;
     }
 
+    //hash password
+    const hashPass = await bcrypt.hash(password,10)
+
     const updateUser = await prisma.user.update({
       where: {
         id: userIdCookie
       },
       data: {
         username,
-        password,
+        password: hashPass,
         streetAddress,
         cityName,
         zipCode,
