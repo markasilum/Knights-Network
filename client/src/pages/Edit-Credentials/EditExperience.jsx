@@ -28,6 +28,7 @@ const EditExperience = ({expData}) => {
       const response = await fetch("http://localhost:3000/experience/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();

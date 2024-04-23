@@ -24,6 +24,8 @@ const LicenseForm = () => {
       const response = await fetch("http://localhost:3000/license/create", {
         method: "POST",
         body: formData,
+        credentials:'include'
+
       });
 
       const responseData = await response.json();

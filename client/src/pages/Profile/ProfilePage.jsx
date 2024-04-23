@@ -16,7 +16,9 @@ import SideBar from "../../components/SideBar";
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/role");
+        const response = await fetch("http://localhost:3000/user/role",{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setUserRole(getUserResult);
       } catch (error) {
@@ -27,7 +29,9 @@ import SideBar from "../../components/SideBar";
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/details");
+        const response = await fetch("http://localhost:3000/user/details",{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setUserData(getUserResult);
         // console.log(getUserResult)
@@ -38,7 +42,9 @@ import SideBar from "../../components/SideBar";
 
     const fetchPersonData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/person/details");
+        const response = await fetch("http://localhost:3000/person/details",{
+          credentials:'include'
+        });
         const getPersonResult = await response.json();
         setData(getPersonResult);
       } catch (error) {
@@ -47,7 +53,9 @@ import SideBar from "../../components/SideBar";
     };
     const fetchCompanyData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/company/details");
+        const response = await fetch("http://localhost:3000/company/details",{
+          credentials:'include'
+        });
         const getPersonResult = await response.json();
         setCompData(getPersonResult);
       } catch (error) {
@@ -57,7 +65,9 @@ import SideBar from "../../components/SideBar";
 
     const fetchEducation = async () => {
       try {
-        const response = await fetch("http://localhost:3000/education/index");
+        const response = await fetch("http://localhost:3000/education/index",{
+          credentials:'include'
+        });
         const getEducRes = await response.json();
         setEducData(getEducRes);
         // console.log(getEducRes)
@@ -68,7 +78,9 @@ import SideBar from "../../components/SideBar";
 
     const fetchCompanyJobPost = async () => {
       try {
-        const response = await fetch("http://localhost:3000/jobpost/company/index");
+        const response = await fetch("http://localhost:3000/jobpost/company/index",{
+          credentials:'include'
+        });
         const getJobRes = await response.json();
         setCompJobPostData(getJobRes);
         // console.log(getEducRes)

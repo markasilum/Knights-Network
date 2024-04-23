@@ -10,7 +10,9 @@ const SelectEditLicense = () => {
     useEffect(()=>{
     const fetchLicense = async () =>{
       try {
-        const response = await fetch(`http://localhost:3000/license/person/index`);
+        const response = await fetch(`http://localhost:3000/license/person/index`,{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setLicense(getUserResult);
         // console.log(getUserResult)

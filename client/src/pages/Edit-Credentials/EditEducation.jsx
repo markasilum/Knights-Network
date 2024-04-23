@@ -30,6 +30,7 @@ const EditEducation = ({educationData, degreeData}) => {
       const response = await fetch("http://localhost:3000/education/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();

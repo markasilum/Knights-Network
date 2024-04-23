@@ -108,7 +108,8 @@ const EditPersonProfile = () => {
         // Send the article data to your server
         const response = await fetch('http://localhost:3000/person/update', {
           method: 'PUT',
-          body: formData
+          body: formData,
+          credentials:'include'
         });
 
       navigate("/profile")

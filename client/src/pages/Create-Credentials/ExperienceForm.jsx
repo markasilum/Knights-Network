@@ -29,6 +29,8 @@ const ExperienceForm = () => {
       const response = await fetch("http://localhost:3000/experience/create", {
         method: "POST",
         body: formData,
+        credentials:'include'
+
       });
 
       const responseData = await response.json();

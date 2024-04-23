@@ -133,6 +133,7 @@ const handleSubmit = async (event) => {
       {
         method: "POST",
         body: formData,
+        credentials:'include'
       }
     );
 

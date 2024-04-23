@@ -25,7 +25,9 @@ const EventDetail = () => {
   const fetchEventPartners = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/events/check?id=${eventId}`
+        `http://localhost:3000/events/check?id=${eventId}`,{
+          credentials:'include'
+        }
       );
       const getApplicationData = await response.json();
       setPartners(getApplicationData);
@@ -40,7 +42,9 @@ const EventDetail = () => {
     const fetchEventDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/events/details?id=${eventId}`
+          `http://localhost:3000/events/details?id=${eventId}`,{
+            credentials:'include'
+          }
         );
         const getEventRes = await response.json();
         setDate(getEventRes.eventDateTime)
@@ -63,6 +67,7 @@ const EventDetail = () => {
         headers:{
           "Content-Type": "application/json"
         },
+        credentials:'include',
         body: JSON.stringify({'id':eventId})
       });
       const responseData = await response.json();

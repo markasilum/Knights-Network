@@ -9,7 +9,9 @@ const Homepage = () => {
 
     const fetchJobPosts = async () => {
         try {
-          const response = await fetch("http://localhost:3000/jobpost/index");
+          const response = await fetch("http://localhost:3000/jobpost/index",{
+            credentials:'include'
+          });
           const getJobPostsResult = await response.json();
           setJobPosts(getJobPostsResult);
         } catch (error) {

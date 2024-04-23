@@ -15,7 +15,9 @@ const EventsDashboard = () => {
     useEffect(()=>{
           const fetchEventsData = async () => {
               try {
-                const response = await fetch("http://localhost:3000/events/index");
+                const response = await fetch("http://localhost:3000/events/index",{
+                  credentials:'include'
+                });
                 const getEventRes = await response.json();
                 setEventsData(getEventRes);
               } catch (error) {

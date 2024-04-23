@@ -10,7 +10,9 @@ const EventPartners = () => {
   const fetchEventPartners = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/events/partners?id=${eventId}`
+        `http://localhost:3000/events/partners?id=${eventId}`,{
+          credentials:'include'
+        }
       );
       const getEventRes = await response.json();
       setEventData(getEventRes);
@@ -36,6 +38,7 @@ const EventPartners = () => {
       const response = await fetch("http://localhost:3000/events/set-status", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
     } catch (error) {
       console.error("Error updating status:", error);

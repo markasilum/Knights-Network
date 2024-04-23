@@ -24,7 +24,9 @@ const JobPostDetails = () => {
     const fetchJobPostDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/jobpost/details?id=${jobPostId}`
+          `http://localhost:3000/jobpost/details?id=${jobPostId}`,{
+            credentials:'include'
+          }
         );
         const getJobRes = await response.json();
         setJobData(getJobRes);
@@ -36,7 +38,9 @@ const JobPostDetails = () => {
     const fetchJobPostSkills = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`
+          `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`,{
+            credentials:'include'
+          }
         );
         const getJobSkillsRes = await response.json();
         setJobSkills(getJobSkillsRes);
@@ -48,7 +52,9 @@ const JobPostDetails = () => {
     const fetchJobPostLicense = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`
+          `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`,{
+            credentials:'include'
+          }
         );
         const getJobSkillsRes = await response.json();
         setJobLicense(getJobSkillsRes);
@@ -61,7 +67,9 @@ const JobPostDetails = () => {
     const fetchJobPostDegree = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`
+          `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`,{
+            credentials:'include'
+          }
         );
         const getJobDegreeRes = await response.json();
         setJobDegree(getJobDegreeRes);
@@ -73,7 +81,9 @@ const JobPostDetails = () => {
     const fetchApplication = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/application/check?id=${jobPostId}`
+          `http://localhost:3000/application/check?id=${jobPostId}`,{
+            credentials:'include'
+          }
         );
         const getApplicationData = await response.json();
         setApplicationData(getApplicationData);
@@ -100,7 +110,8 @@ const JobPostDetails = () => {
         headers:{
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({'id':jobData.id})
+        body: JSON.stringify({'id':jobData.id}),
+        credentials:'include'
       });
       const responseData = await response.json();
 

@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 
-let userIdCookie = "49c8d7fb-666b-42e0-9710-5e23a275b481"
+let userIdCookie = companyUserId
 
 const getCompanyDetails = async (req, res) => {
   const data = await prisma.company.findUnique({
