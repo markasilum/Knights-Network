@@ -1,12 +1,17 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
 
-let userIdCookie = companyUserId
+  return decodedToken.id;
+};
 
 const jobPostIndex = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
   try {
     const jobPosts = await prisma.jobPost.findMany({
       orderBy: [
@@ -66,6 +71,8 @@ const updateJobPostStatus = async (req, res) => {
 };
 
 const companyJobPostIndex = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
   try {
     const data = await prisma.jobPost.findMany({
       where: {
@@ -86,6 +93,8 @@ const companyJobPostIndex = async (req, res) => {
 };
 
 const createJobPost = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
   try {
     // Extract data from the request body
     let {
@@ -196,6 +205,8 @@ const createJobPost = async (req, res) => {
 };
 
 const updateJobPost = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
   try {
     // Extract data from the request body
     let {

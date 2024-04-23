@@ -5,12 +5,18 @@ const multer  = require('multer');
 const prisma = new PrismaClient();
 
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const jwt = require("jsonwebtoken");
 
-let userIdCookie = personUserId
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+
+  return decodedToken.id;
+};
 
 const apply = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
     try {
       const { id } = req.body;
       // Create a new person record in the database using Prisma
@@ -44,6 +50,8 @@ const apply = async (req, res) => {
   }
 
   const getListOfApplications = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req)
+
     try{    
       const {id} = req.query
       const data = await prisma.application.findMany({
@@ -76,6 +84,8 @@ const apply = async (req, res) => {
   }
 
   const checkIfApplied = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req)
+
     try{    
       const {id} = req.query
       const data = await prisma.application.findMany({

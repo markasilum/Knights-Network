@@ -1,12 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const jwt = require("jsonwebtoken");
 
-let userIdCookie = personUserId
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+
+  return decodedToken.id;
+};
+
 
 const getPersonSkills = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
     try {
       const skills = await prisma.personSkill.findMany({
         where: {
@@ -33,6 +39,8 @@ const getPersonSkills = async (req, res) => {
     }
   };
 const createPersonSkill = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
     try {
       // Extract data from the request body
       const { skillName } = req.body;

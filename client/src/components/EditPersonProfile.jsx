@@ -15,7 +15,7 @@ const EditPersonProfile = () => {
     const [lastName, setLastName] = useState('');
     const [suffix, setSuffix] = useState('');
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('fakepassword');
     const [streetAddress, setStreetAdd] = useState('');
     const [cityName, setCityName] = useState('');
     const [zipCode, setZipCode] = useState('');
@@ -30,11 +30,12 @@ const EditPersonProfile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/user/details');
+            const response = await fetch('http://localhost:3000/user/details',{
+              credentials:'include'
+            });
             const result = await response.json();
 
                 setUsername(result.username);
-                setPassword(result.password);
                 setStreetAdd(result.streetAddress)
                 setCityName(result.cityName);
                 setZipCode(result.zipCode);
@@ -50,7 +51,9 @@ const EditPersonProfile = () => {
         };
         const fetchPersonData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/person/details');
+            const response = await fetch('http://localhost:3000/person/details',{
+              credentials:'include'
+            });
             const result = await response.json();
             setFirstName(result.firstName);
             setMiddleName(result.middleName);
@@ -201,7 +204,7 @@ const EditPersonProfile = () => {
               <span className="label-text font-bold">Password</span>
             </div>
           </label>
-          <input type="text" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
         </div>
   
