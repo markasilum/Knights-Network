@@ -2,10 +2,14 @@ import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UniversitySealWhite from "../assets/UniversitySealWhite.png";
 import { RoleContext } from "../App";
-import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useNavigate } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
+
 const TopBar = () => {
   const { role } = useContext(RoleContext);
+ 
+
   return (
     <div className="navbar bg-primary text-base-100 text-2xl max-h-14 flex flex-row w-full">
       <div className="flex flex-row w-[38%]">
@@ -27,6 +31,12 @@ const TopBar = () => {
         )}
         {role.roleName == "admin" && (
           <Link to="/events">
+            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+          </Link>
+        )}
+
+        {!role && (
+          <Link to="/login">
             <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}
@@ -67,10 +77,7 @@ const TopBar = () => {
             </Link>
           </li>
           <li>
-            <Link to={"/login"}>
-              <LogoutIcon />
-              Logout
-            </Link>
+            <LogoutButton/>
           </li>
         </ul>
       </div>

@@ -54,10 +54,9 @@ const loginReceive = async (req, res) => {
 //example
 const logoutUser = async (req, res) => {
   try {
-    const cookies = req.cookies;
-    console.log(cookies.jwt);
-    res.send("get cookie")
-    // res.json(cookies);
+    console.log("logout clicked")
+    res.cookie('jwt','',{maxAge:1})
+    res.redirect('/login')
   } catch (error) {
     console.log(error);
   }

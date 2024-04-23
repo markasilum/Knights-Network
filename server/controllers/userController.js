@@ -6,8 +6,19 @@ let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 let personUserId2 = "bdb007b8-917f-4c93-ac85-2186970525d7"
 let adminId = "88000b90-b82e-4860-a8e6-34545bda89cb"
+const jwt = require("jsonwebtoken");
 
 let userId = companyUserId;
+const getUserIdFromJWT = (req) => {
+  // Extract JWT from request (assuming it's stored in a cookie)
+  const token = req.cookies.jwt;
+
+  // Decode the JWT to extract userId
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+
+  // Extract userId from decoded JWT payload
+  return decodedToken.userId;
+};
 
 const role = async (req, res) => {
     const data = await prisma.roles.findUnique({
@@ -15,6 +26,9 @@ const role = async (req, res) => {
         userId: userId,
       },
     });
+    const token = req.cookies.jwt;
+    const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+    console.log(decodedToken.id)
     res.json(data);
   }
 
