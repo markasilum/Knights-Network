@@ -4,21 +4,20 @@ const prisma = new PrismaClient();
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
 
-let userId = personUserId;
-
-let personId = "9689255f-6e15-4073-8c68-5d39ad8f9003";
-let companyId = "7c2b0ac0-a50b-4ff5-9b0c-b7c13d45a4fe";
-
-
+let userIdCookie = personUserId
 const getPersonExperience = async (req, res) => {
     try{    
       const data = await prisma.experience.findMany({
         where:{
-          personId:personId,
-        },
+          person:{
+            userId: userIdCookie
+          }
+        },orderBy:{
+          endDate:"desc"
+        }
       });
 
-      console.log(data)
+      // console.log(data)
   
       res.json(data);
       
@@ -45,7 +44,7 @@ const createExperience = async (req, res) => {
         endDate,
         person:{
           connect:{
-              id:personId,
+              userId:userIdCookie,
           }
         },
       },
@@ -84,7 +83,7 @@ const updateExperience = async (req, res) => {
 
     // Send a response with the newly created person
     res.status(201).json(updateExperience);
-    console.log(updateExperience)
+    // console.log(updateExperience)
 
   }catch{
     console.error('Error updating experience:', error);

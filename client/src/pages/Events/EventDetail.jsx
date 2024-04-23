@@ -138,11 +138,11 @@ const EventDetail = () => {
 
               {partners.length != 0 &&
                 role.roleName === "company" &&
-                partners[0].status === "pending" && (
+               
                   <div className="w-full flex justify-end">
                     <ButtonSuccess text={"Pending"} />
                   </div>
-                )}
+                }
             </div>
           </div>
         </div>

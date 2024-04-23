@@ -189,10 +189,9 @@ const ResumeCard = () => {
         </div>
 
         <div className="pl-5">
-          {/* <span className="font-normal">{skills.join(", ")}</span> */}
           <ul className="font-normal list-disc">
-            {skills.map((item, index) => (
-                <li key={index}>{item}</li>
+            {skills.map((skill) => (
+                <li key={skill.id}>{skill.skillName}</li>
             ))}
         </ul>
         </div>
@@ -229,12 +228,11 @@ const ResumeCard = () => {
         </div>
 
         <div className="pl-5">
-          {/* <span className="font-normal">{skills.join(", ")}</span> */}
-          {/* <ul className="font-normal list-disc">
-            {licenses.map((item, index) => (
-                <li key={index}>{item}</li>
+          <ul className="font-normal list-disc">
+            {licenses.map((license) => (
+                <li key={license.id}>{license.licenseName}</li>
             ))}
-        </ul> */}
+        </ul>
         </div>
 
         <div className="flex flex-row justify-center border-b-2 border-solid border-black mb-2">
@@ -242,10 +240,9 @@ const ResumeCard = () => {
         </div>
 
         <div className="pl-5">
-          {/* <span className="font-normal">{skills.join(", ")}</span> */}
           <ul className="font-normal list-disc">
-            {certs.map((item, index) => (
-                <li key={index}>{item}</li>
+            {certs.map((cert) => (
+                <li key={cert.id}>{cert.certName}</li>
             ))}
         </ul>
         </div>

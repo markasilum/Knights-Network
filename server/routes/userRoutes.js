@@ -8,4 +8,7 @@ router.get("/index/alumni", userController.userIndexAlumni)
 router.get("/index/students", userController.userIndexStudents)
 router.get("/index/companies", userController.userIndexCompany)
 router.get("/verify", userController.verifyUser)
+router.get("/setting", userController.userSetting)
+
+router.put("/setting/update", userController.userSettingUpdate)
 module.exports = router;

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "react-datetime/css/react-datetime.css";
 import DateTime from "react-datetime";
 import DateToWords from '../../components/DateFormatter';
+import { useNavigate } from "react-router-dom";
 
 const EditExperience = ({expData}) => {
     const [expId, setExpId] = useState(expData.id);
@@ -10,11 +11,9 @@ const EditExperience = ({expData}) => {
   const [jobDetails, setJobDetails] = useState(expData.jobDetails);
   const [startDate, setStartDate] = useState(expData.startDate);
   const [endDate, setEndDate] = useState(expData.endDate);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    // event.preventDefault();
-    
-    console.log(startDate);
 
     const formData = new FormData();
 
@@ -36,6 +35,8 @@ const EditExperience = ({expData}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      
+      navigate(0)
     } catch (error) {
       console.error("Error creating education:", error);
     }
