@@ -57,7 +57,8 @@ const CreatePersonForm = () => {
     try {
       const response = await fetch('http://localhost:3000/person/create', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();

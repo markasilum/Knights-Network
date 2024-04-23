@@ -52,7 +52,9 @@ function App() {
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/role");
+        const response = await fetch("http://localhost:3000/user/role",{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setUserRole(getUserResult);
       } catch (error) {

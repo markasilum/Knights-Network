@@ -8,7 +8,9 @@ const CertificationsCard = () => {
 useEffect(()=>{
     const fetchCerts = async () =>{
       try {
-        const response = await fetch(`http://localhost:3000/certification/person/index`);
+        const response = await fetch(`http://localhost:3000/certification/person/index`,{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setCerts(getUserResult);
         // console.log(getUserResult)

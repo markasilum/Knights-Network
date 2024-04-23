@@ -24,7 +24,7 @@ const role = async (req, res) => {
         id: userId,
       },
       include:{
-        person: {},
+        person: true,
         company: true,
       }
     });

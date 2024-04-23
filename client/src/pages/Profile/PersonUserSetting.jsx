@@ -24,7 +24,8 @@ const PersonUserSetting = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(settingData)
+        body: JSON.stringify(settingData),
+        credentials:'include'
       });
 
       const responseData = await response.json();

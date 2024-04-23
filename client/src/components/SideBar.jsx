@@ -20,7 +20,6 @@ const SideBar = () => {
       <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/jobpost/dashboard"} />
       <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
-      <SidebarButton text={"Logout"} onClick={"/login"} />
     </ul>
   )
 
@@ -31,7 +30,6 @@ const SideBar = () => {
       <SidebarButton text={"Applications"} icon={<ContactPageIcon fontSize="large"/>} onClick={"/applications"} />
       <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
-      <SidebarButton text={"Logout"} onClick={"/login"} />
     </ul>
   )
 
@@ -40,7 +38,6 @@ const SideBar = () => {
     <SidebarButton text={"Events"} onClick={"/eventslist"} />
     <SidebarButton text={"Users"} onClick={"/verify-users/alumni"} />
     <SidebarButton text={"Calendar"} />
-    <SidebarButton text={"Logout"} onClick={"/login"} />
   </ul>
   
   )

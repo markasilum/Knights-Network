@@ -10,7 +10,9 @@ const JobPostsDashboard = () => {
 
  const fetchCompanyJobPost = async () => {
   try {
-    const response = await fetch("http://localhost:3000/jobpost/company/index");
+    const response = await fetch("http://localhost:3000/jobpost/company/index",{
+      credentials:'include'
+    });
     const getJobRes = await response.json();
     setJobPostData(getJobRes);
   } catch (error) {
@@ -33,7 +35,8 @@ const JobPostsDashboard = () => {
    try {
     const response = await fetch('http://localhost:3000/jobpost/set-status', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials:'include'
       });
 
       fetchCompanyJobPost()  

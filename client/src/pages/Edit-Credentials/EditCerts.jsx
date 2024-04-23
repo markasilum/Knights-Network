@@ -25,6 +25,7 @@ const EditCerts = ({certData}) => {
           {
             method: "PUT",
             body: formData,
+            credentials:'include'
           }
         );
   

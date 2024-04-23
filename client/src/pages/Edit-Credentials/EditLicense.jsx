@@ -25,6 +25,7 @@ const EditLicense = ({licenseData}) => {
       const response = await fetch("http://localhost:3000/license/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();

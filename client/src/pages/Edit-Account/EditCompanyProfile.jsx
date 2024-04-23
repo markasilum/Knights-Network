@@ -22,7 +22,9 @@ const EditCompanyProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/details");
+        const response = await fetch("http://localhost:3000/user/details",{
+          credentials:'include'
+        });
         const result = await response.json();
 
         setUsername(result.username);
@@ -41,7 +43,9 @@ const EditCompanyProfile = () => {
     };
     const fetchCompanyData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/company/details");
+        const response = await fetch("http://localhost:3000/company/details",{
+          credentials:'include'
+        });
         const result = await response.json();
         setCompanyName(result.companyName);
         setCompanySize(result.companySize);
@@ -92,6 +96,7 @@ const EditCompanyProfile = () => {
       const response = await fetch("http://localhost:3000/company/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();

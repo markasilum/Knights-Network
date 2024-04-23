@@ -15,6 +15,7 @@ const getEventsList = async (req, res) => {
           ],
         })
         res.json(jobPosts);
+
       }catch(error){
         console.error('Error: ', error)
         res.status(500).json({ error: 'Internal server error' });

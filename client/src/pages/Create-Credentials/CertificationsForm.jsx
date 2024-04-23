@@ -23,6 +23,8 @@ const CertificationsForm = () => {
         {
           method: "POST",
           body: formData,
+          credentials:'include'
+
         }
       );
 

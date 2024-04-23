@@ -12,7 +12,9 @@ const ResumeView = () => {
     const getPersonCredentials = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/person/credentials?id=${personId}`
+          `http://localhost:3000/person/credentials?id=${personId}`,{
+            credentials:'include'
+          }
         );
         const getCredReq = await response.json();
         setPersonData(getCredReq);
