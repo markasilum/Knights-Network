@@ -21,7 +21,7 @@ const getPersonCredentials = async (req, res) => {
 
   const data = await prisma.person.findUnique({
     where: {
-      userId: userIdCookie
+      id: id
     },
     include:{
       user: true,
