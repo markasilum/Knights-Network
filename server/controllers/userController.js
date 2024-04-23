@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 
 let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
 let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
@@ -154,6 +155,18 @@ const role = async (req, res) => {
         }
       });
       res.status(201).json(data);
+      
+      
+    } catch (error) {
+      console.error("Error getting company index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  const login =  async (req, res) => {
+    console.log(req.query)
+    try {
+      
       
       
     } catch (error) {
