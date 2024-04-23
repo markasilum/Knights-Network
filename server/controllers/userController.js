@@ -30,6 +30,36 @@ const role = async (req, res) => {
     res.json(data);
   }
 
+  const userSetting =  async (req, res) => {
+    const data = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select:{
+        setting: true
+      }
+    });
+    res.json(data);
+    // console.log(data)
+  }
+
+  const userSettingUpdate =  async (req, res) => {
+    const settingData = req.body
+    console.log(settingData)
+    const updatedAccountSettings = await prisma.accountSettings.upsert({
+      where: {
+        userId
+      },
+      update: settingData,
+      create: {
+        userId,
+        ...settingData
+      }
+    });
+
+    res.json(updatedAccountSettings);
+  }
+
   const userIndexAlumni =  async (req, res) => {
     try {
       const data = await prisma.roles.findMany({
@@ -142,4 +172,6 @@ module.exports ={
     userIndexStudents,
     userIndexCompany,
     verifyUser,
+    userSetting,
+    userSettingUpdate
 }

@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import DateTime from "react-datetime";
+import { useNavigate } from "react-router-dom";
 
 const EditLicense = ({licenseData}) => {
   const[id, setId] = useState(licenseData.id);
   const [licenseName, setLicenseName] = useState(licenseData.licenseName);
   const [licensePic, setLicensePic] = useState(licenseData.licensePic);
   const [licenseValidity, setLicenseValidity] = useState(licenseData.licenseValidity);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
+    
     const formData = new FormData();
 
     if (licensePic) {
@@ -29,6 +32,7 @@ const EditLicense = ({licenseData}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      navigate(0)
     } catch (error) {
       console.error("Error creating license:", error);
     }
