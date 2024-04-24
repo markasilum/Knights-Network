@@ -112,7 +112,12 @@ const updateCompany = async (req, res) => {
     }
 
     //hash password
-    const hashPass = await bcrypt.hash(password,10)
+    let hashPass = ""
+    if(password){
+       hashPass = await bcrypt.hash(password,10)
+    }else{
+      console.log("password not updated")
+    }
 
     const updateUser = await prisma.user.update({
       where: {
@@ -120,7 +125,7 @@ const updateCompany = async (req, res) => {
       },
       data: {
         username,
-        password: hashPass,
+        ...(hashPass && { password: hashPass }),
         streetAddress,
         cityName,
         zipCode,

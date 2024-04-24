@@ -8,7 +8,7 @@ const EditCompanyProfile = () => {
   const [companyName, setCompanyName] = useState("");
   const [companySize, setCompanySize] = useState("");
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("fakepassword");
+  const [password, setPassword] = useState("");
   const [streetAddress, setStreetAdd] = useState("");
   const [cityName, setCityName] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -197,8 +197,8 @@ const EditCompanyProfile = () => {
               <input
                 type="password"
                 id="password"
-                placeholder="Password"
-                className="input input-bordered w-full "
+                placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
+                className="input input-bordered w-full placeholder-black"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

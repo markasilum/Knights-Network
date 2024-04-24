@@ -15,7 +15,7 @@ const EditPersonProfile = () => {
     const [lastName, setLastName] = useState('');
     const [suffix, setSuffix] = useState('');
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('fakepassword');
+    const [password, setPassword] = useState('');
     const [streetAddress, setStreetAdd] = useState('');
     const [cityName, setCityName] = useState('');
     const [zipCode, setZipCode] = useState('');
@@ -204,7 +204,7 @@ const EditPersonProfile = () => {
               <span className="label-text font-bold">Password</span>
             </div>
           </label>
-          <input type="password" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" id="password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" className="input input-bordered w-full placeholder-black" value={password} onChange={(e) => setPassword(e.target.value)}/>
           </div>
         </div>
   
