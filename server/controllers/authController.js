@@ -10,6 +10,12 @@ const createToken = (id) => {
   });
 };
 
+function exclude(user, keys) {
+  return Object.fromEntries(
+    Object.entries(user).filter(([key]) => !keys.includes(key))
+  );
+}
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -26,7 +32,7 @@ const loginUser = async (req, res) => {
     if (user) {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
-        return user;
+        return exclude(user,['password']);
       }
     } 
     
@@ -38,12 +44,14 @@ const loginUser = async (req, res) => {
 
 const loginReceive = async (req, res) => {
     const { email, password } = req.body;
-
+    console.log("login creds receive")
     try {
         const user = await loginUser({ body: { email, password } }, res);
         const token = createToken(user.id)
         res.cookie('jwt', token,{httpOnly:true, maxAge:maxAge*1000})
-        res.status(200).json({ user: user.id, role: user.role.roleName});
+        console.log(user)
+        res.cookie('email', user.emailAddress,{httpOnly:true, maxAge:maxAge*1000})
+        res.status(200).json({ user: user});
     } catch (error) {
         res.status(400).json({ error: "Invalid credentials" });
 
@@ -62,8 +70,20 @@ const logoutUser = async (req, res) => {
   }
 };
 
+const getEmailCookie = async (req, res) => {
+  try {
+    const emailCookie = req.cookies
+    console.log(emailCookie)
+    res.json(emailCookie.email)
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 module.exports = {
   loginUser,
   logoutUser,
-  loginReceive
+  loginReceive,
+  getEmailCookie
 };

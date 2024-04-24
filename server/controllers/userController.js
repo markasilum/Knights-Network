@@ -11,7 +11,12 @@ const getUserIdFromJWT = (req) => {
 
   return decodedToken.id;
 };
-
+//exclude password on get requests
+function exclude(user, keys) {
+  return Object.fromEntries(
+    Object.entries(user).filter(([key]) => !keys.includes(key))
+  );
+}
 const role = async (req, res) => {
     const userId = getUserIdFromJWT(req)
 
@@ -37,7 +42,7 @@ const role = async (req, res) => {
         company: true,
       }
     });
-    res.json(data);
+    res.json(exclude(data,['password']));
   }
 
   const userSetting =  async (req, res) => {
