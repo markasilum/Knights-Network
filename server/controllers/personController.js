@@ -81,7 +81,7 @@ const createPerson = async (req, res) => {
       ? req.files["idPhoto"][0].filename
       : null;
       
-      const hashPass = await bcrypt.hash(password,10)
+    const hashPass = await bcrypt.hash(password,10)
 
     // Create a new person record in the database using Prisma
     const newPerson = await prisma.user.create({
@@ -158,15 +158,20 @@ const updatePerson = async (req, res) => {
       profPic = req.file.filename;
     }
 
-    const hashPass = await bcrypt.hash(password,10)
-
+    let hashPass = ""
+    if(password){
+       hashPass = await bcrypt.hash(password,10)
+    }else{
+      console.log("password not updated")
+    }
+    
     const updatePerson = await prisma.user.update({
       where: {
        id:userIdCookie
       },
       data: {
         username,
-        password: hashPass,
+        ...(hashPass && { password: hashPass }),
         streetAddress,
         cityName,
         zipCode,
