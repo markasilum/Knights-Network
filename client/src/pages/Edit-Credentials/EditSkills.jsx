@@ -29,6 +29,10 @@ const EditSkills = ({skillsData}) => {
         console.error("Error updating skill:", error);
       }
     };
+
+    const handleButtonClick = (event) => {
+      handleSubmit()
+    };
   
     return (
       <dialog id={skillsData.id} className="modal">
@@ -55,10 +59,16 @@ const EditSkills = ({skillsData}) => {
               value={skillName}
               onChange={(e) => setSkillName(e.target.value)}
             />
-            <button type="submit" className={`btn btn-primary w-40 mt-5`}>
+           
+          </form>
+          <div className="modal-action">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button type="submit" className={`btn btn-primary w-40 mt-5`} onClick={handleButtonClick}>
               Update
             </button>
           </form>
+        </div>
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

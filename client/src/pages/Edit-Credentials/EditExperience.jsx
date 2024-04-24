@@ -5,13 +5,14 @@ import DateToWords from '../../components/DateFormatter';
 import { useNavigate } from "react-router-dom";
 
 const EditExperience = ({expData}) => {
-    const [expId, setExpId] = useState(expData.id);
+  const [expId, setExpId] = useState(expData.id);
   const [jobTitle, setJobTitle] = useState(expData.jobTitle);
   const [companyName, setCompanyName] = useState(expData.companyName);
   const [jobDetails, setJobDetails] = useState(expData.jobDetails);
   const [startDate, setStartDate] = useState(expData.startDate);
   const [endDate, setEndDate] = useState(expData.endDate);
   const navigate = useNavigate();
+  
 
   const handleSubmit = async (event) => {
 
@@ -36,8 +37,8 @@ const EditExperience = ({expData}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
-      
       navigate(0)
+
     } catch (error) {
       console.error("Error creating education:", error);
     }
@@ -54,6 +55,10 @@ const EditExperience = ({expData}) => {
   const handleEndDateChange = (endDate) => {
     const end = endDate.toISOString();
     setEndDate(end);
+  };
+
+  const handleButtonClick = (event) => {
+    handleSubmit()
   };
     return (
         <dialog id={expData.id} className="modal">
@@ -131,12 +136,17 @@ const EditExperience = ({expData}) => {
                     />
                   </div>
                 </div>
-                <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-                  Update Experience
-                </button>
+                
               {/* </div> */}
             </form>
-           
+            <div className="modal-action">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button type="submit" className={`btn btn-primary w-40 mt-5`} onClick={handleButtonClick}>
+              Update
+            </button>
+          </form>
+        </div>
           </div>
           <form method="dialog" className="modal-backdrop">
             <button>close</button>
