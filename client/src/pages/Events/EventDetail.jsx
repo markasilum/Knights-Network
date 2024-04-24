@@ -9,9 +9,9 @@ import SidebarAdmin from "../../components/SidebarAdmin";
 import EventEdit from "./EventEdit";
 import DateToWords from "../../components/DateFormatter";
 import DateConverter from "../../components/DateConverter";
-import { RoleContext } from "../../App";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonSuccess from "../../components/ButtonSuccess";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const EventDetail = () => {
   
@@ -19,7 +19,8 @@ const EventDetail = () => {
   const [date, setDate] = useState(new Date(eventData.eventDateTime));
   const [partners, setPartners] = useState([]);
 
-  const{role} = useContext(RoleContext)
+  const {user} = useAuthContext()
+  const role = user.user.role
   const { eventId } = useParams();
 
   const fetchEventPartners = async () => {

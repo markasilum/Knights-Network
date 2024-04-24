@@ -8,10 +8,11 @@ import FeedIcon from '@mui/icons-material/Feed';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import EventIcon from '@mui/icons-material/Event';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { RoleContext } from "../App";
+import { useAuthContext } from "../hooks/useAuthContext";
+import PeopleIcon from '@mui/icons-material/People';
 const SideBar = () => {
-  
-  const {role} = useContext(RoleContext)
+  const {user} = useAuthContext()
+  const role = user.user.role
   let userSideBar
 
   const companySidebar = (
@@ -35,9 +36,9 @@ const SideBar = () => {
 
   const adminSideBar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-    <SidebarButton text={"Events"} onClick={"/eventslist"} />
-    <SidebarButton text={"Users"} onClick={"/verify-users/alumni"} />
-    <SidebarButton text={"Calendar"} />
+    <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/eventslist"} />
+    <SidebarButton text={"Users"}  icon={<PeopleIcon fontSize="large"/>}  onClick={"/verify-users/alumni"} />
+    <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
   </ul>
   
   )

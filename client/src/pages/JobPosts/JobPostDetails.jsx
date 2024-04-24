@@ -5,12 +5,13 @@ import {useParams} from "react-router-dom";
 
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonSuccess from "../../components/ButtonSuccess";
-import { RoleContext } from "../../App";
 import EditJobPost from "./EditJobPost";
+import { useAuthContext } from "../../hooks/useAuthContext";
 const JobPostDetails = () => {
 
-  const {role} = useContext(RoleContext)
-
+  const {user} = useAuthContext()
+  const role = user.user.role
+  
   const [jobData, setJobData] = useState([]);
   const [jobSkills, setJobSkills] = useState([]);
   const [jobLicense, setJobLicense] = useState([]);

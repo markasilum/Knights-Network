@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UniversitySealWhite from "../assets/UniversitySealWhite.png";
-import { RoleContext } from "../App";
+
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const TopBar = () => {
-  const { role } = useContext(RoleContext);
- 
+  const {user} = useAuthContext()
+  const role = user.user.role
 
   return (
     <div className="navbar bg-primary text-base-100 text-2xl max-h-14 flex flex-row w-full">

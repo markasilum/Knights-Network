@@ -43,7 +43,6 @@ import ResumeView from './components/ResumeView';
 import EventPartners from './pages/Events/EventPartners';
 import PersonUserSetting from './pages/Profile/PersonUserSetting';
 
-export const RoleContext = createContext();
 function App() {
 
   const [role, setUserRole] = useState({});
@@ -67,7 +66,6 @@ function App() {
   return (
     <div className='className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	'>
       <Router>
-      <RoleContext.Provider value={{ role }}>
           <Routes>
             <Route index element={<ProfilePage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
@@ -106,7 +104,6 @@ function App() {
             <Route path='/jobpost/applicants/:jobPostId' element={<JobPostApplicants/>}/>
             <Route path='/jobpost/applicants/resume/:personId' element={<ResumeView/>}/>
           </Routes>
-          </RoleContext.Provider>
       </Router>
     </div>
   )
