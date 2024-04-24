@@ -80,10 +80,38 @@ const getEmailCookie = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+    const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+    const userId = decodedToken.id;
+
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      include:{
+        role: true
+      }
+    });
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+   
+    console.log("get current user", { user: user})
+    res.status(200).json({ user: user});
+  } catch (error) {
+    console.error(error);
+    // Send a 400 error response
+    res.status(400).json({ error: "Bad request" });
+  }
+};
+
 
 module.exports = {
   loginUser,
   logoutUser,
   loginReceive,
-  getEmailCookie
+  getEmailCookie,
+  getCurrentUser
 };

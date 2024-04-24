@@ -7,7 +7,7 @@ const EditCerts = ({certData}) => {
     const [certPhoto, setCertPhoto] = useState(certData.certPhoto);
     const [certId, setCertId] = useState(certData.id);
     const navigate = useNavigate();
-    
+  
     const handleSubmit = async (event) => {
   
       const formData = new FormData();
@@ -34,8 +34,8 @@ const EditCerts = ({certData}) => {
         if (!response.ok) {
           throw new Error(responseData.error);
         }
-
         navigate(0)
+
       } catch (error) {
         console.error("Error creating license:", error);
       }
@@ -85,6 +85,9 @@ const EditCerts = ({certData}) => {
       setCertPhoto(null);
       // Resetting the file input if needed
       document.getElementById("fileInput").value = "";
+    };
+    const handleButtonClick = (event) => {
+      handleSubmit()
     };
   
     return (
@@ -147,10 +150,16 @@ const EditCerts = ({certData}) => {
                 )
               }
             </div>
-            <button type="submit" className={`btn btn-primary w-40 mt-5`}>
+            
+          </form>
+          <div className="modal-action">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button type="submit" className={`btn btn-primary w-40 mt-5`} onClick={handleButtonClick}>
               Update
             </button>
           </form>
+        </div>
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>
