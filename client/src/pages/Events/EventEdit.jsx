@@ -12,7 +12,7 @@ const EventEdit = ({ eventData }) => {
   const [eventId, setEventId] = useState(eventData.id);
   const [eventName, setEventName] = useState(eventData.eventName);
   const [location, setLocation] = useState(eventData.eventLocation);
-  const [date, setDate] = useState(new Date(eventData.eventDateTime));
+  const [date, setDate] = useState(eventData.eventDateTime);
   const [eventDetails, setEventDetails] = useState(eventData.eventDesc);
   const [image, setImage] = useState(null);
 
@@ -37,6 +37,7 @@ const EventEdit = ({ eventData }) => {
       const response = await fetch("http://localhost:3000/events/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();
@@ -105,6 +106,7 @@ const EventEdit = ({ eventData }) => {
 
   return (
     <dialog id={eventData.id} className="modal">
+      {console.log(date)}
       <div className="modal-box w-11/12 max-w-5xl mt-10">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}

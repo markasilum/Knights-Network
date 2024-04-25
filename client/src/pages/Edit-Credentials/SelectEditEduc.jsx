@@ -12,7 +12,9 @@ const SelectEditEduc = () => {
   useEffect(() => {
     const fetchEducation = async () => {
       try {
-        const response = await fetch("http://localhost:3000/education/index");
+        const response = await fetch("http://localhost:3000/education/index",{
+          credentials:'include'
+        });
         const getEducRes = await response.json();
         // setDegreeId(getEducRes.map(educ => educ.degreeId))
         setEducData(getEducRes);
@@ -22,7 +24,9 @@ const SelectEditEduc = () => {
         const fetchDegree = async () => {
           try {
             const response = await fetch(
-              `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
+              `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`,{
+                credentials:'include'
+              }
             );
             const getUserResult = await response.json();
             setDegree(getUserResult);

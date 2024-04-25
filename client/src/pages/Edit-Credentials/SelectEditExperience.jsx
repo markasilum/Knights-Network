@@ -10,7 +10,9 @@ const SelectEditExperience = () => {
     const fetchExperience = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/experience/person/index`
+          `http://localhost:3000/experience/person/index`,{
+            credentials:'include'
+          }
         );
         const getUserResult = await response.json();
         setExperience(getUserResult);

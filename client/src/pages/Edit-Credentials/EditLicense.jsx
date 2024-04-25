@@ -25,6 +25,7 @@ const EditLicense = ({licenseData}) => {
       const response = await fetch("http://localhost:3000/license/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();
@@ -33,6 +34,7 @@ const EditLicense = ({licenseData}) => {
         throw new Error(responseData.error);
       }
       navigate(0)
+
     } catch (error) {
       console.error("Error creating license:", error);
     }
@@ -89,6 +91,10 @@ const EditLicense = ({licenseData}) => {
     setLicensePic(null);
     // Resetting the file input if needed
     document.getElementById("fileInput").value = "";
+  };
+
+  const handleButtonClick = (event) => {
+    handleSubmit()
   };
   return (
     <dialog id={licenseData.id} className="modal">
@@ -157,11 +163,17 @@ const EditLicense = ({licenseData}) => {
               }
              
             </div>
-            <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-              Update License
-            </button>
+            
           {/* </div> */}
         </form>
+        <div className="modal-action">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button type="submit" className={`btn btn-primary w-40 mt-5`} onClick={handleButtonClick}>
+              Update
+            </button>
+          </form>
+        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

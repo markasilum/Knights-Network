@@ -8,7 +8,9 @@ const SkillsCard = () => {
   useEffect(()=>{
     const fetchSkills = async () =>{
       try {
-        const response = await fetch(`http://localhost:3000/skills/person/index`);
+        const response = await fetch(`http://localhost:3000/skills/person/index`,{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setSkills(getUserResult);
         // console.log(getUserResult)

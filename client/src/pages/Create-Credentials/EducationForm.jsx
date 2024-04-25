@@ -31,6 +31,8 @@ const EducationForm = () => {
       const response = await fetch("http://localhost:3000/education/create", {
         method: "POST",
         body: formData,
+        credentials:'include'
+
       });
 
       const responseData = await response.json();

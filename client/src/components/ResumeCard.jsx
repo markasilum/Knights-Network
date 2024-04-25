@@ -18,7 +18,9 @@ const ResumeCard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/details");
+        const response = await fetch("http://localhost:3000/user/details",{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setUserData(getUserResult);
         // console.log(getUserResult)
@@ -28,7 +30,9 @@ const ResumeCard = () => {
     };
     const fetchPersonData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/person/details");
+        const response = await fetch("http://localhost:3000/person/details",{
+          credentials:'include'
+        });
         const getPersonResult = await response.json();
         setPersonData(getPersonResult);
       } catch (error) {
@@ -38,7 +42,9 @@ const ResumeCard = () => {
     const fetchExperience = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/experience/person/index`
+          `http://localhost:3000/experience/person/index`,{
+            credentials:'include'
+          }
         );
         const getUserResult = await response.json();
         setExperience(getUserResult);
@@ -50,7 +56,9 @@ const ResumeCard = () => {
     const fetchSkills = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/skills/person/index`
+          `http://localhost:3000/skills/person/index`,{
+            credentials:'include'
+          }
         );
         const getUserResult = await response.json();
         setSkills(getUserResult);
@@ -62,7 +70,9 @@ const ResumeCard = () => {
     
     const fetchEducation = async () => {
       try {
-        const response = await fetch("http://localhost:3000/education/index");
+        const response = await fetch("http://localhost:3000/education/index",{
+          credentials:'include'
+        });
         const getEducRes = await response.json();
         // setDegreeId(getEducRes.map(educ => educ.degreeId))
         setEducData(getEducRes);
@@ -72,7 +82,9 @@ const ResumeCard = () => {
         const fetchDegree = async () => {
             try {
               const response = await fetch(
-                `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
+                `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`,{
+                  credentials:'include'
+                }
               );
               const getUserResult = await response.json();
               setDegree(getUserResult);
@@ -90,7 +102,9 @@ const ResumeCard = () => {
     };
     const fetchCerts = async () =>{
         try {
-          const response = await fetch(`http://localhost:3000/certification/person/index`);
+          const response = await fetch(`http://localhost:3000/certification/person/index`,{
+            credentials:'include'
+          });
           const getUserResult = await response.json();
           setCerts(getUserResult);
           // console.log(getUserResult)
@@ -100,7 +114,9 @@ const ResumeCard = () => {
       }
       const fetchLicense = async () =>{
         try {
-          const response = await fetch(`http://localhost:3000/license/person/index`);
+          const response = await fetch(`http://localhost:3000/license/person/index`,{
+            credentials:'include'
+          });
           const getUserResult = await response.json();
           setLicense(getUserResult);
           // console.log(getUserResult)

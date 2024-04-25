@@ -9,7 +9,9 @@ const JobPostApplicants = () => {
   const fetchJobPostApplicants = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/jobpost/applicants?id=${jobPostId}`
+        `http://localhost:3000/jobpost/applicants?id=${jobPostId}`,{
+          credentials:'include'
+        }
       );
       const getJobRes = await response.json();
       setJobData(getJobRes);
@@ -37,6 +39,7 @@ const JobPostApplicants = () => {
         {
           method: "PUT",
           body: formData,
+          credentials:'include'
         }
       );
 

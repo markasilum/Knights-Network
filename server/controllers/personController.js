@@ -1,12 +1,19 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const jwt = require("jsonwebtoken");
 
-let userIdCookie = personUserId
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+
+  return decodedToken.id;
+};
 
 const getPersonDetails = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
   const data = await prisma.person.findUnique({
     where: {
       userId: userIdCookie
@@ -73,12 +80,14 @@ const createPerson = async (req, res) => {
     const idPhoto = req.files["idPhoto"]
       ? req.files["idPhoto"][0].filename
       : null;
+      
+    const hashPass = await bcrypt.hash(password,10)
 
     // Create a new person record in the database using Prisma
     const newPerson = await prisma.user.create({
       data: {
         username,
-        password,
+        password: hashPass,
         streetAddress,
         cityName,
         zipCode,
@@ -122,7 +131,8 @@ const createPerson = async (req, res) => {
 };
 
 const updatePerson = async (req, res) => {
-  //to do: include id in the request body
+  const userIdCookie = getUserIdFromJWT(req)
+
   try {
     // Extract data from the request body
     const {
@@ -142,15 +152,26 @@ const updatePerson = async (req, res) => {
       personId,
     } = req.body;
 
-    const profPic = req.file.filename;
+    
+    let profPic;
+    if (req.file != null) {
+      profPic = req.file.filename;
+    }
 
+    let hashPass = ""
+    if(password){
+       hashPass = await bcrypt.hash(password,10)
+    }else{
+      console.log("password not updated")
+    }
+    
     const updatePerson = await prisma.user.update({
       where: {
        id:userIdCookie
       },
       data: {
         username,
-        password,
+        ...(hashPass && { password: hashPass }),
         streetAddress,
         cityName,
         zipCode,

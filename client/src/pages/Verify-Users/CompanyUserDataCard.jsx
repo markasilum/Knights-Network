@@ -9,6 +9,7 @@ const CompanyUserDataCard = ({userData}) => {
         try {
           const response = await fetch(`http://localhost:3000/user/verify?id=${userData.id}`, {
             method: "GET",
+            credentials: 'include'
           });
     
           const responseData = await response.json();

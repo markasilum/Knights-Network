@@ -12,7 +12,9 @@ const ApplicationDashboard = () => {
     useEffect(()=>{
           const fetchApplications = async () => {
               try {
-                const response = await fetch("http://localhost:3000/application/person/index");
+                const response = await fetch("http://localhost:3000/application/person/index",{
+                  credentials:'include'
+                });
                 const getJobRes = await response.json();
                 setApplicationData(getJobRes);
               } catch (error) {

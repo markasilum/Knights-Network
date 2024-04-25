@@ -5,7 +5,6 @@ const CertificationsForm = () => {
   const [certName, setCertName] = useState("");
   const [certDetails, setCertDetails] = useState("");
   const [certPhoto, setCertPhoto] = useState("");
-
   const handleSubmit = async (event) => {
 
     const formData = new FormData();
@@ -23,6 +22,8 @@ const CertificationsForm = () => {
         {
           method: "POST",
           body: formData,
+          credentials:'include'
+
         }
       );
 

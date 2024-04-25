@@ -8,7 +8,9 @@ const PersonUserSetting = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/user/setting`)
+    fetch(`http://localhost:3000/user/setting`,{
+      credentials:'include'
+    })
       .then((response) => response.json())
       .then((data) => {
         setSettingData(data.setting);
@@ -24,7 +26,8 @@ const PersonUserSetting = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(settingData)
+        body: JSON.stringify(settingData),
+        credentials:'include'
       });
 
       const responseData = await response.json();
