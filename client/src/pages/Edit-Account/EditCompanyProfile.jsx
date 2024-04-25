@@ -22,11 +22,12 @@ const EditCompanyProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/details");
+        const response = await fetch("http://localhost:3000/user/details",{
+          credentials:'include'
+        });
         const result = await response.json();
 
         setUsername(result.username);
-        setPassword(result.password);
         setStreetAdd(result.streetAddress);
         setCityName(result.cityName);
         setZipCode(result.zipCode);
@@ -41,7 +42,9 @@ const EditCompanyProfile = () => {
     };
     const fetchCompanyData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/company/details");
+        const response = await fetch("http://localhost:3000/company/details",{
+          credentials:'include'
+        });
         const result = await response.json();
         setCompanyName(result.companyName);
         setCompanySize(result.companySize);
@@ -92,6 +95,7 @@ const EditCompanyProfile = () => {
       const response = await fetch("http://localhost:3000/company/update", {
         method: "PUT",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();
@@ -191,10 +195,10 @@ const EditCompanyProfile = () => {
                 </div>
               </label>
               <input
-                type="text"
+                type="password"
                 id="password"
-                placeholder="Password"
-                className="input input-bordered w-full "
+                placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
+                className="input input-bordered w-full placeholder-black"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

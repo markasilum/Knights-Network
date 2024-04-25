@@ -11,7 +11,9 @@ const EducCard = ({educData}) => {
   useEffect(()=>{
     const fetchDegree = async () =>{
       try {
-        const response = await fetch(`http://localhost:3000/degree/index?ids=${degreeIds.join(',')}`);
+        const response = await fetch(`http://localhost:3000/degree/index?ids=${degreeIds.join(',')}`,{
+          credentials:'include'
+        });
         const getUserResult = await response.json();
         setDegree(getUserResult);
         // console.log(getUserResult)

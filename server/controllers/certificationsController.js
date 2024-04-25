@@ -1,12 +1,17 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
+const jwt = require("jsonwebtoken");
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
 
-let userIdCookie = personUserId
+  return decodedToken.id;
+};
 
 const getPersonCerts = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
     try {
       const certs = await prisma.certification.findMany({
         where: {
@@ -36,6 +41,8 @@ const getPersonCerts = async (req, res) => {
     }
   };
 const createCert = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
     try {
       // Extract data from the request body
       const { certName, certDetails } = req.body;

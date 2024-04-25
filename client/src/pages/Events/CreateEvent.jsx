@@ -33,6 +33,7 @@ const CreateEvent = () => {
       const response = await fetch("http://localhost:3000/events/create", {
         method: "POST",
         body: formData,
+        credentials:'include'
       });
 
       const responseData = await response.json();

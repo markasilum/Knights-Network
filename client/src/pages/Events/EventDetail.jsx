@@ -9,9 +9,9 @@ import SidebarAdmin from "../../components/SidebarAdmin";
 import EventEdit from "./EventEdit";
 import DateToWords from "../../components/DateFormatter";
 import DateConverter from "../../components/DateConverter";
-import { RoleContext } from "../../App";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonSuccess from "../../components/ButtonSuccess";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const EventDetail = () => {
   
@@ -19,13 +19,16 @@ const EventDetail = () => {
   const [date, setDate] = useState(new Date(eventData.eventDateTime));
   const [partners, setPartners] = useState([]);
 
-  const{role} = useContext(RoleContext)
+  const {user} = useAuthContext()
+  const role = user.user.role
   const { eventId } = useParams();
 
   const fetchEventPartners = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/events/check?id=${eventId}`
+        `http://localhost:3000/events/check?id=${eventId}`,{
+          credentials:'include'
+        }
       );
       const getApplicationData = await response.json();
       setPartners(getApplicationData);
@@ -40,7 +43,9 @@ const EventDetail = () => {
     const fetchEventDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/events/details?id=${eventId}`
+          `http://localhost:3000/events/details?id=${eventId}`,{
+            credentials:'include'
+          }
         );
         const getEventRes = await response.json();
         setDate(getEventRes.eventDateTime)
@@ -63,6 +68,7 @@ const EventDetail = () => {
         headers:{
           "Content-Type": "application/json"
         },
+        credentials:'include',
         body: JSON.stringify({'id':eventId})
       });
       const responseData = await response.json();

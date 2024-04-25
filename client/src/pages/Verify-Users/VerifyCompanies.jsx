@@ -12,7 +12,9 @@ const VerifyCompanies = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/user/index/companies"
+          "http://localhost:3000/user/index/companies",{
+            credentials:'include'
+          }
         );
         const getUsersResult = await response.json();
         setUserData(getUsersResult[0].user);

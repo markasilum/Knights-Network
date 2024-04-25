@@ -2,6 +2,7 @@ const express = require("express");
 const multer  = require('multer');
 const router = express.Router();
 const path = require('path');
+const {requireAuth} = require('../middleware/authMiddleware')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -16,7 +17,7 @@ var upload = multer({ storage: storage })
 
 const eventController = require('../controllers/eventsController')
 
-router.get('/index', eventController.getEventsList)
+router.get('/index',eventController.getEventsList)
 router.post('/create',upload.single("eventPhoto"), eventController.createEvent);
 router.post('/join', eventController.joinEvent);
 router.put('/update',upload.single("eventPhoto"), eventController.updateEvent);

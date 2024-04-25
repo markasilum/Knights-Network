@@ -1,36 +1,53 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 
-let personUserId = "2e3d06a3-fcdd-45a8-a4d3-2d6cfaad96be";
-let companyUserId = "9113d0aa-0d6a-4df3-b663-d72f3b9d7774";
-let personUserId2 = "bdb007b8-917f-4c93-ac85-2186970525d7"
-let adminId = "88000b90-b82e-4860-a8e6-34545bda89cb"
 
-let userId = companyUserId;
+const jwt = require("jsonwebtoken");
 
+const getUserIdFromJWT = (req) => {
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+
+  return decodedToken.id;
+};
+//exclude password on get requests
+function exclude(user, keys) {
+  return Object.fromEntries(
+    Object.entries(user).filter(([key]) => !keys.includes(key))
+  );
+}
 const role = async (req, res) => {
+    const userId = getUserIdFromJWT(req)
+
     const data = await prisma.roles.findUnique({
       where: {
         userId: userId,
       },
     });
+    // const token = req.cookies.jwt;
+    // const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
+    // console.log(decodedToken.id)
     res.json(data);
   }
 
   const userDetails =  async (req, res) => {
+    const userId = getUserIdFromJWT(req)
     const data = await prisma.user.findUnique({
       where: {
         id: userId,
       },
       include:{
-        person: {},
+        person: true,
         company: true,
       }
     });
-    res.json(data);
+    res.json(exclude(data,['password']));
   }
 
   const userSetting =  async (req, res) => {
+    const userId = getUserIdFromJWT(req)
+
     const data = await prisma.user.findUnique({
       where: {
         id: userId,
@@ -44,6 +61,8 @@ const role = async (req, res) => {
   }
 
   const userSettingUpdate =  async (req, res) => {
+    const userId = getUserIdFromJWT(req)
+
     const settingData = req.body
     console.log(settingData)
     const updatedAccountSettings = await prisma.accountSettings.upsert({
@@ -61,6 +80,7 @@ const role = async (req, res) => {
   }
 
   const userIndexAlumni =  async (req, res) => {
+    
     try {
       const data = await prisma.roles.findMany({
         where:{
@@ -88,6 +108,7 @@ const role = async (req, res) => {
   }
 
   const userIndexStudents =  async (req, res) => {
+    
     try {
       const data = await prisma.roles.findMany({
         where:{
@@ -161,8 +182,6 @@ const role = async (req, res) => {
      res.status(500).json({ error: "Internal Server Error" });
     }
   }
-
-
 
 
 module.exports ={

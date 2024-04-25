@@ -10,7 +10,9 @@ const JobPostsDashboard = () => {
 
  const fetchCompanyJobPost = async () => {
   try {
-    const response = await fetch("http://localhost:3000/jobpost/company/index");
+    const response = await fetch("http://localhost:3000/jobpost/company/index",{
+      credentials:'include'
+    });
     const getJobRes = await response.json();
     setJobPostData(getJobRes);
   } catch (error) {
@@ -33,7 +35,8 @@ const JobPostsDashboard = () => {
    try {
     const response = await fetch('http://localhost:3000/jobpost/set-status', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials:'include'
       });
 
       fetchCompanyJobPost()  
@@ -58,7 +61,7 @@ const JobPostsDashboard = () => {
         <SideBar/>
 
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
-            <div className="pt-5 pr-5 pl-3 overflow-x-auto">
+            <div className="pt-5 pr-5 pl-3 overflow-scroll">
                 <table className="table bg-white rounded-xl mb-3">
                     <thead>
                     <tr>

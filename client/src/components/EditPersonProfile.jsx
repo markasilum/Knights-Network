@@ -30,11 +30,12 @@ const EditPersonProfile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/user/details');
+            const response = await fetch('http://localhost:3000/user/details',{
+              credentials:'include'
+            });
             const result = await response.json();
 
                 setUsername(result.username);
-                setPassword(result.password);
                 setStreetAdd(result.streetAddress)
                 setCityName(result.cityName);
                 setZipCode(result.zipCode);
@@ -50,7 +51,9 @@ const EditPersonProfile = () => {
         };
         const fetchPersonData = async () => {
           try {
-            const response = await fetch('http://localhost:3000/person/details');
+            const response = await fetch('http://localhost:3000/person/details',{
+              credentials:'include'
+            });
             const result = await response.json();
             setFirstName(result.firstName);
             setMiddleName(result.middleName);
@@ -108,7 +111,8 @@ const EditPersonProfile = () => {
         // Send the article data to your server
         const response = await fetch('http://localhost:3000/person/update', {
           method: 'PUT',
-          body: formData
+          body: formData,
+          credentials:'include'
         });
 
       navigate("/profile")
@@ -200,7 +204,7 @@ const EditPersonProfile = () => {
               <span className="label-text font-bold">Password</span>
             </div>
           </label>
-          <input type="text" id="password" placeholder="Password" className="input input-bordered w-full " value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" id="password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" className="input input-bordered w-full placeholder-black" value={password} onChange={(e) => setPassword(e.target.value)}/>
           </div>
         </div>
   
