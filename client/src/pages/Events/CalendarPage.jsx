@@ -49,9 +49,8 @@ const CalendarPage = () => {
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className="pt-5 pr-5 pl-3 h-screen">
-            <div className="w-full bg-white h-full min-h-80 p-3 rounded-xl mb-20 flex flex-col">
+            <div className="w-full bg-white h-fit min-h-80 p-3 rounded-xl mb-20 flex flex-col">
               <Calendar
-                className="w-full h-full border-gray-200 border rounded-lg"
                 localizer={localizer}
                 events={eventsData}
                 startAccessor="eventDateTime"

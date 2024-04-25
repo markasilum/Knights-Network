@@ -43,6 +43,7 @@ import ResumeView from './components/ResumeView';
 import EventPartners from './pages/Events/EventPartners';
 import PersonUserSetting from './pages/Profile/PersonUserSetting';
 import CalendarPage from './pages/Events/CalendarPage';
+import ChooseUserType from './pages/Login/ChooseUserType';
 
 function App() {
 
@@ -71,12 +72,13 @@ function App() {
             <Route index element={<ProfilePage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/settings" element={<PersonUserSetting/>}/>
+            <Route path="/register" element={<ChooseUserType/>}/>
             <Route path="/home" element={<Homepage/>}/>
             <Route path="/applications" element={<ApplicationDashboard/>}/>
-            <Route path="/createaccount" element={<CreateAccount/>}/>
+            <Route path="/register/person" element={<CreateAccount/>}/>
             <Route path="/editaccount" element={<EditAccount/>}/>
             <Route path="/login" element={<LoginScreen/>}/>
-            <Route path="/createcompany" element={<CreateCompany/>}/>
+            <Route path="/register/company" element={<CreateCompany/>}/>
             <Route path="/editcompprofile" element={<EditCompanyProfile/>}/>
             <Route path="/createjobpost" element={<CreateJobPost/>}/>
             <Route path="/credentials" element={<CredentialsForm/>}/>

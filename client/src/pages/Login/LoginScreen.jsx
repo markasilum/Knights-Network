@@ -113,7 +113,7 @@ const LoginScreen = () => {
             </div>
 
             <button className='btn btn-accent w-2/3 text-white text-xl' onClick={login} disabled={isLoading}>Login</button>
-            <button className='btn btn-secondary w-2/3 text-white text-xl'><Link to="/createaccount">Register</Link></button>
+            <button className='btn btn-secondary w-2/3 text-white text-xl'><Link to="/register">Register</Link></button>
         </div>
       </div>
     </div>

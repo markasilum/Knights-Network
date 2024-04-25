@@ -35,18 +35,18 @@ app.use(cookies())
 
 //user routes
 app.use('/auth',authRoutes)
-app.use('/user', requireAuth,userRoutes)
-app.use('/person', requireAuth,personRoutes)
-app.use('/company',requireAuth, companyRoutes)
+app.use('/user',userRoutes)
+app.use('/person',personRoutes)
+app.use('/company', companyRoutes)
 app.use('/education', educationRoutes)
 app.use('/degree', degreeRoutes)
 app.use('/experience', experienceRoutes)
-app.use('/jobpost',requireAuth, jobPostRoutes)
+app.use('/jobpost', jobPostRoutes)
 app.use('/application', applicationRoutes)
 app.use('/license',licenseRoutes)
 app.use('/skills', skillsRoutes)
 app.use('/certification',certificationRoutes)
-app.use('/events', requireAuth, eventsRoutes)
+app.use('/events', eventsRoutes)
 
 app.use('/uploads', express.static('uploads'))
 
