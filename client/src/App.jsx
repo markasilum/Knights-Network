@@ -42,6 +42,7 @@ import JobPostApplicants from './pages/JobPosts/JobPostApplicants';
 import ResumeView from './components/ResumeView';
 import EventPartners from './pages/Events/EventPartners';
 import PersonUserSetting from './pages/Profile/PersonUserSetting';
+import CalendarPage from './pages/Events/CalendarPage';
 
 function App() {
 
@@ -96,6 +97,7 @@ function App() {
             <Route path='/skills-edit' element={<SelectEditSkills/>}/>
             <Route path='/certifications-edit' element={<SelectEditCerts/>}/>
             <Route path='/events' element={<EventsAll/>}/>
+            <Route path='/events/calendar' element={<CalendarPage/>}/>
             <Route path='/event-edit' element={<EventEdit/>}/>
             <Route path='/event/partners/:eventId' element={<EventPartners/>}/>
             <Route path='/verify-users/alumni' element={<VerifyAlumni/>}/>
