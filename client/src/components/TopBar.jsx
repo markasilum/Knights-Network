@@ -9,7 +9,12 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 const TopBar = () => {
   const {user} = useAuthContext()
-  const role = user.user.role
+  let role
+  if(user){
+     role = user.user.role
+  }else{
+    role={"role":"guest"}
+  }
 
   return (
     <div className="navbar bg-primary text-base-100 text-2xl max-h-14 flex flex-row w-full">

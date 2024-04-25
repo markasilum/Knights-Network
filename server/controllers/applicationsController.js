@@ -31,7 +31,8 @@ const apply = async (req, res) => {
             connect:{
               id: id
             }
-          }
+          },
+          status:"pending"
         },
         include: {
           person: true,
