@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import TopBar from "../../components/topbar";
 import { useNavigate } from "react-router-dom";
+import TopBarGuest from "../../components/TopBarGuest";
 
 const CreateCompany = () => {
   const navigate = useNavigate();
@@ -78,11 +79,8 @@ const CreateCompany = () => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
-      }else(
-        navigate("/login")
-      )
-
-      
+      }
+      navigate("/login")  
     } catch (error) {
       // setIsSubmitting(false);
       console.error("Error creating person:", error);
@@ -271,7 +269,7 @@ const CreateCompany = () => {
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBar />
+      <TopBarGuest/>
       <form className="w-2/3" onSubmit={handleSubmit}>
         <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
           <label className="form-control w-full max-w-xs">

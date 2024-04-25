@@ -55,6 +55,8 @@ const getPersonCredentials = async (req, res) => {
 };
 
 const createPerson = async (req, res) => {
+  console.log(req.body)
+
   try {
     // Extract data from the request body
     const {
@@ -73,6 +75,7 @@ const createPerson = async (req, res) => {
       biography,
       role,
     } = req.body;
+
 
     const profPic = req.files["profPic"]
       ? req.files["profPic"][0].filename
