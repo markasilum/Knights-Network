@@ -20,7 +20,7 @@ const SideBar = () => {
       <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onClick={"/profile"} />
       <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/jobpost/dashboard"} />
       <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
-      <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
+      <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'} />
     </ul>
   )
 
@@ -30,7 +30,7 @@ const SideBar = () => {
       <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/home"} />
       <SidebarButton text={"Applications"} icon={<ContactPageIcon fontSize="large"/>} onClick={"/applications"} />
       <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
-      <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
+      <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'}/>
     </ul>
   )
 
@@ -38,7 +38,7 @@ const SideBar = () => {
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
     <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/eventslist"} />
     <SidebarButton text={"Users"}  icon={<PeopleIcon fontSize="large"/>}  onClick={"/verify-users/alumni"} />
-    <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} />
+    <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'} />
   </ul>
   
   )
