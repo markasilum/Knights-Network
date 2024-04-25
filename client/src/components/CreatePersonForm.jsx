@@ -1,7 +1,10 @@
 import React from 'react'
 import TopBar from './topbar'
 import { useState } from 'react';
+import TopBarGuest from './TopBarGuest';
+import { useNavigate } from 'react-router-dom';
 const CreatePersonForm = () => {
+  const navigate = useNavigate()
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -24,7 +27,6 @@ const CreatePersonForm = () => {
   const handleSubmit = async (event) => {
     // setIsSubmitting(true);
     event.preventDefault();
-
     const formData = new FormData();
 
     if (image) {
@@ -67,9 +69,7 @@ const CreatePersonForm = () => {
         throw new Error(responseData.error);
       }
      
-
-      const newArticleId = responseData.id; 
-
+      navigate("/login")
      
     } catch (error) {
       setIsSubmitting(false);
@@ -170,7 +170,8 @@ const CreatePersonForm = () => {
  
   return (
     <div className='w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto'>
-      <TopBar/>
+      {/* <TopBar/> */}
+      <TopBarGuest/>
 
       <form onSubmit={handleSubmit} className='w-2/3'>
       <div className='flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl'>
