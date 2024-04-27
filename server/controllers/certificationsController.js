@@ -46,7 +46,10 @@ const createCert = async (req, res) => {
     try {
       // Extract data from the request body
       const { certName, certDetails } = req.body;
-      const certPhoto = req.file.filename
+      let certPhoto
+      if(certPhoto) {
+        certPhoto = req.file.filename
+      } 
 
       const newCert = await prisma.certification.create({
         data: {

@@ -100,8 +100,8 @@ model Certification {
   person      Person @relation(fields: [personId], references: [id])
   personId    String
   certName    String
-  certDetails String
-  certPhoto   String
+  certDetails String?
+  certPhoto   String?
 }
 
 model PersonVerificationReqs {
