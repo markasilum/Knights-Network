@@ -4,6 +4,7 @@ import SideBar from "../../components/SideBar";
 import ButtonNavigator from "../../components/ButtonNavigator";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import DateToWords from "../../components/DateFormatter";
+import DateConverter from "../../components/DateConverter";
 
 const ApplicationDashboard = () => {
 
@@ -48,7 +49,7 @@ const ApplicationDashboard = () => {
                             <td>{job.jobPost.jobTitle}</td>
                             <td>{job.jobPost.company.companyName}</td>
                             <td><Link className="underline" to={`/jobpostdetails/${job.jobPostId}`}  >View Details</Link></td>
-                            <td><DateToWords dateString={job.dateCreated}/></td>
+                            <td><DateConverter isoString={job.dateCreated}/></td>
                         </tr>
                         ))}
                     </tbody>
