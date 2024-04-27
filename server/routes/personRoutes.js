@@ -28,4 +28,6 @@ router.get("/details", personController.getPersonDetails);
 router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'idPhoto' }]), personController.createPerson);
 router.put("/update", upload.single('profPic'), personController.updatePerson);
 router.get("/credentials", personController.getPersonCredentials);
+router.get("/resume/download", personController.resumePDF);
+
 module.exports = router;
