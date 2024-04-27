@@ -103,7 +103,7 @@ const getCurrentUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     // Send a 400 error response
-    res.status(400).json({ error: "Bad request" });
+    res.status(400).json();
   }
 };
 
