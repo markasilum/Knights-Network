@@ -28,18 +28,13 @@ export const AuthContextProvider = ({children}) => {
             const userData = await fetch(`http://localhost:3000/auth/user`, {
             credentials: "include",
           });
-         
-          if (userData.status === 401) {
-            console.log("User not logged in");
-            dispatch({ type: "LOGOUT" });
-          } else {
-            const user = await userData.json();
-            console.log(user);
+
+          const user = await userData.json();
+          if(user){
             dispatch({ type: "LOGIN", payload: user });
           }
           
         } catch (error) {
-          // Handle error, maybe set user to null
           console.error("Error fetching user:", error);
           dispatch({ type: "LOGOUT" }); // Assuming you have a LOGOUT action
         } 
