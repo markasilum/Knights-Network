@@ -215,7 +215,19 @@ const getRecommendation = async (req, res) => {
       ]),
     ];
 
-    res.json(finalSetUserIdArray);
+    const userDetails = await prisma.user.findMany({
+        where: {
+            id: {
+              in: finalSetUserIdArray
+            },
+        },
+        select: {
+          person: true
+        },
+      });
+
+
+    res.json(userDetails);
   } catch (error) {
     console.log("error", error);
   }
