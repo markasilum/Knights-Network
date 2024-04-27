@@ -47,24 +47,6 @@ import ChooseUserType from './pages/Login/ChooseUserType';
 
 function App() {
 
-  const [role, setUserRole] = useState({});
-  
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/user/role",{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setUserRole(getUserResult);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchUserRole();
-  }, []);
-
   return (
     <div className='className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	'>
       <Router>
