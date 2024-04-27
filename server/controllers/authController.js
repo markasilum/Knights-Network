@@ -44,7 +44,7 @@ const loginUser = async (req, res) => {
 
 const loginReceive = async (req, res) => {
     const { email, password } = req.body;
-    console.log("login creds receive")
+    // console.log("login creds receive")
     try {
         const user = await loginUser({ body: { email, password } }, res);
         const token = createToken(user.id)
@@ -98,12 +98,12 @@ const getCurrentUser = async (req, res) => {
       return res.status(400).json({ error: "User not found" });
     }
    
-    console.log("get current user", { user: user})
+    // console.log("get current user", { user: user})
     res.status(200).json({ user: user});
   } catch (error) {
     console.error(error);
     // Send a 400 error response
-    res.status(400).json({ error: "Bad request" });
+    res.status(400).json();
   }
 };
 

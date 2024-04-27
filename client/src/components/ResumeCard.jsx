@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TopBar from "./topbar";
 import DateToWords from "./DateFormatter";
+import ButtonPrimary from "./ButtonPrimary";
 
 const ResumeCard = () => {
   const [personData, setPersonData] = useState("");
@@ -12,7 +13,24 @@ const ResumeCard = () => {
   // const [degreeIds, setDegreeId] = useState([])
   const[certs, setCerts] = useState([])
   const[licenses, setLicense] = useState([])
+  const [pdfUrl, setPdfUrl] = useState('');
 
+    
+    const downloadResume = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/person/resume/download?id=${userData.id}`,{
+          headers:{
+            'credentials': 'include',
+          }
+        });
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setPdfUrl(url);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
 
   useEffect(() => {
@@ -125,8 +143,7 @@ const ResumeCard = () => {
         }
       }
   
-      fetchLicense()
-  
+    fetchLicense()
     fetchCerts()
     fetchEducation();
     fetchSkills();
@@ -136,25 +153,6 @@ const ResumeCard = () => {
     // console.log(degree)
   }, []);
 
-  // useEffect(()=>{
-  //   const degreeIds = educData.map(educ => educ.degreeId)
-  //   const fetchDegree = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`
-  //         );
-  //         const getUserResult = await response.json();
-  //         setDegree(getUserResult);
-  //         // console.log(getUserResult)
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     };
-
-  //     fetchDegree();
-  //     console.log(degreeIds)
-
-  // },[educData])
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
       <TopBar />
@@ -262,7 +260,11 @@ const ResumeCard = () => {
             ))}
         </ul>
         </div>
+       <div className="flex flex-row justify-end w-full">
+       <ButtonPrimary text={"Downlod PDF"} onClick={downloadResume}/>
+       </div>
       </div>
+      
     </div>
   );
 };
