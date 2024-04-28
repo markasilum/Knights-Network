@@ -18,7 +18,7 @@ const PersonCredentials = ({educData}) => {
       <LicenseCard/>
       <SkillsCard/>
       <CertificationsCard/>
-      <ButtonNavigator path={`/resume`} text={"Create Resume"}/>
+      <ButtonNavigator path={`/resume`} text={"View Resume"}/>
 
 
     </div>
