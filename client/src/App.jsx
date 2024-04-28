@@ -53,6 +53,42 @@ function App() {
     <div className="className=w-full h-screen flex justify-center align-middle bg-white overflow-hidden	">
       <Router>
         <Routes>
+          {/* no login required */}
+          <Route
+            path="/register"
+            element={<ChooseUserType /> }
+          />
+          <Route
+            path="/register/person"
+            element={<CreateAccount />}
+          />
+          <Route
+            path="/register/company"
+            element={<CreateCompany />}
+          />
+          {/* admin page */}
+          <Route
+            path="/eventslist"
+            element={user && user.user.role.roleName == 'admin' ? <EventsDashboard /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/event/partners/:eventId"
+            element={user && user.user.role.roleName == 'admin' ? <EventPartners /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/verify-users/alumni"
+            element={user && user.user.role.roleName == 'admin'  ? <VerifyAlumni /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/verify-users/students"
+            element={user && user.user.role.roleName == 'admin'  ? <VerifyStudents /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/verify-users/companies"
+            element={user && user.user.role.roleName == 'admin' ? <VerifyCompanies /> : <Navigate to={"/login"} />}
+          />
+
+
           <Route index element={user ? <ProfilePage /> : <LoginScreen />} />
           <Route
             path="/profile"
@@ -62,10 +98,7 @@ function App() {
             path="/settings"
             element={user ? <PersonUserSetting /> : <Navigate to={"/login"} />}
           />
-          <Route
-            path="/register"
-            element={user ? <ChooseUserType /> : <Navigate to={"/login"} />}
-          />
+         
           <Route
             path="/home"
             element={user ? <Homepage /> : <Navigate to={"/login"} />}
@@ -76,10 +109,7 @@ function App() {
               user ? <ApplicationDashboard /> : <Navigate to={"/login"} />
             }
           />
-          <Route
-            path="/register/person"
-            element={user ? <CreateAccount /> : <Navigate to={"/login"} />}
-          />
+          
           <Route
             path="/editaccount"
             element={user ? <EditAccount /> : <Navigate to={"/login"} />}
@@ -88,10 +118,7 @@ function App() {
             path="/login"
             element={!user ? <LoginScreen /> : <Navigate to={"/profile"} />}
           />
-          <Route
-            path="/register/company"
-            element={user ? <CreateCompany /> : <Navigate to={"/login"} />}
-          />
+          
           <Route
             path="/editcompprofile"
             element={user ? <EditCompanyProfile /> : <Navigate to={"/login"} />}
@@ -137,10 +164,7 @@ function App() {
             path="/eventdetails/:eventId"
             element={user ? <EventDetail /> : <Navigate to={"/login"} />}
           />
-          <Route
-            path="/eventslist"
-            element={user ? <EventsDashboard /> : <Navigate to={"/login"} />}
-          />
+          
           <Route
             path="/createevent"
             element={user ? <CreateEvent /> : <Navigate to={"/login"} />}
@@ -183,22 +207,8 @@ function App() {
             path="/event-edit"
             element={user ? <EventEdit /> : <Navigate to={"/login"} />}
           />
-          <Route
-            path="/event/partners/:eventId"
-            element={user ? <EventPartners /> : <Navigate to={"/login"} />}
-          />
-          <Route
-            path="/verify-users/alumni"
-            element={user ? <VerifyAlumni /> : <Navigate to={"/login"} />}
-          />
-          <Route
-            path="/verify-users/students"
-            element={user ? <VerifyStudents /> : <Navigate to={"/login"} />}
-          />
-          <Route
-            path="/verify-users/companies"
-            element={user ? <VerifyCompanies /> : <Navigate to={"/login"} />}
-          />
+          
+          
           <Route
             path="/jobpost/applicants/:jobPostId"
             element={user ? <JobPostApplicants /> : <Navigate to={"/login"} />}

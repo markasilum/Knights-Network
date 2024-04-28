@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
 import { Link, useParams } from "react-router-dom";
+import RecommendList from "./RecommendList";
 const JobPostApplicants = () => {
   const { jobPostId } = useParams();
   const [jobData, setJobData] = useState([]);
+  const [recommendation, setRecommendation] = useState("");
 
   const fetchJobPostApplicants = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/jobpost/applicants?id=${jobPostId}`,{
-          credentials:'include'
+        `http://localhost:3000/jobpost/applicants?id=${jobPostId}`,
+        {
+          credentials: "include",
         }
       );
       const getJobRes = await response.json();
@@ -22,6 +25,22 @@ const JobPostApplicants = () => {
   };
 
   useEffect(() => {
+    const fetchJobPostRecommendation = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/recommendation/get?id=${jobPostId}`,
+          {
+            credentials: "include",
+          }
+        );
+        const getJobRes = await response.json();
+        setRecommendation(getJobRes);
+        // console.log(getEducRes)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchJobPostRecommendation();
     fetchJobPostApplicants();
   }, []);
 
@@ -39,10 +58,9 @@ const JobPostApplicants = () => {
         {
           method: "PUT",
           body: formData,
-          credentials:'include'
+          credentials: "include",
         }
       );
-
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -63,7 +81,6 @@ const JobPostApplicants = () => {
               <div className="font-normal">{jobData.jobLoc}</div>
 
               <div className="border border-b border-info mt-3"></div>
-
 
               <div className="w-fill h-96  mt-3 flex flex-row gap-3">
                 <div className="w-full h-full">
@@ -116,10 +133,10 @@ const JobPostApplicants = () => {
                                   <option value={applicant.status}>
                                     {applicant.status}
                                   </option>
-                                  {applicant.status == "accepted"&&(
+                                  {applicant.status == "accepted" && (
                                     <option value="rejected">rejected</option>
                                   )}
-                                  {applicant.status == "rejected"&&(
+                                  {applicant.status == "rejected" && (
                                     <option value="accepted">accepted</option>
                                   )}
                                 </select>
@@ -136,63 +153,41 @@ const JobPostApplicants = () => {
                           </div>
                         </div>
                       ))}
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
+                  
                   </div>
                 </div>
 
                 <div className="w-full h-full ">
-                  <h1 className="h-5 font-semibold text-lg mb-3">Recommended</h1>
+                  <h1 className="h-5 font-semibold text-lg mb-3">
+                    Recommended
+                  </h1>
                   <div className="flex flex-col gap-3 h-full max-h-[150%] overflow-scroll">
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
-                    <div className="bg-neutral p-3 flex flex-row justify-between rounded-md ">
-                      data
-                    </div>
+                  {recommendation&&(
+                    recommendation.map((recommended) =>(
+                      <div
+                          key={recommended.person.id}
+                          className="bg-neutral p-3 flex flex-row justify-between rounded-md min-h-20"
+                        >
+                          <div className="flex flex-col">
+                            <div>
+                              {recommended.person.firstName}{" "}
+                              {recommended.person.middleName}{" "}
+                              {recommended.person.lastName}
+                            </div>
+                          </div>
+                          <div className="h-full flex items-center">
+                            <Link
+                              className="underline decoration-1 font-thin"
+                              to={`/jobpost/applicants/resume/${recommended.person.id}`}
+                            >
+                              View Resume
+                            </Link>
+                          </div>
+                        </div>
+                    )
+                    )
+                  )}
+                 
                   </div>
                 </div>
               </div>

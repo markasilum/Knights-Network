@@ -145,6 +145,7 @@ const createPerson = async (req, res) => {
     });
 
     // Send a response with the newly created person
+    res.cookie('email', emailAddress,{httpOnly:true, maxAge:maxAge*1000})
     res.status(201).json(newPerson);
   } catch (error) {
     console.error("Error creating person:", error);
@@ -277,6 +278,7 @@ const resumePDF = async (req, res) => {
   });
   doc.moveDown()
 
+
   data.experience.map((item)=>(
     doc.font('Gotham-Medium').text(item.jobTitle),
     doc.font('Gotham-Book').text(item.companyName),
@@ -286,10 +288,10 @@ const resumePDF = async (req, res) => {
     doc.list(detail.split('\n'),{
       bulletRadius: 2,
       indent: 10
-    })
+    }),
+    doc.moveDown()
   ))
 
-  doc.moveDown()
   doc.font('Gotham-Medium').text("Skills",{
     underline:true,
     align:'center'
@@ -297,6 +299,7 @@ const resumePDF = async (req, res) => {
   doc.moveDown()
 
   const skillNames = data.skills.map(skill => skill.skill.skillName);
+  
   doc.font('Gotham-Book').list(skillNames,{
     bulletRadius: 2,
   })
@@ -317,25 +320,31 @@ const resumePDF = async (req, res) => {
     doc.moveDown()
   ))
 
-  doc.font('Gotham-Medium').text("Licenses",{
-    underline:true,
-    align:'center'
-  });
-  const licenseNames = data.personLicense.map(item => item.license.licenseName);
-  doc.font('Gotham-Book').list(licenseNames,{
-    bulletRadius: 2,
-  })
-
-  doc.font('Gotham-Medium').text("Certifications",{
-    underline:true,
-    align:'center'
-  });
-  doc.moveDown()
-
-  const certifications = data.certification.map(item => item.certName);
-  doc.font('Gotham-Book').list(certifications,{
-    bulletRadius: 2,
-  })
+  console.log("resume create",data.personLicense)
+  if(data.personLicense.length !=0 ){
+    doc.font('Gotham-Medium').text("Licenses",{
+      underline:true,
+      align:'center'
+    });
+    const licenseNames = data.personLicense.map(item => item.license.licenseName);
+    doc.font('Gotham-Book').list(licenseNames,{
+      bulletRadius: 2,
+    })
+  }
+ 
+  if(data.certification){
+    doc.font('Gotham-Medium').text("Certifications",{
+      underline:true,
+      align:'center'
+    });
+    doc.moveDown()
+  
+    const certifications = data.certification.map(item => item.certName);
+    doc.font('Gotham-Book').list(certifications,{
+      bulletRadius: 2,
+    })
+  }
+  
 
   doc.end();
   const buffers = [];
