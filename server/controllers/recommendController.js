@@ -77,13 +77,14 @@ const getRecommendation = async (req, res) => {
     function removePrepositions(originalString) {
       // Create a regular expression to match common prepositions globally and case insensitive
       const regex =
-        /\b(?:for|in|with|on|at|by|of|to|from|through|and|skills)\b/gi;
+        /\b(?:for|in|with|on|at|by|of|to|from|through|and|skills|skill|a|proficient|about|abilities|convey|detail-oriented|including)\b/gi;
       // Replace all occurrences of the specified prepositions with an empty string
       let modifiedString = originalString.replace(regex, "");
       modifiedString = modifiedString.trim();
       return modifiedString;
     }
     const skillNames = jobPost.jobSkillsReq.map((item) => item.skill.skillName);
+
     const filteredSkillName = skillNames.map((item) =>
       removePrepositions(item)
     );
@@ -106,7 +107,7 @@ const getRecommendation = async (req, res) => {
           },
         })),
       },
-      select: {
+      include: {
         personSkill: {
           select: {
             person: {
