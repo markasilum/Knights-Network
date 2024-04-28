@@ -18,7 +18,9 @@ const PersonCredentials = ({educData}) => {
       <LicenseCard/>
       <SkillsCard/>
       <CertificationsCard/>
+      <div className='w-full flex flex-row justify-end'>
       <ButtonNavigator path={`/resume`} text={"View Resume"}/>
+      </div>
 
 
     </div>

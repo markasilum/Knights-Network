@@ -315,7 +315,7 @@ const resumePDF = async (req, res) => {
     doc.font('Gotham-Medium').text(item.schoolName),
     doc.font('Gotham-Book').text(item.degree.degreeName),
     doc.font('Gotham-Book').text(DateToWords(item.startDate)+" - "+ DateToWords(item.endDate)),
-    doc.font('Gotham-Book').text(item.qpi),
+    doc.font('Gotham-Book').text( "QPI: "+item.qpi),
     doc.font('Gotham-Book').text(item.awards),
     doc.moveDown()
   ))
@@ -358,7 +358,7 @@ const resumePDF = async (req, res) => {
   
  
   } catch (error) {
-    
+    console.log(error)
   }
 };
 
