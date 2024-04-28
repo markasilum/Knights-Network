@@ -86,7 +86,8 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
   
 
   const handleSubmit = async (event) => {
-    // event.preventDefault()
+    event.preventDefault()
+
     const formData = new FormData();
     formData.append("id", jobId);
     formData.append("jobTitle", jobTitle);
@@ -118,20 +119,16 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
     //   }
 
     try {
+
       const response = await fetch("http://localhost:3000/jobpost/update", {
         method: "PUT",
         body: formData,
         credentials:'include'
       });
 
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.error);
-      }
-      // navigate(0)
+      
     } catch (error) {
-      console.error("Error creating job post:", error);
+      console.error("Error updating job post:", error);
     }
   };
 
