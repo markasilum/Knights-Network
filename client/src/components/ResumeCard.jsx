@@ -284,7 +284,7 @@ const ResumeCard = () => {
                 </ul>
               </div>
               <div className="flex flex-row justify-end w-full">
-                <ButtonPrimary text={"Downlod PDF"} onClick={downloadResume} />
+                <button type="button" className="btn btn-success w-40 mt-5 mb-3 text-white" onClick={downloadResume}>Downlod PDF</button>
               </div>
             </div>
           </div>
