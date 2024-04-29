@@ -10,6 +10,11 @@ const CalendarPage = () => {
   const localizer = dayjsLocalizer(dayjs);
   const [eventsData, setEventsData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const sevenAM = new Date();
+  sevenAM.setHours(7, 0, 0, 0);
+  const elevenPM = new Date();
+  elevenPM.setHours(23, 0, 0, 0);
+
 
   const handleEventClick = (event) => {
     // Set the selected date to the start date of the clicked event
@@ -24,13 +29,12 @@ const CalendarPage = () => {
         });
         const getEventRes = await response.json();
         const eventDataWithDateObjects = getEventRes.map(event => {
-            const eventDateTime = new Date(event.eventDateTime);
-            const eventEndDateTime = new Date(event.eventDateTime);
-            eventEndDateTime.setHours(eventEndDateTime.getHours() + 6); // Adding 6 hours to eventDateTime
+            const startDate = new Date(event.startDate);
+            const endDate = new Date(event.endDate);
             return {
               ...event,
-              eventDateTime,
-              eventEndDateTime
+              startDate,
+              endDate
             };
           });
         setEventsData(eventDataWithDateObjects);
@@ -53,14 +57,16 @@ const CalendarPage = () => {
               <Calendar
                 localizer={localizer}
                 events={eventsData}
-                startAccessor="eventDateTime"
-                endAccessor="eventEndDateTime"
+                startAccessor="startDate"
+                endAccessor="endDate"
                 titleAccessor="eventName"
                 resourceAccessor="eventLocation"
                 onSelectEvent={handleEventClick} // Handle event click
                 defaultDate={selectedDate} // Set the date prop to the selected date
                 onView={() => setSelectedDate(null)} 
                 style={{ height: 500 }}
+                min={sevenAM}
+                max={elevenPM}
               />
             </div>
           </div>

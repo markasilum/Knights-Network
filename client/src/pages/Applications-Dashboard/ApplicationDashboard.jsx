@@ -61,7 +61,7 @@ const ApplicationDashboard = () => {
         <SideBar/>
 
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-            <div className="pt-3 pr-3 pl-3 mt-3 mr-3 ml-2 overflow-x-auto rounded-xl bg-white">
+            <div className="pt-2 pr-2 pl-2 mt-2 mr-2 overflow-x-auto rounded-xl bg-white">
                 <div className="flex flex-row gap-2 items-center pb-3 bg-white">
                 <div className="font-thin">Status: </div>
                                 <select

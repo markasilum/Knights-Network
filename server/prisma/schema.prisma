@@ -163,7 +163,7 @@ model Company {
 }
 
 model CompanyVerificationReqs {
-  id              String  @id @default(uuid())
+  id              String  @id @default(uuid()) 
   company         Company @relation(fields: [companyId], references: [id])
   companyId       String  @unique
   secRegistration String
@@ -264,7 +264,8 @@ model Events {
   id            String          @id @default(uuid())
   eventName     String
   eventDesc     String          @db.Text
-  eventDateTime DateTime
+  startDate DateTime?
+  endDate DateTime?
   eventLocation String
   eventPhoto    String?
   companyEvents CompanyEvents[]
