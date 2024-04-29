@@ -689,11 +689,7 @@ const updateJobPost = async (req, res) => {
           })
         }
       })
-    }
-   
-
-
-    
+    }   
 
   } catch (error) {
     console.error("Error creating job post:", error);

@@ -12,7 +12,7 @@ const VerifyStudents = () => {
 
     const fetchUsers = async () => {
         try {
-          const response = await fetch("http://localhost:3000/user/index/alumni",{
+          const response = await fetch("http://localhost:3000/user/index/students",{
             credentials:'include'
           });
           const getUsersResult = await response.json();

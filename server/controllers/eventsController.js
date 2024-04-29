@@ -13,7 +13,7 @@ const getEventsList = async (req, res) => {
         const jobPosts = await prisma.events.findMany({
           orderBy:[
             {
-              eventDateTime: 'desc'
+              startDate: 'desc'
             }
           ],
         })
@@ -28,7 +28,7 @@ const getEventsList = async (req, res) => {
 };
 const createEvent = async (req, res) => {
   try {
-    const { eventName, eventLocation, eventDesc, eventDateTime } = req.body;
+    const { eventName, eventLocation, eventDesc, startDate, endDate } = req.body;
     let eventPhoto
 
     if(req.file != null){
@@ -41,7 +41,8 @@ const createEvent = async (req, res) => {
         eventPhoto,
         eventLocation,
         eventDesc,
-        eventDateTime,
+        startDate,
+        endDate
       },
     });
 
@@ -57,7 +58,7 @@ const createEvent = async (req, res) => {
 
 const updateEvent = async (req, res) => {
   try {
-    const { eventId, eventName, eventLocation, eventDesc, eventDateTime } = req.body;
+    const { eventId, eventName, eventLocation, eventDesc, startDate, endDate } = req.body;
     let eventPhoto
 
     if(req.file != null){
@@ -73,7 +74,8 @@ const updateEvent = async (req, res) => {
         eventPhoto,
         eventLocation,
         eventDesc,
-        eventDateTime,
+        startDate,
+        endDate,
       },
     });
 
@@ -91,14 +93,14 @@ const getEventDetails = async (req, res) => {
     try {
         // Extract the query parameter 'ids' from the request
         const { id } = req.query;
-        console.log(req.query)
+        // console.log(req.query)
         // Query the database using Prisma to fetch job post by their IDs
         const eventDetails = await prisma.events.findUnique({
             where: {
                 id: id 
             },
         });
-        console.log(eventDetails)
+        // console.log(eventDetails)
         res.json(eventDetails);
     } catch (error) {
         // If there's an error, send an error response
@@ -150,7 +152,7 @@ const getEventDetails = async (req, res) => {
         }
       });
 
-      console.log(data)
+      // console.log(data)
       
       res.json(data);
       
@@ -168,9 +170,9 @@ const getEventDetails = async (req, res) => {
         where:{
           id: id,
         },
-        include:{
+        select:{
           companyEvents:{
-            include:{
+            select:{
               company: true
             }
           }

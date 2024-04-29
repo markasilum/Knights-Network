@@ -11,6 +11,7 @@ import DateConverter from '../../components/DateConverter'
 
 const EventsDashboard = () => {
   const[eventsData,setEventsData] = useState([])
+  const [filterStat, setFilterStat] = useState('upcoming')
 
     useEffect(()=>{
           const fetchEventsData = async () => {
@@ -26,39 +27,60 @@ const EventsDashboard = () => {
             };
             fetchEventsData()
        },[])
+
+       const filteredEvents = filterStat === "upcoming"
+       ? eventsData.filter(event => new Date(event.startDate) > new Date())
+       : filterStat === "past"
+           ? eventsData.filter(event => new Date(event.startDate) < new Date())
+           : eventsData;
   return (
      <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
       <div className="flex flex-row gap-2">
        <SideBar/>
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
-            <div className="pt-5 pr-5 pl-3 overflow-x-auto">
-           
-                <table className="table bg-white rounded-xl mb-3">
+            <div className="pt-2 pr-2 overflow-x-auto">
+            <div className="w-full h-fit min-h-80 p-3 rounded-xl mb-20 flex flex-col bg-white">
+            <div className="flex flex-row gap-2 items-center pb-3 bg-white">
+                <div className="font-thin ml-3">Status: </div>
+                      <select
+                          className="select select-bordered select-xs w-24 mt-2 max-w-xs font-thin"
+                          defaultValue={filterStat}
+                          onChange={(e) => {setFilterStat(e.target.value)}}
+                      >
+                        <option value="all">All</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="past">Past</option>
+                      </select>
+                </div>
+
+                <table className="table bg-white rounded-xl">
                     <thead>
                     <tr>
                         <th>Event Name</th>
                         <th>Details</th>
                         <th>Partners</th>
-                        <th>Event Date and Time</th>
+                        <th>Event Date</th>
                     </tr>
                     </thead>
                     <tbody>
-                        {eventsData.map((event)=>(
-                        <tr key={event.id} className='p-2  w-full align-center hover'>
+                        {filteredEvents.map((event)=>(
+                        <tr key={event.id} className=' align-center hover'>
                             <td>{event.eventName}</td>
                             <td><Link className="underline" to={`/eventdetails/${event.id}`}>View Details</Link></td>
                             <td><Link className="underline" to={`/event/partners/${event.id}`}>View Partners</Link></td>
-                            <td><DateConverter isoString={event.eventDateTime}/></td>
+                            <td><DateConverter isoString={event.startDate}/></td>
+                            
                         </tr>
-                        ))}
+                        ))} 
+                        
                     </tbody>
                 </table>
                 <CreateEvent/>
               <ButtonPrimary text={"New Event"} onClick={()=>document.getElementById('new_event_form').showModal()}/>
                 
             </div>
-            
+            </div>
         </div>
       </div>
     </div>

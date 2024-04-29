@@ -4,12 +4,15 @@ import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { formatDateToString } from "../../components/DateConverterFunction";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const [eventName, setEventName] = useState("");
   const [location, setLocation] = useState("");
-  const [date, setDate] = useState(new Date().toISOString());
+  const [startDate, setStartDate] = useState(new Date().toISOString());
+  const [endDate, setEndDate] = useState(new Date().toISOString());
+
   const [eventDetails, setEventDetails] = useState("");
   const [image, setImage] = useState(null);
 
@@ -24,7 +27,8 @@ const CreateEvent = () => {
     formData.append("eventName", eventName);
     formData.append("eventLocation", location);
     formData.append("eventDesc", eventDetails);
-    formData.append("eventDateTime", date);
+    formData.append("startDate", startDate);
+    formData.append("endDate", endDate);
 
     for (const value of formData.values()) {
       console.log(value);
@@ -95,14 +99,19 @@ const CreateEvent = () => {
     document.getElementById("fileInput").value = "";
   };
 
-  const handleDate = (endDate) => {
+  const handleEndDate = (endDate) => {
     const end = endDate.toISOString();
-    setDate(end);
+    setEndDate(end);
+  };
+
+  const handleStartDate = (startDate) => {
+    const start = startDate.toISOString();
+    setStartDate(start);
   };
 
   return (
     <dialog id="new_event_form" className="modal">
-      <div className="modal-box w-11/12 max-w-5xl mt-10">
+      <div className="modal-box w-11/12 max-w-5xl mt-10 bg-neutral overflow-scroll">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -148,20 +157,60 @@ const CreateEvent = () => {
                 </div>
               </div>
 
+              <div className="flex flex-row w-full gap-5">
+                <div className="flex flex-col">
+                <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-semibold">
+                    Start Date
+                  </span>
+                </div>
+              </label>
+
               <DateTime
                 id="date"
-                selected={date}
+                dateFormat="MM-DD-YYYY"
+                selected={startDate}
                 timeFormat={true}
-                onChange={handleDate}
+                onChange={handleStartDate}
                 onKeyDown={(e) => {
                   e.preventDefault();
                 }}
                 inputProps={{
-                  placeholder: "Date of Event",
+                  placeholder: formatDateToString(startDate),
                   className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center mt-5",
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center placeholder-black",
                 }}
               />
+                </div>
+
+                <div className="flex flex-col">
+                <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-semibold">
+                    End Date
+                  </span>
+                </div>
+              </label>
+
+              <DateTime
+                id="date"
+                dateFormat="MM-DD-YYYY"
+                selected={endDate}
+                timeFormat={true}
+                onChange={handleEndDate}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                }}
+                inputProps={{
+                  placeholder: formatDateToString(endDate),
+                  className:
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center placeholder-black",
+                }}
+              />
+                </div>
+
+              </div>
 
               <div>
                 <label className="form-control w-full max-w-xs">

@@ -107,7 +107,7 @@ import SideBar from "../../components/SideBar";
       <SideBar/>
 
       <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-      <div className="pt-5 pr-5 pl-3 overflow-scroll">
+      <div className="pt-2 pr-2 overflow-scroll">
         <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
           <div className="flex flex-col col-span-1">
 
