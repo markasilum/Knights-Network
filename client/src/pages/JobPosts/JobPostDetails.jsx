@@ -19,6 +19,22 @@ const JobPostDetails = () => {
   const { jobPostId } = useParams();
   const[applicationData,setApplicationData] = useState([])
 
+  const fetchApplication = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/application/check?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getApplicationData = await response.json();
+      console.log(getApplicationData)
+
+      setApplicationData(getApplicationData);
+      // console.log(getApplicationData)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
   
@@ -79,20 +95,7 @@ const JobPostDetails = () => {
       }
     };
 
-    const fetchApplication = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/application/check?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getApplicationData = await response.json();
-        setApplicationData(getApplicationData);
-        // console.log(getApplicationData)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    
   
 
     
@@ -118,10 +121,9 @@ const JobPostDetails = () => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
-      }else{
-        console.log("Application Sent")
       }
-      
+
+      fetchApplication()  
     } catch (error) {
       console.error('Error sending application:', error);
     }
@@ -137,7 +139,7 @@ const JobPostDetails = () => {
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className="pt-5 pr-5 pl-3 overflow-auto">
-            <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
+            <div className="w-full bg-white h-fit min-h-80 p-5 rounded-lg mb-20 flex flex-col">
               <div className="w-full flex flex-row justify-between">
                 {/* {console.log(jobDegree)} */}
                 <div className="font-semibold text-2xl">{jobData.jobTitle}</div>
@@ -228,15 +230,22 @@ const JobPostDetails = () => {
                 </div>
               </div>
 
-              {role.roleName !== "company" && applicationData === false && (
+              {role.roleName !== "company" && !applicationData && (
                 <div className="w-full flex flex-row justify-end">
                   <ButtonPrimary text={"Apply"} onClick={handleApplication} />
                 </div>
               )}
 
-              {role.roleName !== "company" && applicationData === true && (
+              {role.roleName !== "company" && applicationData && (
                 <div className="w-full flex flex-row justify-end">
-                  <ButtonSuccess text={"Application Sent"} />
+                  {applicationData.status=='accepted'&&(
+                       <ButtonSuccess key={applicationData.id} text={`Application ${applicationData.status}`} />
+                  )}
+                  {applicationData.status =='rejected'&&(
+                      <button key={applicationData.id} className="btn btn-error text-white">{`Application ${applicationData.status}`}</button>
+
+                  )
+                  }
                 </div>
               )}
             </div>
