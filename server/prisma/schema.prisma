@@ -223,6 +223,7 @@ model Application {
   id          String   @id @default(uuid())
   dateCreated DateTime @default(now())
   status      String
+  isArchived Boolean @default(false)
   person      Person   @relation(fields: [personId], references: [id])
   personId    String
   jobPost     JobPost  @relation(fields: [jobPostId], references: [id])

@@ -85,34 +85,27 @@ const apply = async (req, res) => {
   }
 
   const checkIfApplied = async (req, res) => {
-    const userIdCookie = getUserIdFromJWT(req)
+    const userIdCookie = getUserIdFromJWT(req);
 
-    try{    
-      const {id} = req.query
-      const data = await prisma.application.findMany({
-        where:{
-          jobPostId: id,
-          person:{
-            userId: userIdCookie
-          }
-        }
-      });
-      let exist = false;
+    try {    
+        const { id } = req.query;
+        const data = await prisma.application.findFirst({
+            where: {
+                AND: [
+                    { jobPostId: id },
+                    { person: { userId: userIdCookie } }
+                ]
+            }
+        });
+     
+        res.json(data);
+        console.log(data)
       
-      data.map((job)=>{
-        if(job.jobPostId != null){
-          exist = true
-        }
-      })
-      res.json(exist);
-      
-    }catch(error){
-      console.error('Error getting application:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-      // console.log(req.body)
-  
+    } catch(error) {
+        console.error('Error getting application:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  }
+}
 
   const setStatus = async (req, res) => {
     console.log(req.body)
@@ -134,9 +127,30 @@ const apply = async (req, res) => {
   
     }
   }
+
+  const archive = async (req, res) => {
+    try{    
+      const {id} = req.body
+      const data = await prisma.application.update({
+        where:{
+          id: id,
+        },data:{
+          isArchived: true
+        }
+      });
+      
+      res.status(201).json(data);
+    }catch(error){
+      console.error('Error getting application:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      console.log(req.body)
+  
+    }
+  }
 module.exports ={
   apply,
   getListOfApplications,
   checkIfApplied,
-  setStatus
+  setStatus,
+  archive
 }
