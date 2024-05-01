@@ -18,6 +18,7 @@ var upload = multer({ storage: storage })
 const eventController = require('../controllers/eventsController')
 
 router.get('/index',eventController.getEventsList)
+router.get('/index/company',eventController.getJoinedEvents)
 router.post('/create',upload.single("eventPhoto"), eventController.createEvent);
 router.post('/join', eventController.joinEvent);
 router.put('/update',upload.single("eventPhoto"), eventController.updateEvent);

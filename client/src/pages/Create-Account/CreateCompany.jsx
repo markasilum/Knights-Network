@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import TopBar from "../../components/topbar";
 import { useNavigate } from "react-router-dom";
 import TopBarGuest from "../../components/TopBarGuest";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const CreateCompany = () => {
   const navigate = useNavigate();
@@ -23,67 +24,107 @@ const CreateCompany = () => {
   const [secRegistration, setSecRegistration] = useState("");
   const [dtiRegistration, setDtiRegistration] = useState("");
   const [businessPermit, setBusinessPermit] = useState("");
+  const [previewProfPic, setPreviewProfPic] = useState();
+  const [previewSecRegistration, setPreviewSecRegistration] = useState("");
+  const [previewDtiRegistration, setPreviewDtiRegistration] = useState("");
+  const [previewBusinessPermit, setPreviewBusinessPermit] = useState("");
+
+  const createObjectURL = (file, setterFunction) => {
+    if (!file) return setterFunction(undefined);
+    const objectUrl = URL.createObjectURL(file);
+    setterFunction(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  };
+  useEffect(() => createObjectURL(profPic, setPreviewProfPic), [profPic]);
+  useEffect( () => createObjectURL(secRegistration, setPreviewSecRegistration),[secRegistration]);
+  useEffect(() => createObjectURL(dtiRegistration, setPreviewDtiRegistration),[dtiRegistration]);
+  useEffect(() => createObjectURL(businessPermit, setPreviewBusinessPermit),[businessPermit]);
+  
+  const [errors, setErrors] = useState({});
+
+  
+
+  // Validation function for email format
+  const validateEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      return "Invalid email format";
+    }
+    return "";
+  };
+
+  // Validation function for password length
+  const validatePassword = (value) => {
+    if (value.length < 6) {
+      return "Password must be at least 6 characters long";
+    }
+    return "";
+  };
 
   const handleSubmit = async (event) => {
-    // setIsSubmitting(true);
     event.preventDefault();
+    setErrors({})
+    const errors = {};
+    // errors.emailAddress = validateEmail(emailAddress); // Add email validation
+    // errors.password = validatePassword(password);
 
-    const formData = new FormData();
-    if (profPic) {
-      formData.append("profPic", profPic);
-    }
-    if (secRegistration) {
-      formData.append("secRegistration", secRegistration);
-    }
-    if (dtiRegistration) {
-      formData.append("dtiRegistration", dtiRegistration);
-    }
-    if (businessPermit) {
-      formData.append("businessPermit", businessPermit);
-    }
-
-    // Append article data to the formData
-    // Append values to formData
-    formData.append("companyName", companyName);
-    formData.append("companySize", companySize);
-    formData.append("industry", industry);
-    formData.append("username", username);
-    formData.append("password", password);
-    formData.append("streetAddress", streetAddress);
-    formData.append("cityName", cityName);
-    formData.append("zipCode", zipCode);
-    formData.append("countryName", countryName);
-    formData.append("emailAddress", emailAddress);
-    formData.append("contactNum", phoneNumber);
-    formData.append("biography", bio);
-
-    //   for (const value of formData.values()) {
-    //     console.log(value);
-    //   }
-
-    // const data = new URLSearchParams();
-
-    // for (const pair of formData.values()) {
-    //   data.append(pair[0], pair[1]);
-    // }
-    try {
-      // Send the article data to your server
-      const response = await fetch("http://localhost:3000/company/create", {
-        method: "POST",
-        body: formData,
-        credentials:'include'
-
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.error);
+    const hasErrors = Object.values(errors).some((error) => error);
+    if (hasErrors) {
+      setErrors(errors);
+    } else {
+      const formData = new FormData();
+      if (profPic) {
+        formData.append("profPic", profPic);
       }
-      navigate("/login")  
-    } catch (error) {
-      // setIsSubmitting(false);
-      console.error("Error creating person:", error);
+      if (secRegistration) {
+        formData.append("secRegistration", secRegistration);
+      }
+      if (dtiRegistration) {
+        formData.append("dtiRegistration", dtiRegistration);
+      }
+      if (businessPermit) {
+        formData.append("businessPermit", businessPermit);
+      }
+
+      formData.append("companyName", companyName);
+      formData.append("companySize", companySize);
+      formData.append("industry", industry);
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("streetAddress", streetAddress);
+      formData.append("cityName", cityName);
+      formData.append("zipCode", zipCode);
+      formData.append("countryName", countryName);
+      formData.append("emailAddress", emailAddress);
+      formData.append("contactNum", phoneNumber);
+      formData.append("biography", bio);
+
+      try {
+        // Send the article data to your server
+        const response = await fetch("http://localhost:3000/company/create", {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          throw new Error(responseData.error);
+        }
+        navigate("/login");
+      } catch (error) {
+        console.log(error.message)
+        if(error.message == "Username already taken"){
+          setErrors({username: "Username already taken"})
+        }else if(error.message == "Email already taken"){
+          // setErrors(errors.emailAddress = "Email already taken")
+          setErrors({emailAddress: "Email already taken"})
+        }else if(error.message == "Username and Email are already taken"){
+          
+          setErrors({username: "Username already taken", emailAddress: "Email already taken"})
+        }
+      }
     }
   };
 
@@ -269,7 +310,8 @@ const CreateCompany = () => {
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto">
-      <TopBarGuest/>
+      {console.log(errors)}
+      <TopBarGuest />
       <form className="w-2/3" onSubmit={handleSubmit}>
         <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
           <label className="form-control w-full max-w-xs">
@@ -284,9 +326,11 @@ const CreateCompany = () => {
             className="input input-bordered w-full "
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
+            required
           />
 
-          <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="flex flex-row w-full gap-3 justify-between">
+          <div className="flex flex-col w-1/2">
             <div>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
@@ -300,7 +344,10 @@ const CreateCompany = () => {
                 className="input input-bordered w-full "
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-              />
+                required
+              />{errors.username && (
+                <span className="text-error  font-normal h-2">{errors.username}</span>
+              )}
             </div>
             <div>
               <label className="form-control w-full max-w-xs">
@@ -309,15 +356,58 @@ const CreateCompany = () => {
                 </div>
               </label>
               <input
-                type="text"
+                type="password"
                 id="password"
                 placeholder="Password"
                 className="input input-bordered w-full "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
               />
+              {errors.password && (
+              <span className="text-error  font-normal h-2">{errors.password}</span>
+            )}
             </div>
           </div>
+          <div className="w-1/2">
+            <div>
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-bold">Company Logo</span>
+                </div>
+              </label>
+              {!profPic && (
+                <input
+                  type="file"
+                  id="profilePicture"
+                  className="file-input file-input-bordered w-full"
+                  onChange={handleProfPicChange}
+                />
+              )}
+              {profPic && (
+                <div className="w-full flex flex-row gap-2 justify-center items-center">
+                  <div className="w-36 h-36">
+                    <img
+                      className="w-full h-full object-contain rounded-lg"
+                      src={previewProfPic}
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleRemoveProfPic}
+                    className="btn btn-info w-fit text-white ml-3"
+                  >
+                    <DeleteOutlinedIcon/>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+          </div>
+        
+
+         
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
@@ -333,6 +423,7 @@ const CreateCompany = () => {
               className="input input-bordered w-full col-span-2"
               value={streetAddress}
               onChange={(e) => setStreetAdd(e.target.value)}
+              required
             />
             <input
               type="text"
@@ -341,6 +432,7 @@ const CreateCompany = () => {
               className="input input-bordered w-full "
               value={cityName}
               onChange={(e) => setCityName(e.target.value)}
+              required
             />
             <input
               type="text"
@@ -349,6 +441,7 @@ const CreateCompany = () => {
               className="input input-bordered w-full"
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
+              required
             />
             <input
               type="text"
@@ -357,6 +450,7 @@ const CreateCompany = () => {
               className="input input-bordered w-full col-span-2"
               value={countryName}
               onChange={(e) => setCountryName(e.target.value)}
+              required
             />
           </div>
 
@@ -400,14 +494,22 @@ const CreateCompany = () => {
           </label>
 
           <div className="grid grid-cols-2 gap-2 w-full">
+            <div className="flex flex-col">
             <input
-              type="text"
+              type="email"
               id="emailAddress"
               placeholder="Email Address"
               className="input input-bordered w-full "
               value={emailAddress}
               onChange={(e) => setEmailAddress(e.target.value)}
+              
             />
+              {errors.emailAddress && (
+              <span className="text-error">{errors.emailAddress}</span>
+            )}
+            </div>
+            
+            
             <input
               type="text"
               id="phoneNumber"
@@ -418,40 +520,7 @@ const CreateCompany = () => {
             />
           </div>
 
-          <div className="w-full grid grid-cols-2 gap-2">
-            <div>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text font-bold">Company Logo</span>
-                </div>
-              </label>
-              {!profPic && (
-                <input
-                  type="file"
-                  id="profilePicture"
-                  className="file-input file-input-bordered w-full max-w-xs"
-                  onChange={handleProfPicChange}
-                />
-              )}
-              {profPic && (
-                <div className="w-full flex flex-row gap-5 items-center">
-                  <div className="w-32 h-32">
-                    <img
-                      className="w-full h-full object-contain rounded-full"
-                      src={`http://localhost:3000/uploads/profPic/${profPic}`}
-                    />
-                  </div>
-
-                  <button
-                    onClick={handleRemoveProfPic}
-                    className="btn btn-info w-fit text-white ml-3"
-                  >
-                    Remove Image
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+          
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
@@ -480,6 +549,7 @@ const CreateCompany = () => {
                 id="businessPermit"
                 className="file-input file-input-bordered w-full"
                 onChange={handleBusPermitChange}
+                required
               />
             )}
             {businessPermit && (
@@ -487,14 +557,16 @@ const CreateCompany = () => {
                 <div className="w-2/3 h-56 max-h-56">
                   <img
                     className="w-full h-full object-contain "
-                    src={`http://localhost:3000/uploads/profPic/${businessPermit}`}
+                    src={previewBusinessPermit}
                   />
                 </div>
 
                 <button
                   onClick={handleRemoveBusPermitPic}
                   className="btn btn-info w-fit text-white ml-3"
-                >Remove</button>
+                >
+                  Remove
+                </button>
               </div>
             )}
             <label className="form-control w-full">
@@ -508,6 +580,7 @@ const CreateCompany = () => {
                 id="businessPermit"
                 className="file-input file-input-bordered w-full"
                 onChange={handleDtiPicChange}
+                required
               />
             )}
             {dtiRegistration && (
@@ -515,14 +588,16 @@ const CreateCompany = () => {
                 <div className="w-2/3 h-56 max-h-56">
                   <img
                     className="w-full h-full object-contain "
-                    src={`http://localhost:3000/uploads/profPic/${dtiRegistration}`}
+                    src={previewDtiRegistration}
                   />
                 </div>
 
                 <button
                   onClick={handleRemoveDtiPic}
                   className="btn btn-info w-fit text-white ml-3"
-                >Remove</button>
+                >
+                  Remove
+                </button>
               </div>
             )}
 
@@ -537,6 +612,7 @@ const CreateCompany = () => {
                 id="businessPermit"
                 className="file-input file-input-bordered w-full"
                 onChange={handleSecPicChange}
+                required
               />
             )}
             {secRegistration && (
@@ -544,14 +620,16 @@ const CreateCompany = () => {
                 <div className="w-2/3 h-56 max-h-56">
                   <img
                     className="w-full h-full object-contain "
-                    src={`http://localhost:3000/uploads/profPic/${secRegistration}`}
+                    src={previewSecRegistration}
                   />
                 </div>
 
                 <button
                   onClick={handleRemoveSecPic}
                   className="btn btn-info w-fit text-white ml-3"
-                >Remove</button>
+                >
+                  Remove
+                </button>
               </div>
             )}
           </div>

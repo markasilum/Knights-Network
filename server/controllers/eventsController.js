@@ -163,6 +163,36 @@ const getEventDetails = async (req, res) => {
     }
   }
 
+  const getJoinedEvents = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req)
+
+    try{    
+      const data = await prisma.events.findMany({
+        where:{
+          companyEvents:{
+            some:{
+              company:{
+                userId:userIdCookie
+              }
+            }
+          }
+        },orderBy:{
+          startDate:'desc'
+        }
+        
+      });
+
+      // console.log(data)
+      
+      res.json(data);
+      
+    }catch(error){
+      console.error('Error getting company events:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      console.log(req.body)
+    }
+  }
+
   const getPartners = async (req, res) => {
     try{    
       const {id} = req.query
@@ -219,5 +249,6 @@ module.exports = {
   joinEvent,
   checkIfJoined,
   getPartners,
-  setStatus
+  setStatus,
+  getJoinedEvents
 };

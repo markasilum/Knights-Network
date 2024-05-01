@@ -3,11 +3,17 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import DateOnlyConverter from "./DateOnlyConverter";
 import TimeConverter from "./TimeConverter";
 
-const EventCard = ({ eventData, filter }) => {
+const EventCard = ({ eventData, filter, companyEvents }) => {
+  console.log(companyEvents)
   // Filter events based on the filter value
-  const filteredEvents = filter === "upcoming"
-    ? eventData.filter(event => new Date(event.startDate) > new Date())
-    : eventData.filter(event => new Date(event.startDate) < new Date());
+  let filteredEvents;
+  if (filter === "upcoming") {
+    filteredEvents = eventData.filter(event => new Date(event.startDate) > new Date());
+  } else if (filter === "joined") {
+    filteredEvents = companyEvents
+  } else {
+    filteredEvents = eventData.filter(event => new Date(event.startDate) < new Date());
+  }
 
   return (
     <div className="overflow-auto-y w-full bg-white h-fit flex flex-col rounded-xl mb-20 gap-3">

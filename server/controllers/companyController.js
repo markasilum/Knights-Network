@@ -36,6 +36,7 @@ const createCompany = async (req, res) => {
     contactNum,
     emailAddress,
     biography,
+    industry,
   } = req.body;
 
   const profPic = req.files["profPic"]
@@ -51,40 +52,82 @@ const createCompany = async (req, res) => {
     ? req.files["businessPermit"][0].filename
     : null;
 
-    const hashPass = await bcrypt.hash(password,10)
-  await prisma.user.create({
-    data: {
-      username,
-      password: hashPass,
-      streetAddress,
-      cityName,
-      zipCode,
-      countryName,
-      emailAddress,
-      contactNum,
-      biography,
-      profPic,
-      verified: false,
-      role: {
-        create: {
-          roleName: "company",
+  const hashPass = await bcrypt.hash(password,10)
+  try {
+    const checkEmail = await prisma.user.findFirst({
+      where:{
+        emailAddress: emailAddress,
+      }
+    })
+
+    const checkUsername = await prisma.user.findFirst({
+      where:{
+        username: username,
+      }
+    })
+
+    console.log(checkEmail,checkUsername)
+    if(checkEmail && checkUsername){
+      throw new Error("Username and Email are already taken")
+    }
+    if(checkEmail){
+      throw new Error("Email already taken");
+    }
+
+    if(checkUsername){
+      throw new Error("Username already taken");
+    }
+
+    await prisma.user.create({
+      data: {
+        username,
+        password: hashPass,
+        streetAddress,
+        cityName,
+        zipCode,
+        countryName,
+        emailAddress,
+        contactNum,
+        biography,
+        profPic,
+        verified: false,
+        role: {
+          create: {
+            roleName: "company",
+          },
         },
-      },
-      company: {
-        create: {
-          companyName,
-          companySize,
-          verifiReq: {
-            create: {
-              secRegistration: secRegistration,
-              dtiRegistration: dtiRegistration,
-              businessPermit: businessPermit,
+        company: {
+          create: {
+            companyName,
+            companySize,
+            verifiReq: {
+              create: {
+                secRegistration: secRegistration,
+                dtiRegistration: dtiRegistration,
+                businessPermit: businessPermit,
+              },
             },
+            industry:{
+              connectOrCreate:{
+                industry
+              }
+            }
           },
         },
       },
-    },
-  });
+    });
+    
+  } catch (error) {
+    if (error.message === "Username and Email are already taken") {
+      return res.status(400).json({ error: error.message });
+    } else if (error.message === "Email already taken" || error.message === "Username already taken") {
+      return res.status(400).json({ error: error.message });
+    } else {
+      console.error("Unexpected error:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
 };
 
 const updateCompany = async (req, res) => {
