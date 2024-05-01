@@ -24,7 +24,9 @@ const loginUser = async (req, res) => {
         emailAddress: email,
       },
       include:{
-        role: true
+        role: true,
+        person: true,
+        company: true
       }
     });
 
@@ -91,7 +93,17 @@ const getCurrentUser = async (req, res) => {
         id: userId,
       },
       include:{
-        role: true
+        role: true,
+        person: true,
+        company: {
+          include:{
+            industry:{
+              include:{
+                industry: true
+              }
+            }
+          }
+        }
       }
     });
     if (!user) {

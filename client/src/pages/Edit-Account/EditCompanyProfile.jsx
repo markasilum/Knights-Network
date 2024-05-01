@@ -2,74 +2,46 @@ import React from "react";
 import { useState, useEffect } from "react";
 import TopBar from "../../components/topbar";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const EditCompanyProfile = () => {
   const navigate = useNavigate();
-  const [companyName, setCompanyName] = useState("");
-  const [companySize, setCompanySize] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [streetAddress, setStreetAdd] = useState("");
-  const [cityName, setCityName] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [countryName, setCountryName] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [bio, setBio] = useState("");
-  const [profPic, setProfPic] = useState("");
-  const [industry, setIndustry] = useState("");
-  // const [preview, setPreview] = useState();
+  const {user} = useAuthContext()
 
+  const [companyName, setCompanyName] = useState(user.user.company.companyName);
+  const [companySize, setCompanySize] = useState(user.user.company.companySize);
+  const [username, setUsername] = useState(user.user.username);
+  const [password, setPassword] = useState("");
+  const [streetAddress, setStreetAdd] = useState(user.user.streetAddress);
+  const [cityName, setCityName] = useState(user.user.cityName);
+  const [zipCode, setZipCode] = useState(user.user.zipCode);
+  const [countryName, setCountryName] = useState(user.user.countryName);
+  const [emailAddress, setEmailAddress] = useState(user.user.emailAddress);
+  const [phoneNumber, setPhoneNumber] = useState(user.user.contactNum);
+  const [bio, setBio] = useState(user.user.biography);
+  const [profPic, setProfPic] = useState(user.user.profPic);
+  const [industry, setIndustry] = useState(user.user.company.industry.map(item=>item.industry.industryName));
+  const [preview, setPreview] = useState();
+
+  // const previewFunction = async () => {
+
+  // }
   // useEffect(() => {
+  //   console.log("profPic:", profPic); // Log the value of profPic
   //   if (!profPic) {
+  //     console.log("profPic is empty, setting preview to undefined");
   //     setPreview(undefined);
-  //     console.log(profPic)
   //     return;
   //   }
-  //     console.log("not empty", profPic)
+  
+  //   console.log("profPic is not empty, creating object URL");
   //   const objectUrl = URL.createObjectURL(profPic);
   //   setPreview(objectUrl);
-
+  
   //   return () => URL.revokeObjectURL(objectUrl);
   // }, [profPic]);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/user/details", {
-          credentials: "include",
-        });
-        const result = await response.json();
-
-        setUsername(result.username);
-        setStreetAdd(result.streetAddress);
-        setCityName(result.cityName);
-        setZipCode(result.zipCode);
-        setCountryName(result.countryName);
-        setEmailAddress(result.emailAddress);
-        setPhoneNumber(result.contactNum);
-        setProfPic(result.profPic);
-        setBio(result.biography);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchCompanyData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/company/details", {
-          credentials: "include",
-        });
-        const result = await response.json();
-        setCompanyName(result.companyName);
-        setCompanySize(result.companySize);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchUserData();
-    fetchCompanyData();
-  }, []);
+  
 
   const handleSubmit = async (event) => {
     // setIsSubmitting(true);
@@ -84,7 +56,7 @@ const EditCompanyProfile = () => {
     }
     formData.append("companyName", companyName);
     formData.append("companySize", companySize);
-    formData.append("industry", industry);
+    formData.append("industryName", industry);
     formData.append("username", username);
     formData.append("password", password);
     formData.append("streetAddress", streetAddress);
@@ -160,6 +132,9 @@ const EditCompanyProfile = () => {
 
     // If file is valid, update the image state and set image preview URL
     setProfPic(file);
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
   };
 
   const handleRemoveProfPic = () => {
@@ -333,7 +308,7 @@ const EditCompanyProfile = () => {
                 onChange={handleProfPicChange}
               />
             )}
-            {profPic && (
+            {profPic && !preview &&  (
               <div className="w-32 h-32">
                 <img
                   className="w-full h-full object-contain rounded-md"
@@ -341,7 +316,24 @@ const EditCompanyProfile = () => {
                 />
               </div>
             )}
-            {profPic && (
+            {profPic && !preview &&  (
+              <button
+                onClick={handleRemoveProfPic}
+                className="btn btn-info w-fit text-white ml-3"
+              >
+                Remove Image
+              </button>
+            )}
+
+            {preview && (
+              <div className="w-32 h-32">
+                <img
+                  className="w-full h-full object-contain rounded-md"
+                  src={preview}
+                />
+              </div>
+            )}
+            {preview && (
               <button
                 onClick={handleRemoveProfPic}
                 className="btn btn-info w-fit text-white ml-3"

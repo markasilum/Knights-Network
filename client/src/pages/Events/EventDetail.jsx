@@ -26,17 +26,19 @@ const EventDetail = () => {
   const role = user.user.role;
   const { eventId } = useParams();
 
-  const checkIfJoined = async () => {
+  const fetchEventDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/events/check?id=${eventId}`,
+        `http://localhost:3000/events/details?id=${eventId}`,
         {
           credentials: "include",
         }
       );
-      const getApplicationData = await response.json();
-      setJoined(getApplicationData);
-      // console.log(getApplicationData)
+      const getEventRes = await response.json();
+      setStartDate(getEventRes.startDate);
+      setEndDate(getEventRes.endDate);
+      setEventData(getEventRes);
+      // console.log(getEducRes)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -58,24 +60,26 @@ const EventDetail = () => {
     }
   };
 
+  const checkIfJoined = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/events/check?id=${eventId}`,
+        {
+          credentials: "include",
+        }
+      );
+      const getApplicationData = await response.json();
+      setJoined(getApplicationData);
+      // fetchEventPartners()
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  
+
   useEffect(() => {
-    const fetchEventDetails = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/events/details?id=${eventId}`,
-          {
-            credentials: "include",
-          }
-        );
-        const getEventRes = await response.json();
-        setStartDate(getEventRes.startDate);
-        setEndDate(getEventRes.endDate);
-        setEventData(getEventRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    
 
     fetchEventDetails();
     fetchEventPartners();
@@ -100,6 +104,7 @@ const EventDetail = () => {
       } else {
         console.log("Event Joined");
         fetchEventPartners();
+        checkIfJoined()
       }
     } catch (error) {
       console.error("Error joining event:", error);
@@ -170,18 +175,19 @@ const EventDetail = () => {
               </div>
 
               
-
               {partners &&
                 partners.companyEvents &&
-                partners.companyEvents.length != 0 && (
+                partners.companyEvents.length !== 0 &&
+                partners.companyEvents.some((item) => item.status === 'accepted') && (
                   <p className="font-normal mt-3">Partner Companies</p>
                 )}
               <ul className="list-disc ml-5 font-thin">
                 {partners &&
                   partners.companyEvents &&
                   partners.companyEvents.map((item) => (
-                    <li key={item.id}>{item.company.companyName}</li>
-                  
+                    item.status === 'accepted' && ( // Use && to conditionally render
+                      <li key={item.id}>{item.company.companyName}</li>
+                    )
                   ))}
               </ul>
 
@@ -190,12 +196,22 @@ const EventDetail = () => {
                   <ButtonPrimary onClick={handleJoinEvent} text={"Join"} />
                 </div>
               )}
+                {console.log(joined)}
+                {joined.length !== 0 && role.roleName === "company" && (
+                  <div>
+                    {joined[0].status === 'accepted' && (
+                      <div className="w-full flex justify-end">
+                        <ButtonSuccess text={joined[0].status} />
+                      </div>
+                    )}
 
-              {joined.length != 0 && role.roleName === "company" && (
-                <div className="w-full flex justify-end">
-                  <ButtonSuccess text={"Pending"} />
-                </div>
-              )}
+                    {joined[0].status === 'rejected' && (
+                      <div className="w-full flex justify-end">
+                        <button className="btn btn-error">{joined[0].status}</button>
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
           </div>
         </div>

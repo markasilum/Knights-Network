@@ -88,7 +88,7 @@ const CreateCompany = () => {
 
       formData.append("companyName", companyName);
       formData.append("companySize", companySize);
-      formData.append("industry", industry);
+      formData.append("industryName", industry);
       formData.append("username", username);
       formData.append("password", password);
       formData.append("streetAddress", streetAddress);
