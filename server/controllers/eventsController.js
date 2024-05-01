@@ -202,7 +202,7 @@ const getEventDetails = async (req, res) => {
         },
         select:{
           companyEvents:{
-            select:{
+            include:{
               company: true
             }
           }

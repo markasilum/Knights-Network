@@ -181,7 +181,7 @@ model CompIndustry {
 
 model Industry {
   id           String         @id @default(uuid())
-  industryName String
+  industryName String @unique
   compIndustry CompIndustry[]
 }
 

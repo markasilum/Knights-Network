@@ -11,12 +11,11 @@ const getUserIdFromJWT = (req) => {
 };
 
 const getCompanyDetails = async (req, res) => {
-
-  const userId = getUserIdFromJWT(req)
+  const userId = getUserIdFromJWT(req);
 
   const data = await prisma.company.findUnique({
     where: {
-      userId: userId
+      userId: userId,
     },
   });
 
@@ -36,7 +35,7 @@ const createCompany = async (req, res) => {
     contactNum,
     emailAddress,
     biography,
-    industry,
+    industryName,
   } = req.body;
 
   const profPic = req.files["profPic"]
@@ -52,29 +51,29 @@ const createCompany = async (req, res) => {
     ? req.files["businessPermit"][0].filename
     : null;
 
-  const hashPass = await bcrypt.hash(password,10)
+  const hashPass = await bcrypt.hash(password, 10);
   try {
     const checkEmail = await prisma.user.findFirst({
-      where:{
+      where: {
         emailAddress: emailAddress,
-      }
-    })
+      },
+    });
 
     const checkUsername = await prisma.user.findFirst({
-      where:{
+      where: {
         username: username,
-      }
-    })
+      },
+    });
 
-    console.log(checkEmail,checkUsername)
-    if(checkEmail && checkUsername){
-      throw new Error("Username and Email are already taken")
+    console.log(checkEmail, checkUsername);
+    if (checkEmail && checkUsername) {
+      throw new Error("Username and Email are already taken");
     }
-    if(checkEmail){
+    if (checkEmail) {
       throw new Error("Email already taken");
     }
 
-    if(checkUsername){
+    if (checkUsername) {
       throw new Error("Username already taken");
     }
 
@@ -107,37 +106,48 @@ const createCompany = async (req, res) => {
                 businessPermit: businessPermit,
               },
             },
-            industry:{
-              connectOrCreate:{
-                industry
-              }
-            }
+            industry: {
+              connectOrCreate: {
+                where: {
+                  industry: {
+                    industryName,
+                  },
+                },
+                create: {
+                  industry: {
+                    industryName,
+                  },
+                },
+              },
+            },
           },
         },
       },
     });
-    
   } catch (error) {
     if (error.message === "Username and Email are already taken") {
       return res.status(400).json({ error: error.message });
-    } else if (error.message === "Email already taken" || error.message === "Username already taken") {
+    } else if (
+      error.message === "Email already taken" ||
+      error.message === "Username already taken"
+    ) {
       return res.status(400).json({ error: error.message });
     } else {
       console.error("Unexpected error:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
-
 };
 
 const updateCompany = async (req, res) => {
-  const userId = getUserIdFromJWT(req)
+  const userId = getUserIdFromJWT(req);
 
   try {
     // Extract data from the request body
     const {
       companyName,
       companySize,
+      industryName,
       username,
       password,
       streetAddress,
@@ -149,22 +159,57 @@ const updateCompany = async (req, res) => {
       biography,
     } = req.body;
 
+    const compId = await prisma.company.findFirst({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    console.log(compId);
     let profPic;
     if (req.file != null) {
       profPic = req.file.filename;
     }
 
     //hash password
-    let hashPass = ""
-    if(password){
-       hashPass = await bcrypt.hash(password,10)
-    }else{
-      console.log("password not updated")
+    let hashPass = "";
+    if (password) {
+      hashPass = await bcrypt.hash(password, 10);
+    } else {
+      console.log("password not updated");
     }
+
+    const checkEmail = await prisma.user.findFirst({
+      where: {
+        emailAddress: emailAddress,
+      },
+    });
+
+    const checkUsername = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+    });
+
+    console.log(checkEmail, checkUsername);
+    // if (checkEmail && checkUsername) {
+    //   throw new Error("Username and Email are already taken");
+    // }
+    // if (checkEmail) {
+    //   throw new Error("Email already taken");
+    // }
+
+    // if (checkUsername) {
+    //   throw new Error("Username already taken");
+    // }
 
     const updateUser = await prisma.user.update({
       where: {
-        id: userId
+        id: userId,
       },
       data: {
         username,
@@ -180,11 +225,30 @@ const updateCompany = async (req, res) => {
         company: {
           update: {
             where: {
-              userId: userId
+              userId: userId,
             },
             data: {
               companyName,
               companySize,
+              industry: {
+                connectOrCreate: {
+                  where: {
+                    companyId: compId.id,
+                  },
+                  create: {
+                    industry: {
+                      connectOrCreate: {
+                        where:{
+                          industryName
+                        },
+                        create:{
+                          industryName
+                        }
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         },
