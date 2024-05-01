@@ -44,8 +44,8 @@ model AccountSettings{
 //Profiling Module and Resume Module Tables
 model Person {
   id                String                  @id @default(uuid())
-  user              User                    @relation(fields: [userId], references: [id])
-  userId            String                  @unique
+  user              User?                    @relation(fields: [userId], references: [id])
+  userId            String?                  @unique
   firstName         String
   middleName        String
   lastName          String
@@ -62,7 +62,10 @@ model Person {
   personLicense     PersonLicense[]
   applicationLetter ApplicationLetter[]
   application       Application[]
+  contactPerson     ContactPerson?
 }
+
+
 
 model Education {
   id         String    @id @default(uuid())
@@ -160,6 +163,18 @@ model Company {
   industry      CompIndustry[]
   jobPost       JobPost[]
   companyEvents CompanyEvents[]
+  contactPerson ContactPerson[]
+}
+
+model ContactPerson {
+  id String @id @default(uuid())
+  company    Company  @relation(fields: [companyId], references: [id])
+  companyId  String   @unique
+  person          Person      @relation(fields: [personId], references: [id])
+  personId        String @unique
+  email String
+  phone String
+  positionName String 
 }
 
 model CompanyVerificationReqs {
