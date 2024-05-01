@@ -36,6 +36,13 @@ const createCompany = async (req, res) => {
     emailAddress,
     biography,
     industryName,
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    personEmail,
+    personPhone,
+    positionName
   } = req.body;
 
   const profPic = req.files["profPic"]
@@ -77,7 +84,7 @@ const createCompany = async (req, res) => {
       throw new Error("Username already taken");
     }
 
-    await prisma.user.create({
+   const createdUser =  await prisma.user.create({
       data: {
         username,
         password: hashPass,
@@ -106,24 +113,42 @@ const createCompany = async (req, res) => {
                 businessPermit: businessPermit,
               },
             },
-            industry: {
-              connectOrCreate: {
-                where: {
-                  industry: {
-                    industryName,
-                  },
-                },
-                create: {
-                  industry: {
-                    industryName,
-                  },
-                },
+            industry: {//compIndustry
+              create: {
+                industry:{//list of industry
+                  connectOrCreate:{
+                    where: {
+                        industryName,
+                    },
+                    create: {
+                        industryName,
+                    },
+
+                  }
+                }
               },
             },
+            contactPerson:{
+              create:{
+                positionName,
+                email: personEmail,
+                phone: personPhone,
+                person:{
+                  create:{
+                    firstName,
+                    middleName,
+                    lastName,
+                    suffix
+                  }
+                }
+              }
+            }
           },
         },
       },
     });
+
+    res.status(201).json(createdUser);
   } catch (error) {
     if (error.message === "Username and Email are already taken") {
       return res.status(400).json({ error: error.message });

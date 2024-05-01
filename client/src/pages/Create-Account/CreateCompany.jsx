@@ -4,6 +4,7 @@ import TopBar from "../../components/topbar";
 import { useNavigate } from "react-router-dom";
 import TopBarGuest from "../../components/TopBarGuest";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import InputFields from "../../components/InputFields";
 
 const CreateCompany = () => {
   const navigate = useNavigate();
@@ -28,6 +29,13 @@ const CreateCompany = () => {
   const [previewSecRegistration, setPreviewSecRegistration] = useState("");
   const [previewDtiRegistration, setPreviewDtiRegistration] = useState("");
   const [previewBusinessPermit, setPreviewBusinessPermit] = useState("");
+  const [fName,setFname] = useState("")
+  const [midName,setMidName] = useState("")
+  const [lastName,setLastName] = useState("")
+  const [suffix,setSuffix] = useState("")
+  const [personEmail,setPersonEmail] = useState("")
+  const [personPhone,setPersonPhone] = useState("")
+  const [position,setPosition] = useState("")
 
   const createObjectURL = (file, setterFunction) => {
     if (!file) return setterFunction(undefined);
@@ -98,6 +106,14 @@ const CreateCompany = () => {
       formData.append("emailAddress", emailAddress);
       formData.append("contactNum", phoneNumber);
       formData.append("biography", bio);
+
+      formData.append("firstName", fName);
+      formData.append("middleName", midName);
+      formData.append("lastName", lastName);
+      formData.append("suffix", suffix);
+      formData.append("personEmail", personEmail);
+      formData.append("personPhone", personPhone);
+      formData.append("positionName", position);
 
       try {
         // Send the article data to your server
@@ -316,7 +332,7 @@ const CreateCompany = () => {
         <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Company Name</span>
+              <span className="label-text font-normal">Company Name</span>
             </div>
           </label>
           <input
@@ -334,7 +350,7 @@ const CreateCompany = () => {
             <div>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text font-bold">Username</span>
+                  <span className="label-text font-normal">Username</span>
                 </div>
               </label>
               <input
@@ -352,7 +368,7 @@ const CreateCompany = () => {
             <div>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text font-bold">Password</span>
+                  <span className="label-text font-normal">Password</span>
                 </div>
               </label>
               <input
@@ -374,7 +390,7 @@ const CreateCompany = () => {
             <div>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text font-bold">Company Logo</span>
+                  <span className="label-text font-normal">Company Logo</span>
                 </div>
               </label>
               {!profPic && (
@@ -411,7 +427,7 @@ const CreateCompany = () => {
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Address</span>
+              <span className="label-text font-normal">Address</span>
             </div>
           </label>
 
@@ -458,7 +474,7 @@ const CreateCompany = () => {
             <div>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text font-bold">Industry</span>
+                  <span className="label-text font-normal">Industry</span>
                 </div>
               </label>
               <input
@@ -473,7 +489,7 @@ const CreateCompany = () => {
             <div>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text font-bold">Company Size</span>
+                  <span className="label-text font-normal">Company Size</span>
                 </div>
               </label>
               <input
@@ -489,7 +505,7 @@ const CreateCompany = () => {
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Contact</span>
+              <span className="label-text font-normal">Contact</span>
             </div>
           </label>
 
@@ -524,7 +540,7 @@ const CreateCompany = () => {
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Brief Description</span>
+              <span className="label-text font-normal">Brief Description</span>
             </div>
           </label>
           <textarea
@@ -534,12 +550,39 @@ const CreateCompany = () => {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           ></textarea>
+          
+          <div className="w-full flex flex-col items-center mt-5">
+          <span className="text-lg font-normal">Contact Person</span>
+          <div className="flex flex-col w-full ">
+            <div className="flex flex-row w-full gap-2">
+            <InputFields divWid={'w-full'} id={'contactFname'} labelText={'First Name'} name={"contactFname"} placeholder={'First Name'} onChange={(e) => setFname(e.target.value)} value={fName}/>
+            <InputFields divWid={'w-full'} id={'midName'} labelText={'Middle Name'} name={"midName"} placeholder={'Middle Name'} onChange={(e) => setMidName(e.target.value)} value={midName}/>
+            </div>
+            <div className="flex flex-row gap-2">
+            <InputFields divWid={'w-full'} id={'lastName'} labelText={'Last Name'} name={"lastName"} placeholder={'Last Name'} onChange={(e) => setLastName(e.target.value)} value={lastName}/>
+            <InputFields divWid={'w-full'} id={'suffix'} labelText={'Suffix'} name={"suffix"} placeholder={'Suffix'} onChange={(e) => setSuffix(e.target.value)} value={suffix}/>
+            </div>
+            <div className="flex flex-row gap-2">
+            <div className='w-full' >
+            <label className="form-control w-full max-w-xs col-span-2" htmlFor='personEmail'>
+                <div className="label">
+                      <span className="label-text font-normal">Email</span>
+                  </div>
+            </label>
+            <input type='email' id='personEmail' name="personEmail" placeholder='Email Address' className="input input-bordered w-full " value={personEmail} onChange={(e) => setPersonEmail(e.target.value)} />
+          </div>
+            <InputFields divWid={'w-full'} id={'personPhone'} labelText={'Contact Number'} name={"personPhone"} placeholder={'Contact Number'} onChange={(e) => setPersonPhone(e.target.value)} value={personPhone}/>
+            </div>
+            <InputFields divWid={'w-full'} id={'position'} labelText={'Position'} name={"position"} placeholder={'Position Name'} onChange={(e) => setPosition(e.target.value)} value={position}/>
+          </div>
+
+          </div>
 
           <div className="flex flex-col mt-8 w-full items-center">
-            <span className="text-lg font-bold">Verification Requirements</span>
+            <span className="text-lg font-normal">Verification Requirements</span>
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text font-bold">Business Permit</span>
+                <span className="label-text font-normal">Business Permit</span>
               </div>
             </label>
             {/* <input type="file" id="validId" className="file-input file-input-bordered w-full" /> */}
@@ -571,7 +614,7 @@ const CreateCompany = () => {
             )}
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text font-bold">DTI Registration</span>
+                <span className="label-text font-normal">DTI Registration</span>
               </div>
             </label>
             {!dtiRegistration && (
@@ -603,7 +646,7 @@ const CreateCompany = () => {
 
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text font-bold">SEC Registration</span>
+                <span className="label-text font-normal">SEC Registration</span>
               </div>
             </label>
             {!secRegistration && (
