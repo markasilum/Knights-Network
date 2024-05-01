@@ -169,19 +169,7 @@ const EventDetail = () => {
                 </ul>
               </div>
 
-              {joined.length != 0 && console.log(joined[0].status)}
-
-              {role.roleName === "company" && joined.length == 0 && (
-                <div className="w-full flex justify-end">
-                  <ButtonPrimary onClick={handleJoinEvent} text={"Join"} />
-                </div>
-              )}
-
-              {joined.length != 0 && role.roleName === "company" && (
-                <div className="w-full flex justify-end">
-                  <ButtonSuccess text={"Pending"} />
-                </div>
-              )}
+              
 
               {partners &&
                 partners.companyEvents &&
@@ -196,6 +184,18 @@ const EventDetail = () => {
                   
                   ))}
               </ul>
+
+              {role.roleName === "company" && joined.length == 0 && (
+                <div className="w-full flex justify-end">
+                  <ButtonPrimary onClick={handleJoinEvent} text={"Join"} />
+                </div>
+              )}
+
+              {joined.length != 0 && role.roleName === "company" && (
+                <div className="w-full flex justify-end">
+                  <ButtonSuccess text={"Pending"} />
+                </div>
+              )}
             </div>
           </div>
         </div>

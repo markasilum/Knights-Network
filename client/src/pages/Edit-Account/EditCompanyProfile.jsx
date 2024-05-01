@@ -18,12 +18,26 @@ const EditCompanyProfile = () => {
   const [bio, setBio] = useState("");
   const [profPic, setProfPic] = useState("");
   const [industry, setIndustry] = useState("");
+  // const [preview, setPreview] = useState();
+
+  // useEffect(() => {
+  //   if (!profPic) {
+  //     setPreview(undefined);
+  //     console.log(profPic)
+  //     return;
+  //   }
+  //     console.log("not empty", profPic)
+  //   const objectUrl = URL.createObjectURL(profPic);
+  //   setPreview(objectUrl);
+
+  //   return () => URL.revokeObjectURL(objectUrl);
+  // }, [profPic]);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/details",{
-          credentials:'include'
+        const response = await fetch("http://localhost:3000/user/details", {
+          credentials: "include",
         });
         const result = await response.json();
 
@@ -42,8 +56,8 @@ const EditCompanyProfile = () => {
     };
     const fetchCompanyData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/company/details",{
-          credentials:'include'
+        const response = await fetch("http://localhost:3000/company/details", {
+          credentials: "include",
         });
         const result = await response.json();
         setCompanyName(result.companyName);
@@ -95,7 +109,7 @@ const EditCompanyProfile = () => {
       const response = await fetch("http://localhost:3000/company/update", {
         method: "PUT",
         body: formData,
-        credentials:'include'
+        credentials: "include",
       });
 
       const responseData = await response.json();
@@ -320,16 +334,12 @@ const EditCompanyProfile = () => {
               />
             )}
             {profPic && (
-              
-                
-                  <div className="w-32 h-32">
-                    <img
-                    className="w-full h-full object-contain rounded-full"
-                      src={`http://localhost:3000/uploads/profPic/${profPic}`}
-                    />
-                  </div>
-                
-         
+              <div className="w-32 h-32">
+                <img
+                  className="w-full h-full object-contain rounded-md"
+                  src={`http://localhost:3000/uploads/profPic/${profPic}`}
+                />
+              </div>
             )}
             {profPic && (
               <button
@@ -353,8 +363,6 @@ const EditCompanyProfile = () => {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           ></textarea>
-
-         
 
           <button type="submit" className={`btn btn-primary w-40 mt-5`}>
             Update Account
