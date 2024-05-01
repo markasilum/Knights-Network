@@ -210,7 +210,7 @@ model JobPost {
   jobDesc           String              @db.Text
   jobLoc            String
   employmentType    String
-  salary            Int
+  salary            Int?
   isOpen            Boolean
   workModel         String
   validity          DateTime

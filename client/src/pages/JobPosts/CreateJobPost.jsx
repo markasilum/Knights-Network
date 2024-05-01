@@ -155,14 +155,13 @@ const handleValidity = (endDate) => {
   setValidity(end);
 };
   return (
-    <div className="w-9/12 bg-info  h-screen flex flex-col shadow-xl">
+    <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
-
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className=" overflow-auto">
-            <div className="w-full bg-white h-fit min-h-80 rounded-lg mb-20 flex flex-col">
+            <div className="w-full bg-white h-fit min-h-80  mb-20 flex flex-col p-3">
               <form className="w-full" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 bg-neutral  p-10 rounded-xl gap-2">
                   <h1 className="col-span-2 text-center font-medium border-b-2 border-info">

@@ -41,7 +41,7 @@ const EventsDashboard = () => {
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
             <div className="pt-2 pr-2 overflow-x-auto">
             <div className="w-full h-fit min-h-80 p-3 rounded-xl mb-20 flex flex-col bg-white">
-            <div className="flex flex-row gap-2 items-center pb-3 bg-white">
+              <div className="flex flex-row gap-2 items-center pb-3 bg-white">
                 <div className="font-thin ml-3">Status: </div>
                       <select
                           className="select select-bordered select-xs w-24 mt-2 max-w-xs font-thin"

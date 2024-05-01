@@ -96,7 +96,7 @@ const role = async (req, res) => {
               }
             }
           }
-        }
+        },
       });
       res.status(201).json(data);
       console.log(data)

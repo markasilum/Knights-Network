@@ -115,7 +115,6 @@ const createJobPost = async (req, res) => {
     } = req.body;
     const parsedSalary = parseInt(salary);
     const parsedPos = parseInt(numOfPosition);
-
     let isOpenBoolean = true;
     if (isOpen === "false") {
       isOpenBoolean = false;

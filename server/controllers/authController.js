@@ -26,7 +26,15 @@ const loginUser = async (req, res) => {
       include:{
         role: true,
         person: true,
-        company: true
+        company: {
+          include:{
+            industry:{
+              include:{
+                industry: true
+              }
+            }
+          }
+        }
       }
     });
 

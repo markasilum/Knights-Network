@@ -5,41 +5,19 @@ import PersonCredentials from "../../components/PersonCredentials";
 import CompanyJobs from "../../components/CompanyJobs";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import ContactPage from "./ContactPage";
  const ProfilePage = () => {
-  const [userData, setUserData] = useState([]);
+  const {user} = useAuthContext()
+  const [userData, setUserData] = useState(user.user);
   const [educData, setEducData] = useState([]);
   const [data, setData] = useState([]);
   const [compData, setCompData] = useState([]);
   const [compJobPostData, setCompJobPostData] = useState([]);
-  const [userRole, setUserRole] = useState([]);
+  const [userRole, setUserRole] = useState(user.user.role);
   const [profileNavButton, setProfileNavButton] = useState("about");
+  
   useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/user/role",{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setUserRole(getUserResult);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-
-    };
-
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/user/details",{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setUserData(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     const fetchPersonData = async () => {
       try {
         const response = await fetch("http://localhost:3000/person/details",{
@@ -89,18 +67,20 @@ import SideBar from "../../components/SideBar";
       }
     };
 
-    fetchUserRole();
-    fetchUserData();
-    fetchPersonData();
-    fetchEducation();
-    fetchCompanyData();
-    fetchCompanyJobPost()
+    if(userRole.roleName == 'alumni' || userRole.roleName == 'student'){
+      fetchPersonData();
+        fetchEducation();
+    }else if(userRole.roleName == 'company'){
+      fetchCompanyData();
+      fetchCompanyJobPost()
+    }
+    
  }, []);
 
 
   return (
     <div className='w-9/12 bg-neutral  h-screen flex flex-col shadow-xl' >
-      {console.log(educData)}
+      
       <TopBar/>
         
       <div className='flex flex-row gap-2'>
@@ -154,6 +134,7 @@ import SideBar from "../../components/SideBar";
             <p>{userData.countryName}</p>
 
             <p>{userData.contactNum}</p>
+            <p>{userData.emailAddress}</p>
           </div>
 
           <div className="flex flex-col col-span-1 items-end">
@@ -199,10 +180,8 @@ import SideBar from "../../components/SideBar";
         }
 
         {profileNavButton==="contact" &&
-          <div className='overflow-auto-y w-full  bg-white h-fit max-h-96 mt-3 p-5 flex flex-col rounded-xl mb-5'>
-          <p className='text-justify'>Email: {userData.emailAddress}</p>
-          <p className='text-justify'>Phone: {userData.contactNum}</p>
-        </div>  
+          <ContactPage/>
+         
         }
       </div>
     </div>

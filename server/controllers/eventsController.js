@@ -200,7 +200,7 @@ const getEventDetails = async (req, res) => {
         where:{
           id: id,
         },
-        select:{
+        include:{
           companyEvents:{
             include:{
               company: true

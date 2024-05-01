@@ -36,7 +36,7 @@ const TopBar = () => {
           </Link>
         )}
         {role.roleName == "admin" && (
-          <Link to="/events">
+          <Link to="/eventslist">
             <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}

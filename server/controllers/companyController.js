@@ -22,6 +22,28 @@ const getCompanyDetails = async (req, res) => {
   res.json(data);
 };
 
+const getContact = async (req, res) => {
+  const userId = getUserIdFromJWT(req);
+
+  try {
+    const data = await prisma.contactPerson.findFirst({
+      where: {
+        company:{
+          userId: userId
+        }
+      },
+      include:{
+        person: true
+      }
+    });
+  
+    res.json(data);
+    console.log(data)
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 const createCompany = async (req, res) => {
   const {
     companyName,
@@ -182,6 +204,13 @@ const updateCompany = async (req, res) => {
       contactNum,
       emailAddress,
       biography,
+      firstName,
+      middleName,
+      lastName,
+      suffix,
+      personEmail,
+      personPhone,
+      positionName
     } = req.body;
 
     const compId = await prisma.company.findFirst({
@@ -274,6 +303,26 @@ const updateCompany = async (req, res) => {
                   },
                 },
               },
+              contactPerson:{
+                connectOrCreate:{
+                  where:{
+                    companyId: compId.id
+                  },
+                  create:{
+                    positionName,
+                    email: personEmail,
+                    phone: personPhone,
+                    person:{
+                      create:{
+                        firstName,
+                        middleName,
+                        lastName,
+                        suffix
+                      }
+                  }
+                }
+              }
+            }
             },
           },
         },
@@ -286,7 +335,7 @@ const updateCompany = async (req, res) => {
     // Send a response with the newly created person
     res.status(201).json(updateUser);
   } catch (error) {
-    console.error("Error creating person:", error);
+    console.error("Error updating company:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -294,4 +343,5 @@ module.exports = {
   getCompanyDetails,
   createCompany,
   updateCompany,
+  getContact
 };

@@ -28,6 +28,7 @@ var storage = multer.diskStorage({
 
 
 router.get("/details", companyController.getCompanyDetails);
+router.get("/contact", companyController.getContact);
 router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'secRegistration' }, { name: 'dtiRegistration' }, { name: 'businessPermit' }]), companyController.createCompany);
 router.put("/update", upload.single('profPic'),companyController.updateCompany);
 

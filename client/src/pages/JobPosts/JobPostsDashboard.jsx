@@ -7,6 +7,11 @@ import DateToWords from "../../components/DateFormatter";
 
 const JobPostsDashboard = () => {
  const[jobPostData,setJobPostData] = useState([])
+ const [filterStat, setFilterStat] = useState('all')
+
+    const handleFilter = (status) =>{
+      setFilterStat(status)
+    }
 
  const fetchCompanyJobPost = async () => {
   try {
@@ -52,16 +57,24 @@ const JobPostsDashboard = () => {
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-      {/* {jobPostData&&(
-        console.log(jobPostData)
-      )} */}
       <TopBar />
-
       <div className="flex flex-row gap-2">
         <SideBar/>
-
-        <div className="flex flex-col w-9/12  h-screen  bg-neutral">
-            <div className="pt-5 pr-5 pl-3 overflow-scroll">
+          <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
+            <div className="pt-2 pr-2 pl-2 mt-2 mr-2 overflow-x-auto rounded-xl bg-white h-fit">
+                <div className="flex flex-row gap-2 items-center pb-3 bg-white">
+                <div className="font-thin">Status: </div>
+                                <select
+                                  className="select select-bordered select-xs w-24 mt-2 max-w-xs font-thin"
+                                  defaultValue={filterStat}
+                                  onChange={(e) => {handleFilter(e.target.value)}}
+                                >
+                                  <option value={"all"}>All</option>
+                                  <option value="pending">Open</option>
+                                  <option value="accepted">Close</option>
+                                </select>
+                </div>
+                <div className="border-b-2 border-dashed border-info"></div>
                 <table className="table bg-white rounded-xl mb-3">
                     <thead>
                     <tr>
@@ -84,7 +97,9 @@ const JobPostsDashboard = () => {
                         ))}
                     </tbody>
                 </table>
-                <ButtonNavigator text={"New Job"} path={"/createjobpost"}/>    
+                <div className="pb-2">
+                <ButtonNavigator text={"New Job"} path={"/createjobpost"}/>  
+                </div>  
             </div>
         </div>
 
