@@ -187,7 +187,7 @@ const JobPostDetails = () => {
                       <span>Bachelor's degree in </span>
                       {jobDegree.map((degree, index) =>
                         index == jobDegree.length - 1 &&
-                        jobDegree.length != 1 ? (
+                        jobDegree.length == 1 ? (
                           <span key={degree}>or {degree}</span>
                         ) : (
                           <span key={degree}>{degree}, </span>
