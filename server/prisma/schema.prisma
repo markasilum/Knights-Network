@@ -63,6 +63,7 @@ model Person {
   applicationLetter ApplicationLetter[]
   application       Application[]
   contactPerson     ContactPerson?
+  recommendations    JobRecommendation[]
 }
 
 
@@ -223,11 +224,20 @@ model JobPost {
   jobSkillsReq      JobSkillsReq[]
   jobLicenseReq     JobLicenseReq[]
   jobDegreeReq      JobDegreeReq[]
+  jobRecommendation JobRecommendation[]
 }
 
 model ApplicationLetter {
   id            String  @id @default(uuid())
-  appLetterFile Boolean
+  appLetterFile String
+  person        Person  @relation(fields: [personId], references: [id])
+  personId      String
+  jobPost       JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId     String
+}
+
+model JobRecommendation {
+  id            String  @id @default(uuid())
   person        Person  @relation(fields: [personId], references: [id])
   personId      String
   jobPost       JobPost @relation(fields: [jobPostId], references: [id])

@@ -144,9 +144,30 @@ const handleSubmit = async (event) => {
 
     if (!response.ok) {
       throw new Error(responseData.error);
-    }else{
-      navigateHome()
     }
+
+   
+    const recommendations = await fetch(
+      `http://localhost:3000/recommendation/get?id=${responseData.id}`,
+      {
+        credentials: "include",
+      }
+    );
+    const getRecommendations = await recommendations.json();
+
+    const notify = await fetch(
+      "http://localhost:3000/recommendation/notify",
+      {
+        method: "POST",
+        body: formData,
+        credentials:'include'
+      }
+    );
+        
+      
+      
+    
+    navigateHome()
   } catch (error) {
     console.error("Error creating job post:", error);
   }
