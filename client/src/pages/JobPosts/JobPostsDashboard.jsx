@@ -4,13 +4,22 @@ import SideBar from "../../components/SideBar";
 import ButtonNavigator from "../../components/ButtonNavigator";
 import {Link} from "react-router-dom";
 import DateToWords from "../../components/DateFormatter";
+import DateConverter from "../../components/DateConverter";
 
 const JobPostsDashboard = () => {
  const[jobPostData,setJobPostData] = useState([])
- const [filterStat, setFilterStat] = useState('all')
+ const [filterStat, setFilterStat] = useState(true)
 
     const handleFilter = (status) =>{
-      setFilterStat(status)
+      if(status=='all'){
+        setFilterStat(status)
+      }else if(status == 'true'){
+        const booleanValue = true
+        setFilterStat(booleanValue)
+      }else{
+        const booleanValue = false
+        setFilterStat(booleanValue)
+      }
     }
 
  const fetchCompanyJobPost = async () => {
@@ -70,8 +79,8 @@ const JobPostsDashboard = () => {
                                   onChange={(e) => {handleFilter(e.target.value)}}
                                 >
                                   <option value={"all"}>All</option>
-                                  <option value="pending">Open</option>
-                                  <option value="accepted">Close</option>
+                                  <option value={"true"} >Open</option>
+                                  <option value={"false"}>Close</option>
                                 </select>
                 </div>
                 <div className="border-b-2 border-dashed border-info"></div>
@@ -79,22 +88,35 @@ const JobPostsDashboard = () => {
                     <thead>
                     <tr>
                         <th>Job Title</th>
-                        <th>Applicants</th>
-                        <th>Status</th>
+                        <th className="w-full flex justify-center">Applicants</th>
+                        <th className="items-center">Status</th>
                         <th>Details</th>
                         <th>Date Created</th>
                     </tr>
                     </thead>
                     <tbody>
-                        {jobPostData.map((job)=>(
+                        {jobPostData
+                        .filter(job => job.isOpen === filterStat)
+                        .map((job)=>(
                         <tr key={job.id} className='p-2  w-full align-center hover'>
                             <td>{job.jobTitle}</td>
-                            <td className=""><Link className="underline" to={`/jobpost/applicants/${job.id}`}>{job.application.length}</Link></td>
+                            <td className=""><Link className="underline flex w-full justify-center" to={`/jobpost/applicants/${job.id}`}>{job.application.length}</Link></td>
                             <td> <input type="checkbox" className="toggle toggle-success" checked={job.isOpen} onChange={(e) => {handleStatusChange(job.id, !job.isOpen)}}/></td>
-                            <td><Link className="underline" to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
-                            <td><DateToWords dateString={job.dateCreated}/></td>
-                        </tr>
+                            <td><Link className="underline " to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
+                            <td><DateConverter isoString={job.dateCreated}/></td>
+                          </tr>
                         ))}
+                        {jobPostData && filterStat == 'all'&&(
+                          jobPostData.map((job)=>(
+                            <tr key={job.id} className='p-2  w-full align-center hover'>
+                                <td>{job.jobTitle}</td>
+                                <td className=""><Link className="underline flex w-full justify-center" to={`/jobpost/applicants/${job.id}`}>{job.application.length}</Link></td>
+                                <td> <input type="checkbox" className="toggle toggle-success" checked={job.isOpen} onChange={(e) => {handleStatusChange(job.id, !job.isOpen)}}/></td>
+                                <td><Link className="underline" to={`/jobpostdetails/${job.id}`}  >View Details</Link></td>
+                                <td><DateConverter isoString={job.dateCreated}/></td>
+                            </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
                 <div className="pb-2">

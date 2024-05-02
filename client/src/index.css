@@ -2,16 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
-    @font-face {
+
+@font-face {
     font-family: "Trajan-Regular";
-    src: url("../public/fonts/Trajan-Regular.ttf") format('truetype');
+    src: url("../public/fonts/Trajan-Regular.ttf") format('.ttf');
+    font-weight: 100;
 }
+@font-face {
+    font-family: "Gotham-Book";
+    src: url("../public/fonts/Gotham-Book.ttf") format('.ttf');
 }
+
+@font-face {
+    font-family: "Gotham-Medium";
+    src: url("../public/fonts/Gotham-Medium.ttf") format('.ttf');
+}
+
+@font-face {
+    font-family: "Gotham-Light";
+    src: url("../public/fonts/Gotham-Light.ttf") format('.ttf');
+}
+@font-face {
+    font-family: "Palatino-Normal Regular";
+    src: url("../public/fonts/Palatino-Normal Regular.TTF") format('.ttf');
+}
+
 
 @layer components {
-    .overflow-scroll::-webkit-scrollbar { 
-        display: none; 
-    } 
-  }
-
+    .overflow-scroll::-webkit-scrollbar {
+        display: none;
+    }
+}

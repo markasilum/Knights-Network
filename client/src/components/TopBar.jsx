@@ -18,32 +18,32 @@ const TopBar = () => {
 
   return (
     <div className="navbar bg-primary text-base-100 text-2xl max-h-14 flex flex-row w-full">
-      <div className="flex flex-row w-[38%]">
+      <div className="flex flex-row w-[45%]">
         <img src={UniversitySealWhite} className="h-12 w-12 m-3" />
         {role.roleName == "alumni" && (
           <Link to="/home">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}
         {role.roleName == "student" && (
           <Link to="/home">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}
         {role.roleName == "company" && (
           <Link to="/jobpost/dashboard">
-            <p className="bg-primary font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}
         {role.roleName == "admin" && (
           <Link to="/eventslist">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}
 
         {!role && (
           <Link to="/login">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
           </Link>
         )}
       </div>
