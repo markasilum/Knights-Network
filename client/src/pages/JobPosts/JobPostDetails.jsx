@@ -142,10 +142,10 @@ const JobPostDetails = () => {
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-lg mb-20 flex flex-col">
               <div className="w-full flex flex-row justify-between">
                 {/* {console.log(jobDegree)} */}
-                <div className="font-semibold text-2xl">{jobData.jobTitle}</div>
+                <div className="font-gothamBook text-3xl">{jobData.jobTitle}</div>
                 {role.roleName == "company" && (
                   <button
-                    className="font-thin underline"
+                    className="underline font-gothamLight"
                     onClick={() =>
                       document.getElementById(jobData.id).showModal()
                     }
@@ -164,12 +164,12 @@ const JobPostDetails = () => {
               </div>
 
               {jobData.company && jobData.company.companyName && (
-                <h2 className="font-semibold">{jobData.company.companyName}</h2>
+                <h2 className="font-gothamLight mt-2 text-lg">{jobData.company.companyName}</h2>
               )}
-              <div className="font-normal">{jobData.jobLoc}</div>
+              <div className="text-md">{jobData.jobLoc}</div>
 
               <div className="font-thin flex flex-col mt-3">
-                <p className="font-semibold">Job Description</p>
+                <p className="font-normal">Job Description</p>
                 <ul className="list-disc ml-6">
                   {jobData.jobDesc &&
                     jobData.jobDesc
@@ -179,7 +179,7 @@ const JobPostDetails = () => {
               </div>
 
               <div className="mt-5">
-                <div className="font-semibold">Qualifications</div>
+                <div className="font-normal">Qualifications</div>
                 <ul className="list-disc">
                   {jobDegree.length !== 0 && (
                     
@@ -187,7 +187,7 @@ const JobPostDetails = () => {
                       <span>Bachelor's degree in </span>
                       {jobDegree.map((degree, index) =>
                         index == jobDegree.length - 1 &&
-                        jobDegree.length == 1 ? (
+                        jobDegree.length != 1 ? (
                           <span key={degree}>or {degree}</span>
                         ) : (
                           <span key={degree}>{degree}, </span>

@@ -79,120 +79,137 @@ import ContactPage from "./ContactPage";
 
 
   return (
-    <div className='w-9/12 bg-neutral  h-screen flex flex-col shadow-xl' >
-      
-      <TopBar/>
-        
-      <div className='flex flex-row gap-2'>
-      <SideBar/>
+    <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
+      <TopBar />
 
-      <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-      <div className="pt-2 pr-2 overflow-scroll">
-        <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
-          <div className="flex flex-col col-span-1">
+      <div className="flex flex-row gap-2">
+        <SideBar />
 
-            {/* <div className="avatar">
+        <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
+          <div className="pt-2 pr-2 overflow-scroll">
+            <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
+              <div className="flex flex-col col-span-1">
+                {/* <div className="avatar">
               <div className="w-24 rounded">
                 <img src={`http://localhost:3000/uploads/profPic/${userData.profPic}`} />
               </div>
             </div> */}
-            <div className="avatar">
-              <div className="w-24 rounded">
-                <img src={`http://localhost:3000/uploads/profPic/${userData.profPic}`} />
+                <div className="avatar">
+                  <div className="w-24 rounded">
+                    <img
+                      src={`http://localhost:3000/uploads/profPic/${userData.profPic}`}
+                    />
+                  </div>
+                </div>
+
+                {userRole.roleName === "company" && (
+                  <h1 className="font-bold text-2xl mt-5">
+                    {compData.companyName}
+                  </h1>
+                )}
+                {userRole.roleName === "alumni" && (
+                  <h1 className="font-bold text-2xl mt-5">
+                    {data.firstName +
+                      " " +
+                      data.middleName +
+                      " " +
+                      data.lastName +
+                      " " +
+                      data.suffix}
+                  </h1>
+                )}
+                {userRole.roleName === "student" && (
+                  <h1 className="font-bold text-2xl mt-5">
+                    {data.firstName +
+                      " " +
+                      data.middleName +
+                      " " +
+                      data.lastName +
+                      " " +
+                      data.suffix}
+                  </h1>
+                )}
+                <p>{userData.streetAddress + ","}</p>
+                <p>{userData.cityName + ","}</p>
+                <p>{userData.countryName}</p>
+
+                <p>{userData.contactNum}</p>
+                <p>{userData.emailAddress}</p>
+              </div>
+
+              <div className="flex flex-col col-span-1 items-end">
+                {userRole.roleName == "alumni" && (
+                  <Link className="underline" to="/editaccount">
+                    Edit Profile
+                  </Link>
+                )}
+                {userRole.roleName == "student" && (
+                  <Link className="underline" to="/editaccount">
+                    Edit Profile
+                  </Link>
+                )}
+                {userRole.roleName == "company" && (
+                  <Link className="underline" to="/editcompprofile">
+                    Edit Profile
+                  </Link>
+                )}
+              </div>
+
+              <div className="mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 col-span-2">
+                <button
+                  className={`font-semibold active:text-info ${profileNavButton === 'about' ? 'text-accent underline'  : ''}`}
+                  onClick={() => setProfileNavButton("about")}
+                >
+                  About
+                </button>
+                {userRole.roleName === "company" && (
+                  <button
+                  className={`font-semibold active:text-info ${profileNavButton === 'jobs' ? 'text-accent underline'  : ''}`}
+                    onClick={() => setProfileNavButton("jobs")}
+                  >
+                    Jobs
+                  </button>
+                )}
+                {userRole.roleName === "student" ||
+                  (userRole.roleName === "alumni" && (
+                    <button
+                    className={`font-semibold active:text-info ${profileNavButton === 'creds' ? 'text-accent underline'  : ''}`}
+                    onClick={() => setProfileNavButton("creds")}
+                    >
+                      Credentials
+                    </button>
+                  ))}
+                  {userRole.roleName === "company" && (
+                  <button
+                  className={`font-semibold active:text-info ${profileNavButton === 'contact' ? 'text-accent underline'  : ''}`}
+                  onClick={() => setProfileNavButton("contact")}
+                >
+                  Contact
+                </button>
+                )}
+                
               </div>
             </div>
-            
-            {userRole.roleName === "company" && (
-              <h1 className="font-bold text-2xl mt-5">
-                {compData.companyName}
-              </h1>
+
+            {/* create a components */}
+
+            {profileNavButton === "about" && (
+              <PersonAbout userData={userData} />
             )}
-            {userRole.roleName === "alumni" && (
-                <h1 className="font-bold text-2xl mt-5">
-                  {data.firstName +
-                    " " +
-                    data.middleName +
-                    " " +
-                    data.lastName +
-                    " " +
-                    data.suffix}
-                </h1>
-              )}
-              {userRole.roleName === "student" && (
-                <h1 className="font-bold text-2xl mt-5">
-                  {data.firstName +
-                    " " +
-                    data.middleName +
-                    " " +
-                    data.lastName +
-                    " " +
-                    data.suffix}
-                </h1>
-              )}
-            <p>{userData.streetAddress + ","}</p>
-            <p>{userData.cityName + ","}</p>
-            <p>{userData.countryName}</p>
 
-            <p>{userData.contactNum}</p>
-            <p>{userData.emailAddress}</p>
-          </div>
-
-          <div className="flex flex-col col-span-1 items-end">
-            {userRole.roleName == "alumni"&&(
-                  <Link className="underline" to="/editaccount">Edit Profile</Link>
-            )}{userRole.roleName == "company"&&(
-              <Link className="underline" to="/editcompprofile">Edit Profile</Link>
+            {profileNavButton === "creds" && (
+              <PersonCredentials educData={educData} />
             )}
-          </div>
+            {profileNavButton === "jobs" && (
+              <CompanyJobs jobData={compJobPostData} companyData={compData} />
+            )}
 
-          <div className="mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 col-span-2">
-            <button
-              className="font-bold"
-              onClick={() => setProfileNavButton("about")}
-            >
-              About
-            </button>
-            {userRole.roleName ==="company" &&
-                <button className="font-bold" onClick={() => setProfileNavButton("jobs")}>Jobs</button>
-            }{userRole.roleName ==="student"||userRole.roleName ==="alumni"  &&
-            <button className="font-bold" onClick={() => setProfileNavButton("creds")}>Credentials</button>
-            }
-            <button
-              className="font-bold"
-              onClick={() => setProfileNavButton("contact")}
-            >
-              Contact
-            </button>
+            {profileNavButton === "contact" && <ContactPage />}
           </div>
         </div>
-
-        {/* create a components */}
-
-        {profileNavButton==="about" && 
-          <PersonAbout userData={userData}/>
-        }
-   
-        {profileNavButton==="creds" &&
-         <PersonCredentials educData={educData}/>
-        }
-        {profileNavButton==="jobs" &&
-        <CompanyJobs jobData={compJobPostData} companyData={compData} />
-        }
-
-        {profileNavButton==="contact" &&
-          <ContactPage/>
-         
-        }
       </div>
     </div>
-            
-        </div>
-        
-    </div>
-
-
-    
-   );
+  );
  };
 
 export default ProfilePage;
