@@ -246,11 +246,39 @@ const getRecommendation = async (req, res) => {
 
 
     res.json(userDetails);
+    
   } catch (error) {
     console.log("error", error);
   }
 };
 
+const storeRecommendation = async (req, res) => {
+  try {
+    const { jobPostId, personId } = req.body;
+    
+
+    await Promise.all(personId.map(async (person) => {
+      try {
+        await prisma.jobRecommendation.create({
+          data: {
+            personId: person,
+            jobPostId: jobPostId
+          },
+        });
+      } catch (error) {
+        console.error(`Error storing recommendation for person ${person}:`, error);
+        throw error; // Rethrow the error to ensure Promise.all catches it
+      }
+    }));
+    console.log(req.body)
+    res.status(200).json({ message: "Recommendations stored successfully" });
+  } catch (error) {
+    console.error("Error storing recommendations:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getRecommendation,
+  storeRecommendation,
 };

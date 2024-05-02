@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UniversitySealWhite from "../assets/UniversitySealWhite.png";
-
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 const TopBar = () => {
   const {user} = useAuthContext()
   let role
@@ -22,33 +22,46 @@ const TopBar = () => {
         <img src={UniversitySealWhite} className="h-12 w-12 m-3" />
         {role.roleName == "alumni" && (
           <Link to="/home">
-            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
         {role.roleName == "student" && (
           <Link to="/home">
-            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
         {role.roleName == "company" && (
           <Link to="/jobpost/dashboard">
-            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
         {role.roleName == "admin" && (
           <Link to="/eventslist">
-            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
 
         {!role && (
           <Link to="/login">
-            <p className="bg-primary font-TrajanRegular font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
       </div>
       <div className="form-control w-full flex flex-row justify-start text-black ">
-        <select className="select select-bordered w-36 max-w-xs rounded-tl rounded-bl  rounded-none outline-none focus:outline-none focus-within:outline-none"    defaultValue={"Job Posts"}>
+        <select
+          className="select select-bordered w-36 max-w-xs rounded-tl rounded-bl  rounded-none outline-none focus:outline-none focus-within:outline-none"
+          defaultValue={"Job Posts"}
+        >
           <option value={"jobPost"}>Job Posts</option>
           <option value={"Companies"}>Companies</option>
           <option value={"People"}>People</option>
@@ -60,7 +73,29 @@ const TopBar = () => {
         />
       </div>
 
-      <div className="dropdown dropdown-left">
+      <div className="dropdown dropdown-end">
+        <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">
+          <NotificationsNoneOutlinedIcon />
+        </div>
+        <ul
+          tabIndex={0}
+          className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-xl text-black w-72"
+        >
+          <li>
+            <div className="items-start flex flex-col gap-0">
+              <div className="text-lg">Architecture Apprenticeship</div>
+              <div className="font-normal text-base">Arcadian Designs</div>
+              <div className="font-thin text-sm">Makati City</div>
+            </div>
+          </li>
+          <div className="border-b border-solid border-info mt-2 mb-2"></div>
+          <li>
+            <a>Item 2</a>
+          </li>
+        </ul>
+      </div>
+
+      <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">
           <svg
             className="swap-off fill-white"
@@ -74,7 +109,7 @@ const TopBar = () => {
         </div>
         <ul
           tabIndex={0}
-          className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-56 mt-4 text-black "
+          className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-xl w-56 mt-4 text-black "
         >
           <li>
             <Link to={"/settings"}>
@@ -83,7 +118,7 @@ const TopBar = () => {
             </Link>
           </li>
           <li>
-            <LogoutButton/>
+            <LogoutButton />
           </li>
         </ul>
       </div>
