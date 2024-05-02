@@ -6,6 +6,8 @@ import InputFields from '../../components/InputFields';
 import TextAreaInput from '../../components/TextAreaInput';
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
 import SideBar from '../../components/SideBar';
 const CreateJobPost = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const [salary, setSalary] = useState('');
 const [jobLoc, setJobLoc] = useState('');
 const [workModel, setWorkModel] = useState('');
 const [numOfPosition, setNumOfPosition] = useState('');
-const [validity, setValidity] = useState(new Date().toISOString());
+const [validity, setValidity] = useState();
 const [isOpen, setIsOpen] = useState(true);
 const [yearsExp, setYearExp] = useState('');
 const [degree, setDegree] = useState([{degreeName:""}]);
@@ -105,7 +107,7 @@ const handleSubmit = async (event) => {
   formData.append('jobLoc', jobLoc);
   formData.append('workModel', workModel);
   formData.append('numOfPosition', numOfPosition);
-  formData.append('validity', validity);
+  formData.append('validity', validity.toISOString());
   formData.append('isOpen', isOpen);
   // formData.append('degree', degree);
   formData.append('yearsExp', yearsExp);
@@ -151,7 +153,7 @@ const handleSubmit = async (event) => {
 };
 
 const handleValidity = (endDate) => {
-  const end = endDate.toISOString();
+  const end = new Date(endDate)
   setValidity(end);
 };
   return (
@@ -170,25 +172,28 @@ const handleValidity = (endDate) => {
                   <div className="col-span-2">
                     <InputFields
                       id={"jobtitle"}
-                      labelText={"Job Title"}
+                      labelText={"Job Title*"}
                       placeholder={"ex: Jr. React Developer"}
                       value={jobTitle}
                       onChange={(e) => setJobTitle(e.target.value)}
+                      req={true}
                     />
                     <TextAreaInput
                       id={"jobdesc"}
-                      labelText={"Job Description"}
+                      labelText={"Job Description*"}
                       placeholder={"Job Description"}
                       value={jobDesc}
                       onChange={(e) => setJobDesc(e.target.value)}
+                      req={true}
                     />
                   </div>
                   <InputFields
                     id={"employmentType"}
-                    labelText={"Employment Type"}
+                    labelText={"Employment Type*"}
                     placeholder={"ex: Full-time"}
                     value={employmentType}
                     onChange={(e) => setEmploymentType(e.target.value)}
+                    req={true}
                   />
                   <InputFields
                     id={"salary"}
@@ -199,24 +204,27 @@ const handleValidity = (endDate) => {
                   />
                   <InputFields
                     id={"jobLoc"}
-                    labelText={"Job Location"}
+                    labelText={"Job Location*"}
                     placeholder={"ex: Davao City"}
                     value={jobLoc}
                     onChange={(e) => setJobLoc(e.target.value)}
+                    req={true}
                   />
                   <InputFields
                     id={"workModel"}
-                    labelText={"Work Model"}
+                    labelText={"Work Model*"}
                     placeholder={"ex: Work From Home"}
                     value={workModel}
                     onChange={(e) => setWorkModel(e.target.value)}
+                    req={true}
                   />
                   <InputFields
                     id={"numOfPosition"}
-                    labelText={"Number of Positions"}
+                    labelText={"Number of Positions*"}
                     placeholder={"ex: 3"}
                     value={numOfPosition}
                     onChange={(e) => setNumOfPosition(e.target.value)}
+                    req={true}
                   />
                   <div className="col-span-2">
                     <span className="label-text font-bold">Qualifications</span>
@@ -231,7 +239,7 @@ const handleValidity = (endDate) => {
                   />
 
                   <div className="col-span-2">
-                    <span className="label-text">Degree</span>
+                    <span className="label-text">Degree*</span>
                   </div>
                   <div className="col-span-2 flex flex-col gap-2">
                     {degree.map((item, index) => (
@@ -247,6 +255,7 @@ const handleValidity = (endDate) => {
                           value={item.degreeName}
                           placeholder={"ex: BS Information Technology"}
                           onChange={(event) => handleChangeDegree(event, index)}
+                          required
                         />
 
                         {index === degree.length - 1 && (
@@ -367,22 +376,22 @@ const handleValidity = (endDate) => {
                     />
                   </div>
                   <div className="col-span-2">
-                    <span className="label-text">Validity</span>
+                    <span className="label-text">Validity<span className='font-light text-sm'>{" [optional]"}</span></span>
                   </div>
-                  <DateTime
-                    id="isOpen"
-                    selected={validity}
-                    timeFormat={false}
-                    onChange={handleValidity}
-                    onKeyDown={(e) => {
-                      e.preventDefault();
-                    }}
-                    inputProps={{
-                      placeholder: "Open Until",
-                      className:
-                        "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-                    }}
-                  />
+          
+          
+                <DatePicker
+                selected={validity}
+                onChange={handleValidity}
+                showTimeSelect
+                timeFormat="h:mm aa"
+                timeIntervals={15}
+                timeCaption="time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+                placeholderText='mm/dd/yy'
+                className='flex flex-row w-full justify-center items-center align-middle input input-bordered bg-white text-center'
+              />
+                
 
                   <button
                     type="submit"

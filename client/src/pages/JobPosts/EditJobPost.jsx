@@ -8,7 +8,7 @@ import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
   const navigate = useNavigate();
-  const [jobId, setJobId] = useState(jobData.jobId || '');
+  const [jobId, setJobId] = useState(jobData?.jobId || '');
   const [jobTitle, setJobTitle] = useState(jobData.jobTitle || '');
   const [jobDesc, setJobDesc] = useState(jobData.jobDesc || '');
   const [employmentType, setEmploymentType] = useState(jobData.employmentType || '');

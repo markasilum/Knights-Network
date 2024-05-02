@@ -43,9 +43,9 @@ const EditCompanyProfile = () => {
             setMidName(getRes.person.midName)
             setLastName(getRes.person.lastName)
             setSuffix(getRes.person.suffix)
-            setPersonEmail(getRes.personEmail)
-            setPersonPhone(getRes.personPhone)
-            setPosition(getRes.position)
+            setPersonEmail(getRes.email)
+            setPersonPhone(getRes.phone)
+            setPosition(getRes.positionName)
 
           } catch (error) {
             console.error("Error fetching data:", error);
@@ -188,7 +188,7 @@ const EditCompanyProfile = () => {
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className=" overflow-auto mb-20">
-            <div className="w-full bg-white mb-20 flex flex-col p-3">
+            <div className="w-full bg-white flex flex-col p-3">
               
               <form className="w-full" onSubmit={handleSubmit}>
                 <div className="flex flex-col bg-white p-5 rounded-xl">

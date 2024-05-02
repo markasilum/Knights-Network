@@ -24,7 +24,7 @@ const Homepage = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-[1152px] bg-neutral h-screen flex flex-col shadow-xl bg">
+    <div className="w-9/12 max-w-[1440px] bg-neutral h-screen flex flex-col shadow-xl bg">
       <TopBar />
       <div className="flex flex-row gap-2">
         <SideBar/>

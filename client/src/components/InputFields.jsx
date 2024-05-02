@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-const InputFields = ({labelText,id,placeholder,value,onChange, name, divWid}) => {
+const InputFields = ({labelText,id,placeholder,value,onChange, name, divWid, req}) => {
+  const sanitizedValue = value !== null ? value : '';
   
   return (
     <div className={divWid} >
@@ -9,7 +10,7 @@ const InputFields = ({labelText,id,placeholder,value,onChange, name, divWid}) =>
                 <span className="label-text font-normal">{labelText}</span>
             </div>
       </label>
-      <input type='text'id={id} name={name} placeholder={placeholder} className="input input-bordered w-full " value={value} onChange={onChange} />
+      <input type='text' id={id} name={name} placeholder={placeholder} className="input input-bordered w-full " value={sanitizedValue} onChange={onChange} required={req} />
     </div>
 
   )
