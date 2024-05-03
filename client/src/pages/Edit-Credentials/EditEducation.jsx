@@ -4,6 +4,7 @@ import "react-datetime/css/react-datetime.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 const EditEducation = ({educationData, degreeData}) => {
   const [id, setId] = useState(educationData.id);
   const [schoolName, setSchoolName] = useState(educationData.schoolName);

@@ -116,7 +116,7 @@ const ApplicationDashboard = () => {
                                   <p className=" text-md">{job.jobPost.company.companyName}</p>
                                   <div className="modal-action ">
                                     <form method="dialog">
-                                      <button className="btn" onClick={()=>handleArchive(job.id)}>Archive</button>
+                                      <button className="btn btn-error text-white" onClick={()=>handleArchive(job.id)}>Archive</button>
                                     </form>
                                   </div>
                                 </div>
@@ -150,7 +150,7 @@ const ApplicationDashboard = () => {
                                   <p className=" text-md">{job.jobPost.company.companyName}</p>
                                   <div className="modal-action ">
                                     <form method="dialog">
-                                      <button className="btn" onClick={()=>handleArchive(job.id)}>Archive</button>
+                                      <button className="btn btn-error text-white" onClick={()=>handleArchive(job.id)}>Archive</button>
                                     </form>
                                   </div>
                                 </div>
