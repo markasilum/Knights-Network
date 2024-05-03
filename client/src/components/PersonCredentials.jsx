@@ -9,13 +9,13 @@ import CertificationsCard from './CertificationsCard';
 import ButtonPrimary from './ButtonPrimary';
 import ButtonNavigator from './ButtonNavigator';
 
-const PersonCredentials = ({educData}) => {
+const PersonCredentials = ({educData, fetchEducation}) => {
   
   return (
     <div className='overflow-auto-y w-full  bg-white h-fit mt-2 p-4 flex flex-col rounded-xl mb-20 gap-2'>
       <ExperienceCards/>
       <SkillsCard/> 
-      <EducCard educData={educData}/>
+      <EducCard educData={educData} fetchEducation={fetchEducation}/>
       <LicenseCard/>
       <CertificationsCard/>
       <div className='w-full flex flex-row justify-end'>

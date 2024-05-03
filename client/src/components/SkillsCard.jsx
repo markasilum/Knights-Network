@@ -7,20 +7,21 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const SkillsCard = () => {
   const[skills, setSkills] = useState([])
 
-  useEffect(()=>{
-    const fetchSkills = async () =>{
-      try {
-        const response = await fetch(`http://localhost:3000/skills/person/index`,{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setSkills(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  const fetchSkills = async () =>{
+    try {
+      const response = await fetch(`http://localhost:3000/skills/person/index`,{
+        credentials:'include'
+      });
+      const getUserResult = await response.json();
+      setSkills(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  }
 
+  useEffect(()=>{
+    
     fetchSkills()
     
   },[]);
@@ -33,7 +34,7 @@ const SkillsCard = () => {
             <Link to="/skills-edit" className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent'><EditOutlinedIcon fontSize='medium'/></Link>
             </div>
         </div>
-        <SkillsForm/>
+        <SkillsForm fetchSkills={fetchSkills}/>
 
         {/* <span className='font-normal'>{skills.join(", ")}</span> */}
         <ul className='font-normal list-disc ml-5'>

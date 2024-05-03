@@ -16,6 +16,19 @@ import ContactPage from "./ContactPage";
   const [compJobPostData, setCompJobPostData] = useState([]);
   const [userRole, setUserRole] = useState(user.user.role);
   const [profileNavButton, setProfileNavButton] = useState("about");
+
+  const fetchEducation = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/education/index",{
+        credentials:'include'
+      });
+      const getEducRes = await response.json();
+      setEducData(getEducRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   
   useEffect(() => {
     const fetchPersonData = async () => {
@@ -41,18 +54,7 @@ import ContactPage from "./ContactPage";
       }
     };
 
-    const fetchEducation = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/education/index",{
-          credentials:'include'
-        });
-        const getEducRes = await response.json();
-        setEducData(getEducRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+   
 
     const fetchCompanyJobPost = async () => {
       try {
@@ -198,7 +200,7 @@ import ContactPage from "./ContactPage";
             )}
 
             {profileNavButton === "creds" && (
-              <PersonCredentials educData={educData} />
+              <PersonCredentials educData={educData} fetchEducation={fetchEducation}/>
             )}
             {profileNavButton === "jobs" && (
               <CompanyJobs jobData={compJobPostData} companyData={compData} />

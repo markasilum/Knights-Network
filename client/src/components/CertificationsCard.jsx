@@ -6,20 +6,20 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const CertificationsCard = () => {
   const[certs, setCerts] = useState([])
+  const fetchCerts = async () =>{
+    try {
+      const response = await fetch(`http://localhost:3000/certification/person/index`,{
+        credentials:'include'
+      });
+      const getUserResult = await response.json();
+      setCerts(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
 useEffect(()=>{
-    const fetchCerts = async () =>{
-      try {
-        const response = await fetch(`http://localhost:3000/certification/person/index`,{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setCerts(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
 
     fetchCerts()
     
@@ -34,7 +34,7 @@ useEffect(()=>{
             </div>
            
         </div>
-        <CertificationsForm/>
+        <CertificationsForm fetchCerts={fetchCerts}/>
 
         {/* <span className='font-normal'>{certs.join(', ')}</span> */}
         <ul className='font-normal list-disc ml-5'>

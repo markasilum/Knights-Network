@@ -6,24 +6,26 @@ import EditEducation from '../pages/Edit-Credentials/EditEducation';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-const EducCard = ({educData}) => {
+const EducCard = ({educData, fetchEducation}) => {
   const[degree, setDegree] = useState([])
   const degreeIds = educData.map(educ => educ.degreeId)
-  
-  useEffect(()=>{
-    const fetchDegree = async () =>{
-      try {
-        const response = await fetch(`http://localhost:3000/degree/index?ids=${degreeIds.join(',')}`,{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setDegree(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  const fetchDegree = async () =>{
+    try {
+      const response = await fetch(`http://localhost:3000/degree/index?ids=${degreeIds.join(',')}`,{
+        credentials:'include'
+      });
+      const getUserResult = await response.json();
+      setDegree(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  }
 
+  
+
+  useEffect(()=>{
+ 
     fetchDegree()
     
   },[]);
@@ -36,7 +38,7 @@ const EducCard = ({educData}) => {
             <Link className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent' to={"/education-edit"}><EditOutlinedIcon fontSize='medium'/></Link>
             </div>
         </div>
-        <EducationForm/>
+        <EducationForm fetchEducation={fetchEducation} fetchDegree={fetchDegree}/>
         
         {educData.map((education)=>(
           <div key={education.id} className='flex flex-col mb-5'>

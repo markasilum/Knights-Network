@@ -4,7 +4,7 @@ import "react-datetime/css/react-datetime.css";
 import { useState } from "react";
 import TopBar from "../../components/topbar";
 import { useEffect } from "react";
-const EducationForm = () => {
+const EducationForm = ({fetchEducation, fetchDegree}) => {
   const [schoolName, setSchoolName] = useState("");
   const [degree, setDegree] = useState("");
   const [qpi, setQpi] = useState("");
@@ -37,6 +37,8 @@ const EducationForm = () => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      fetchEducation()
+      fetchDegree()
     } catch (error) {
       console.error("Error creating education:", error);
     }
@@ -55,6 +57,9 @@ const EducationForm = () => {
     setEndDate(end);
   };
 
+  const handleButtonClick = (event) => {
+    handleSubmit()
+  };
   return (
     <dialog id="add_education" className="modal">
       <div className="modal-box max-w-2xl bg-base-200">
@@ -132,10 +137,19 @@ const EducationForm = () => {
               onChange={(e) => setAwards(e.target.value)}
             />
           </div>
-          <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-            Create Education
-          </button>
+         
         </form>
+        <div className="modal-action">
+          <form method="dialog">
+            <button
+              type="submit"
+              className={`btn btn-primary w-40 mt-5`}
+              onClick={handleButtonClick}
+            >
+            Create Education
+            </button>
+          </form>
+        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

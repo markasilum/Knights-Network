@@ -7,23 +7,23 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const ExperienceCards = () => {
   const [experience, setExperience] = useState([]);
 
-  useEffect(() => {
-    const fetchExperience = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/experience/person/index`,
-          {
-            credentials: "include",
-          }
-        );
-        const getUserResult = await response.json();
-        setExperience(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const fetchExperience = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/experience/person/index`,
+        {
+          credentials: "include",
+        }
+      );
+      const getUserResult = await response.json();
+      setExperience(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchExperience();
   }, []);
 
@@ -46,7 +46,7 @@ const ExperienceCards = () => {
           </Link>
         </div>
       </div>
-      <ExperienceForm />
+      <ExperienceForm fetchExperience={fetchExperience}/>
 
       {experience.map((experience) => (
         <div key={experience.id} className="flex flex-col mb-5">

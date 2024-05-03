@@ -6,20 +6,20 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const LicenseCard = () => {
   const[licenses, setLicense] = useState([])
+  const fetchLicense = async () =>{
+    try {
+      const response = await fetch(`http://localhost:3000/license/person/index`,{
+        credentials:'include'
+      });
+      const getUserResult = await response.json();
+      setLicense(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
 useEffect(()=>{
-    const fetchLicense = async () =>{
-      try {
-        const response = await fetch(`http://localhost:3000/license/person/index`,{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setLicense(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
 
     fetchLicense()
     
@@ -34,7 +34,7 @@ useEffect(()=>{
             <Link to="/license-edit" className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent' state={{licenses}}><EditOutlinedIcon/></Link>
             </div>
         </div>
-        <LicenseForm/>
+        <LicenseForm fetchLicense={fetchLicense}/>
         <ul className='font-normal list-disc ml-5'>
         {licenses.map((license)=>(
          
