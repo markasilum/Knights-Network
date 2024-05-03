@@ -96,10 +96,28 @@ const updateExperience = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
 
   }
+  
+}
+
+const deleteExperience = async (req, res) => {
+  try{
+    const {id} = req.query
+    const deleteExperience = await prisma.experience.delete({ 
+      where:{
+        id: id
+      },
+    });
+    res.status(201).json("deleted experience");
+  }catch{
+    console.error('Error delete experience:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+  
 }
 
 module.exports = {
     getPersonExperience,
     createExperience,
-    updateExperience
+    updateExperience,
+    deleteExperience
 }

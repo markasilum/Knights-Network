@@ -15,9 +15,6 @@ const EducationForm = () => {
 
   const handleSubmit = async (event) => {
     // event.preventDefault();
-
-    console.log(startDate);
-
     const formData = new FormData();
 
     formData.append("schoolName", schoolName);

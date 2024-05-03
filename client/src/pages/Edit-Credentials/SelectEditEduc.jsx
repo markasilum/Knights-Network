@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import EditEducation from "./EditEducation";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import DateToWords from "../../components/DateFormatter";
+import DeleteEducation from "./DeleteEducation";
 
 const SelectEditEduc = () => {
   const [degree, setDegree] = useState([]);
@@ -99,43 +100,11 @@ const SelectEditEduc = () => {
 
                     </div>
                     <div className="mb-3 flex flex-row">
-                    <button className='font-thin underline' onClick={()=>document.getElementById(education.id).showModal()}>Edit</button>
-                    
-                    <button className="hover:text-error active:text-info p-1" onClick={()=>document.getElementById(education.degreeId).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>
-
-                              <dialog id={education.degreeId} className="modal">
-                                <div className="modal-box">
-                                  <form method="dialog">
-                                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                                  </form>
-                                  <h3 className="font-bold text-lg mb-3 border-b-2">Delete Education?</h3>
-                                  <p>{education.id}</p>
-                                  <p className=" text-md font-semibold">{education.schoolName}</p>
-                                  <p className=" text-md">{education.degree.degreeName}</p>
-                                  <p className=" text-md">QPI: {education.qpi}</p>
-                                  <div className="flex flex-row gap-1">
-                                  <span className="font-thin">
-                                    <DateToWords dateString={education.startDate} />
-                                  </span>
-                                  <span className="font-thin">-</span>
-                                  <span className="font-thin">
-                                    <DateToWords dateString={education.endDate} />
-                                  </span>
-                                </div>
-
-
-                                  <div className="modal-action ">
-                                    <form method="dialog">
-                                      <button className="btn btn-error text-white" onClick={()=>handleDelete(education.id)}>Archive</button>
-                                    </form>
-                                  </div>
-                                </div>
-                                <form method="dialog" className="modal-backdrop">
-                                  <button>close</button>
-                                </form>
-                              </dialog>
+                        <button className='font-thin underline' onClick={()=>document.getElementById(education.id).showModal()}>Edit</button>                 
+                        <button className="hover:text-error active:text-info p-1" onClick={()=>document.getElementById(education.degreeId).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>                             
                     </div>
-                        <EditEducation educationData={education} degreeData={degree}/>
+                    <EditEducation educationData={education} degreeData={degree}/>
+                    <DeleteEducation education={education} handleDelete={handleDelete}/>
 
                   </div>
                 ))}
