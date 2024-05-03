@@ -92,7 +92,7 @@ const CalendarPage = () => {
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-          <div className="pt-5 pr-5 pl-3 h-screen">
+          <div className="pt-2 pr-2 h-screen">
             <div className="w-full bg-white h-fit min-h-80 p-3 rounded-xl mb-20 flex flex-col">
               <Calendar
                 localizer={localizer}

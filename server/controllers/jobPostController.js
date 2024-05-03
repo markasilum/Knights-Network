@@ -719,6 +719,30 @@ const getJobDetails = async (req, res) => {
   }
 };
 
+const getJobsMany = async (req, res) => {
+  try {
+    // Extract the query parameter 'ids' from the request
+    const idArr  = req.body;
+    // Query the database using Prisma to fetch job post by their IDs
+    const jobDetails = await prisma.jobPost.findMany({
+      where: {
+        id:{
+          in: idArr
+        }
+      },
+      include:{
+        company: true
+      }
+    });
+    console.log(jobDetails)
+    res.json(jobDetails);
+  } catch (error) {
+    // If there's an error, send an error response
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const getJobApplicants = async (req, res) => {
   try {
     // Extract the query parameter 'ids' from the request
@@ -833,4 +857,5 @@ module.exports = {
   updateJobPostStatus,
   getJobApplicants,
   updateJobPost,
+  getJobsMany,
 };

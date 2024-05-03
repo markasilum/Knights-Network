@@ -194,14 +194,6 @@ const ResumeCard = () => {
                   <div key={experience.id} className="flex flex-col mb-5">
                     <span className="font-semibold">{experience.jobTitle}</span>
                     <span className="">{experience.companyName}</span>
-                    {/* <p className="font-thin">{experience.jobDetails}</p> */}
-                    <ul className="list-disc ml-8 font-thin">
-                      {experience.jobDetails
-                        .split("\r\n")
-                        .map((line, index) => (
-                          <li key={index}>{line}</li>
-                        ))}
-                    </ul>
                     <div className="flex flex-row gap-1">
                       <span className="font-thin">
                         <DateToWords dateString={experience.startDate} />
@@ -211,6 +203,14 @@ const ResumeCard = () => {
                         <DateToWords dateString={experience.endDate} />
                       </span>
                     </div>
+                    <ul className="list-disc ml-8 font-thin">
+                      {experience.jobDetails
+                        .split("\r\n")
+                        .map((line, index) => (
+                          <li key={index}>{line}</li>
+                        ))}
+                    </ul>
+                    
                   </div>
                 ))}
               </div>

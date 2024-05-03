@@ -134,7 +134,7 @@ const JobPostDetails = () => {
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
-
+      {console.log(jobSkills)}
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
@@ -196,14 +196,14 @@ const JobPostDetails = () => {
                     </li>
                   )}
                   {jobSkills != "" &&
-                    jobSkills.map((skill) => (
-                      <li key={skill} className="font-thin ml-10">
+                    jobSkills.map((skill,index) => (
+                      <li key={index} className="font-thin ml-10">
                         {skill}
                       </li>
                     ))}
                   {jobLicense != "" &&  
-                  jobLicense.map((license) => (
-                      <li key={license} className="font-thin ml-10">
+                  jobLicense.map((license,index) => (
+                      <li key={index} className="font-thin ml-10">
                         {license}
                       </li>
                     ))}

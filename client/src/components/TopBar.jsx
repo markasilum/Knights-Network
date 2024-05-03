@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "../hooks/useAuthContext";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+import Notifications from "./Notifications";
 const TopBar = () => {
   const {user} = useAuthContext()
   let role
@@ -73,27 +74,9 @@ const TopBar = () => {
         />
       </div>
 
-      <div className="dropdown dropdown-end">
-        <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">
-          <NotificationsNoneOutlinedIcon />
-        </div>
-        <ul
-          tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-xl text-black w-72"
-        >
-          <li>
-            <div className="items-start flex flex-col gap-0">
-              <div className="text-lg">Architecture Apprenticeship</div>
-              <div className="font-normal text-base">Arcadian Designs</div>
-              <div className="font-thin text-sm">Makati City</div>
-            </div>
-          </li>
-          <div className="border-b border-solid border-info mt-2 mb-2"></div>
-          <li>
-            <a>Item 2</a>
-          </li>
-        </ul>
-      </div>
+      {(role.roleName == 'alumni' || role.roleName == 'student')&&(
+        <Notifications/>
+      )}
 
       <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">
@@ -111,12 +94,15 @@ const TopBar = () => {
           tabIndex={0}
           className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-xl w-56 mt-4 text-black "
         >
-          <li>
+          {(role.roleName == 'alumni' || role.roleName == 'student')&&(
+            <li>
             <Link to={"/settings"}>
               <SettingsIcon />
               Settings
             </Link>
           </li>
+          )}
+          
           <li>
             <LogoutButton />
           </li>

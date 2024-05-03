@@ -25,7 +25,11 @@ const loginUser = async (req, res) => {
       },
       include:{
         role: true,
-        person: true,
+        person: {
+          include:{
+            recommendations: true
+          }
+        },
         company: {
           include:{
             industry:{
@@ -102,7 +106,11 @@ const getCurrentUser = async (req, res) => {
       },
       include:{
         role: true,
-        person: true,
+        person: {
+          include:{
+            recommendations: true
+          }
+        },
         company: {
           include:{
             industry:{
