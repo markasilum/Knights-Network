@@ -104,7 +104,7 @@ const JobPostDetails = () => {
     fetchJobPostSkills();
     fetchJobPostLicense();
     fetchApplication()
-  }, []);
+  }, [jobPostId]);
 
   const handleApplication = async (event) =>{
     event.preventDefault();
@@ -138,7 +138,7 @@ const JobPostDetails = () => {
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-          <div className="pt-5 pr-5 pl-3 overflow-auto">
+          <div className="pt-2 pr-2 overflow-auto">
             <div className="w-full bg-white h-fit min-h-80 p-5 rounded-lg mb-20 flex flex-col">
               <div className="w-full flex flex-row justify-between">
                 {/* {console.log(jobDegree)} */}

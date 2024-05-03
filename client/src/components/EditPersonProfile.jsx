@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import TopBar from './topbar'
+import SideBar from './SideBar';
 
 const EditPersonProfile = () => {
     const [firstName, setFirstName] = useState('');
@@ -170,15 +171,20 @@ const EditPersonProfile = () => {
     };
   
     return (
-      <div className='w-9/12 bg-neutral  h-screen flex flex-col items-center overflow-auto'>
-        <TopBar/>
-  
-        <form onSubmit={handleSubmit} className='w-2/3'>
-        <div className='flex flex-col bg-base-200 p-10 mt-5 rounded-xl'>
+      <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
+      <TopBar />
+      <div className="flex flex-row gap-2">
+        <SideBar />
+        <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
+          <div className=" overflow-auto mb-20">
+            <div className="w-full bg-white flex flex-col">
+        
+        <form onSubmit={handleSubmit} className='w-full'>
+        <div className='flex flex-col bg-neutral p-5'>
             <span>Edit Account</span>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Name</span>
+              <span className="label-text font-normal">Name</span>
             </div>
           </label>
         
@@ -193,7 +199,7 @@ const EditPersonProfile = () => {
           <div>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Username</span>
+              <span className="label-text font-normal">Username</span>
             </div>
           </label>
           <input type="text" id="username" placeholder="Username" className="input input-bordered w-full " value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -201,7 +207,7 @@ const EditPersonProfile = () => {
           <div>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Password</span>
+              <span className="label-text font-normal">Password</span>
             </div>
           </label>
           <input type="password" id="password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" className="input input-bordered w-full placeholder-black" value={password} onChange={(e) => setPassword(e.target.value)}/>
@@ -210,7 +216,7 @@ const EditPersonProfile = () => {
   
         <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Address</span>
+              <span className="label-text font-normal">Address</span>
             </div>
           </label>
         
@@ -224,7 +230,7 @@ const EditPersonProfile = () => {
   
         <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Contact</span>
+              <span className="label-text font-normal">Contact</span>
             </div>
           </label>
         
@@ -239,7 +245,7 @@ const EditPersonProfile = () => {
           <div>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Profile Picture</span>
+              <span className="label-text font-normal">Profile Picture</span>
             </div>
           </label>
             <input type="file" id="profilePicture" className="file-input file-input-bordered w-full max-w-xs" onChange={handleFileChange}/>
@@ -253,7 +259,7 @@ const EditPersonProfile = () => {
           {/* <div>
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Student or Alumni</span>
+              <span className="label-text font-normal">Student or Alumni</span>
             </div>
           </label>
             
@@ -277,7 +283,7 @@ const EditPersonProfile = () => {
   
         <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Brief Description</span>
+              <span className="label-text font-normal">Brief Description</span>
             </div>
           </label>
         <textarea id="bio" placeholder="Bio" className="textarea textarea-bordered textarea-md w-full" value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
@@ -291,6 +297,11 @@ const EditPersonProfile = () => {
   
   
       </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
      
     )
 }
