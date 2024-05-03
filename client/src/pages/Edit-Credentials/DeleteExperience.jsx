@@ -29,7 +29,7 @@ const DeleteExperience = ({experience, handleDelete}) => {
               className="btn btn-error text-white"
               onClick={() => handleDelete(experience.id)}
             >
-              Archive
+              Delete
             </button>
           </form>
         </div>

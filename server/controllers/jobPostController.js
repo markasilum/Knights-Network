@@ -734,7 +734,6 @@ const getJobsMany = async (req, res) => {
         company: true
       }
     });
-    console.log(jobDetails)
     res.json(jobDetails);
   } catch (error) {
     // If there's an error, send an error response

@@ -7,6 +7,7 @@ import EditEducation from "./EditEducation";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import DateToWords from "../../components/DateFormatter";
 import DeleteEducation from "./DeleteEducation";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const SelectEditEduc = () => {
   const [degree, setDegree] = useState([]);
@@ -99,9 +100,9 @@ const SelectEditEduc = () => {
                     
 
                     </div>
-                    <div className="mb-3 flex flex-row">
-                        <button className='font-thin underline' onClick={()=>document.getElementById(education.id).showModal()}>Edit</button>                 
-                        <button className="hover:text-error active:text-info p-1" onClick={()=>document.getElementById(education.degreeId).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>                             
+                    <div className="mb-3 flex flex-row gap-3">
+                        <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(education.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
+                        <button className="hover:text-error hover:bg-neutral hover:rounded-full active:text-info p-1" onClick={()=>document.getElementById(education.degreeId).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>                             
                     </div>
                     <EditEducation educationData={education} degreeData={degree}/>
                     <DeleteEducation education={education} handleDelete={handleDelete}/>

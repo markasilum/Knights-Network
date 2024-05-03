@@ -31,7 +31,7 @@ const DeleteEducation = ({ education, handleDelete }) => {
               className="btn btn-error text-white"
               onClick={() => handleDelete(education.id)}
             >
-              Archive
+              Delete
             </button>
           </form>
         </div>
