@@ -2,28 +2,47 @@ import React, { useEffect, useState } from "react";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
 import EditExperience from "./EditExperience";
+import DeleteExperience from "./DeleteExperience";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const SelectEditExperience = () => {
   const [experience, setExperience] = useState([]);
 
-  useEffect(() => {
-    const fetchExperience = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/experience/person/index`,{
-            credentials:'include'
-          }
-        );
-        const getUserResult = await response.json();
-        setExperience(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const fetchExperience = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/experience/person/index`,{
+          credentials:'include'
+        }
+      );
+      const getUserResult = await response.json();
+      setExperience(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
 
+  useEffect(() => {
     fetchExperience();
   }, []);
+
+  const handleDelete = async (id) =>{
+    console.log("handleDelete called", id)
+    try {
+      const response = await fetch(
+        `http://localhost:3000/experience/delete?id=${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      fetchExperience();
+    } catch (error) {
+      console.error("Error deleting experience:", error);
+  };
+}
 
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
@@ -45,9 +64,12 @@ const SelectEditExperience = () => {
                         <span className="">{experience.companyName}</span>
                     </div>
                     
-                    <div className="mb-3">
+                    <div className="mb-3 flex flex-row ga-2">
                     <button className='font-thin underline' onClick={()=>document.getElementById(experience.id).showModal()}>Edit</button>
+                    <button className="hover:text-error active:text-info p-1" onClick={()=>document.getElementById(experience.jobTitle).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>
+
                     <EditExperience expData={experience}/>
+                    <DeleteExperience experience={experience} handleDelete={handleDelete}/>
                     </div>
                   </div>
                 ))}
