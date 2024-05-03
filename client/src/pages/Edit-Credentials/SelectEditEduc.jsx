@@ -73,7 +73,7 @@ const SelectEditEduc = () => {
         <SideBar />
 
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-          <div className="pt-5 pr-5 pl-3 overflow-scroll">
+          <div className="pt-2 pr-2 overflow-scroll">
             <div className="w-full bg-white h-fit p-5 rounded-xl mb-2">
               <div className="flex flex-col">
               <div className='font-semibold mb-5'>Edit Education</div>
