@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
 import SkillsForm from '../pages/Create-Credentials/SkillsForm';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const SkillsCard = () => {
   const[skills, setSkills] = useState([])
 
@@ -27,8 +29,8 @@ const SkillsCard = () => {
         <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
             <span className='font-bold'>Skills</span>
             <div className='flex gap-3'>
-            <button className='font-thin underline' onClick={()=>document.getElementById('add_skill').showModal()}>Add</button>
-            <Link to="/skills-edit" className='font-thin underline'>Edit</Link>
+            <button className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-success' onClick={()=>document.getElementById('add_skill').showModal()}><AddOutlinedIcon fontSize='medium'/></button>
+            <Link to="/skills-edit" className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent'><EditOutlinedIcon fontSize='medium'/></Link>
             </div>
         </div>
         <SkillsForm/>

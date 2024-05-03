@@ -3,6 +3,8 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import DateToWords from './DateFormatter';
 import EducationForm from '../pages/Create-Credentials/EducationForm';
 import EditEducation from '../pages/Edit-Credentials/EditEducation';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const EducCard = ({educData}) => {
   const[degree, setDegree] = useState([])
@@ -27,11 +29,11 @@ const EducCard = ({educData}) => {
   },[]);
   return (
     <div className=''>
-        <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
+        <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2 pb-1 items-end'>
             <span className='font-bold'>Education</span>
             <div className='flex gap-3'>
-            <button className='font-thin underline' onClick={()=>document.getElementById('add_education').showModal()}>Add</button>
-            <Link className='font-thin underline' to={"/education-edit"}>Edit</Link>
+            <button className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-success' onClick={()=>document.getElementById('add_education').showModal()}><AddOutlinedIcon fontSize='medium'/></button>
+            <Link className='hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent' to={"/education-edit"}><EditOutlinedIcon fontSize='medium'/></Link>
             </div>
         </div>
         <EducationForm/>

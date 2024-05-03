@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import DateToWords from "./DateFormatter";
 import ExperienceForm from "../pages/Create-Credentials/ExperienceForm";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const ExperienceCards = () => {
   const [experience, setExperience] = useState([]);
 
@@ -32,15 +34,15 @@ const ExperienceCards = () => {
         <div className="flex gap-3">
           {/* <Link to="/expform" className='font-thin underline'>Add</Link> */}
           <button
-            className="font-thin underline"
+            className="hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-success"
             onClick={() =>
               document.getElementById("add_experience").showModal()
             }
           >
-            Add
+            <AddOutlinedIcon fontSize="medium"/>
           </button>
-          <Link to="/experience-edit" className="font-thin underline">
-            Edit
+          <Link to="/experience-edit" className="hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent">
+            <EditOutlinedIcon fontSize="medium"/>
           </Link>
         </div>
       </div>
