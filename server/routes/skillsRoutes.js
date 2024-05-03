@@ -6,6 +6,7 @@ const upload = multer();
 const skillsController = require('../controllers/skillsController')
 
 router.get('/person/index',skillsController.getPersonSkills)
+router.delete('/delete',skillsController.deleteSkill)
 router.post('/create',upload.none(), skillsController.createPersonSkill)
 router.put('/update',upload.none(), skillsController.updatePersonSkill)
 

@@ -105,9 +105,23 @@ const createCert = async (req, res) => {
       // console.log(req.body)
     }
   };
-
+  const deleteCert = async (req, res) => {
+    try {
+      const {id} = req.query
+      const data = await prisma.certification.delete({
+        where:{
+          id: id
+        }
+      })
+  
+      res.status(200).json("deleted certification")
+    } catch (error) {
+      console.error("error deleting license", error)
+    }
+  }
 module.exports = {
     getPersonCerts,
     createCert,
-    updateCert
+    updateCert,
+    deleteCert
 }

@@ -4,6 +4,7 @@ import SideBar from "../../components/SideBar";
 import EditExperience from "./EditExperience";
 import DeleteExperience from "./DeleteExperience";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const SelectEditExperience = () => {
   const [experience, setExperience] = useState([]);
@@ -64,9 +65,9 @@ const SelectEditExperience = () => {
                         <span className="">{experience.companyName}</span>
                     </div>
                     
-                    <div className="mb-3 flex flex-row ga-2">
-                    <button className='font-thin underline' onClick={()=>document.getElementById(experience.id).showModal()}>Edit</button>
-                    <button className="hover:text-error active:text-info p-1" onClick={()=>document.getElementById(experience.jobTitle).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>
+                    <div className="mb-3 flex flex-row gap-3">
+                    <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(experience.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
+                    <button className="hover:text-error hover:rounded-full hover:bg-neutral active:text-info p-1" onClick={()=>document.getElementById(experience.jobTitle).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>
 
                     <EditExperience expData={experience}/>
                     <DeleteExperience experience={experience} handleDelete={handleDelete}/>
