@@ -1,4 +1,4 @@
-const { object, string, number, assert, pattern, size, refine, optional } = require("superstruct");
+const { object, string, number, assert, pattern, size, refine, optional, nullable } = require("superstruct");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
@@ -51,6 +51,27 @@ const User = object({
   maritalStatus: optional(string()),
   birthdate: optional(string()),
   role: string(),
+});
+
+const UpdateUser = object({
+  username: string(),
+  password: optional(string()),
+  streetAddress: optional(string()),
+  cityName: optional(string()),
+  countryName: optional(string()),
+  zipCode: optional(string()),
+  contactNum: phPhoneNum,
+  emailAddress: isEmail,
+  biography: optional(string()),
+  firstName: string(),
+  middleName: string(),
+  lastName: string(),
+  suffix: optional(string()),
+  maindenLastName: optional(string()),
+  maritalStatus: optional(string()),
+  birthdate: optional(string()),
+  profPic: optional(string()),
+  personId: string()
 });
 
 const getUserIdFromJWT = (req) => {
@@ -233,7 +254,7 @@ const createPerson = async (req, res) => {
     }
 
     console.error("Unexpected error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -258,6 +279,7 @@ const updatePerson = async (req, res) => {
       personId,
     } = req.body;
 
+    console.log("password:", req.body.password)
 
 
     let profPic;
@@ -267,7 +289,11 @@ const updatePerson = async (req, res) => {
 
     let hashPass = "";
     if (password) {
-      hashPass = await bcrypt.hash(password, 10);
+      if(password.length >= 6){
+        hashPass = await bcrypt.hash(password, 10);
+      }else{
+        throw new Error("Password must be at least 6 characters long");
+      }
     } 
 
     const checkEmail = await prisma.user.findFirst({
@@ -304,7 +330,7 @@ const updatePerson = async (req, res) => {
       throw new Error("Please enter a valid Philippine contact number");
     } 
 
-
+    assert(req.body, UpdateUser);
     const updatePerson = await prisma.user.update({
       where: {
         id: userIdCookie,
@@ -342,21 +368,22 @@ const updatePerson = async (req, res) => {
     // Send a response with the newly created person
     res.status(201).json(updatePerson);
   } catch (error) {
-     if (error.message === "Username and Email are already taken") {
-      return res.status(400).json({ error: error.message });
-    } else if (
-      error.message === "Email already taken" ||
-      error.message === "Username already taken"
-    ) {
-      return res.status(400).json({ error: error.message });
-    } else if (error.message === "Verification requirement is required") {
-      return res.status(400).json({ error: error.message });
-    }else if (error.message === "Please enter a valid Philippine contact number") {
-      return res.status(400).json({ error: error.message });
-    } else {
-      console.error("Unexpected error:", error);
-      return res.status(500).json({ error: "Internal server error" });
+    const knownErrors = {
+      "Username and Email are already taken": 400,
+      "Email already taken": 400,
+      "Username already taken": 400,
+      "Please enter a valid Philippine contact number": 400,
+      "Verification requirement is required": 400,
+      "Password must be at least 6 characters long": 400
+    };
+
+    if (error.message in knownErrors) {
+      const statusCode = knownErrors[error.message];
+      return res.status(statusCode).json({ error: error.message });
     }
+
+    console.error("Unexpected error:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 

@@ -145,6 +145,10 @@ const EditPersonProfile = () => {
         setErrors({
           invalidNumber: "Please enter a valid Philippine contact number",
         })
+      }else if( error.message ===  "Password must be at least 6 characters long"){
+        setErrors({
+          password: "Password must be at least 6 characters long",
+        })
       }
     }
   };
@@ -381,11 +385,16 @@ const EditPersonProfile = () => {
                         type="password"
                         id="password"
                         placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
-                        className="input input-bordered w-full placeholder-black"
+                        className="input input-bordered w-full placeholder-black focus:placeholder-opacity-0 placeholder-opacity-100"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         minLength={6}
                       />
+                       {errors.password && (
+                        <span className="text-error  font-normal h-2">
+                          {errors.password}
+                        </span>
+                      )}
                     </div>
                   </div>
 

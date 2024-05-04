@@ -13,7 +13,7 @@ const CreatePersonForm = () => {
   const [suffix, setSuffix] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(null);
   const [streetAddress, setStreetAdd] = useState("");
   const [cityName, setCityName] = useState("");
   const [zipCode, setZipCode] = useState("");
