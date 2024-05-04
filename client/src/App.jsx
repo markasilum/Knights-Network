@@ -46,6 +46,7 @@ import PersonUserSetting from "./pages/Profile/PersonUserSetting";
 import CalendarPage from "./pages/Events/CalendarPage";
 import ChooseUserType from "./pages/Login/ChooseUserType";
 import { useAuthContext } from "./hooks/useAuthContext";
+import ViewCompanyProfile from "./pages/Profile/ViewCompanyProfile";
 
 function App() {
   const { user } = useAuthContext();
@@ -93,6 +94,10 @@ function App() {
           <Route
             path="/profile"
             element={user ? <ProfilePage /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/profile/view/:companyId"
+            element={user ? <ViewCompanyProfile /> : <Navigate to={"/login"} />}
           />
           <Route
             path="/settings"
