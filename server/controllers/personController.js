@@ -1,3 +1,4 @@
+const { object, string, number, assert, pattern, size, refine, optional } = require("superstruct");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
@@ -28,6 +29,30 @@ function DateToWords(dateString) {
   return `${month} ${year}`;
 }
 
+const isEmail = refine(string(), 'isEmail', (value) => /\S+@\S+\.\S+/.test(value));
+const phPhoneNum = pattern(string(),  /^(0|\+63|\+?63|0)?[0-9]{10}$/)
+const password = size(string(),6,15)
+
+const User = object({
+  username: string(),
+  password: password,
+  streetAddress: optional(string()),
+  cityName: optional(string()),
+  countryName: optional(string()),
+  zipCode: optional(string()),
+  contactNum: phPhoneNum,
+  emailAddress: isEmail,
+  biography: optional(string()),
+  firstName: string(),
+  middleName: string(),
+  lastName: string(),
+  suffix: optional(string()),
+  maindenLastName: optional(string()),
+  maritalStatus: optional(string()),
+  birthdate: optional(string()),
+  role: string(),
+});
+
 const getUserIdFromJWT = (req) => {
   const token = req.cookies.jwt;
   const decodedToken = jwt.verify(token, "Pedo Mellon a Minno");
@@ -47,8 +72,6 @@ const getPersonDetails = async (req, res) => {
 };
 const getPersonCredentials = async (req, res) => {
   const { id } = req.query;
-
-  // console.log(id)
 
   const data = await prisma.person.findUnique({
     where: {
@@ -79,10 +102,8 @@ const getPersonCredentials = async (req, res) => {
 };
 
 const createPerson = async (req, res) => {
-  console.log(req.body);
-
   try {
-    // Extract data from the request body
+    
     const {
       firstName,
       middleName,
@@ -95,6 +116,7 @@ const createPerson = async (req, res) => {
       zipCode,
       countryName,
       emailAddress,
+      birthdate,
       contactNum,
       biography,
       role,
@@ -106,10 +128,43 @@ const createPerson = async (req, res) => {
     const idPhoto = req.files["idPhoto"]
       ? req.files["idPhoto"][0].filename
       : null;
+    
+      
 
+
+    const checkEmail = await prisma.user.findFirst({
+      where: {
+        emailAddress: emailAddress,
+      },
+    });
+
+    const checkUsername = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+    });
+
+    var contactNumberPattern = /^(0|\+63|\+?63|0)?[0-9]{10}$/;
+    if (!contactNumberPattern.test(contactNum)) {
+      throw new Error("Please enter a valid Philippine contact number");
+    } 
+
+    if (checkEmail && checkUsername) {
+      throw new Error("Username and Email are already taken");
+    }
+    if (checkEmail) {
+      throw new Error("Email already taken");
+    }
+
+    if (checkUsername) {
+      throw new Error("Username already taken");
+    }
+
+    // if (!idPhoto) {
+    //   throw new Error("Verification requirement is required");
+    // }
+    assert(req.body, User);
     const hashPass = await bcrypt.hash(password, 10);
-
-    // Create a new person record in the database using Prisma
     const newPerson = await prisma.user.create({
       data: {
         username,
@@ -129,6 +184,7 @@ const createPerson = async (req, res) => {
             middleName,
             lastName,
             suffix,
+            birthdate,
             verifiReq: {
               create: {
                 idPhoto: idPhoto,
@@ -163,20 +219,32 @@ const createPerson = async (req, res) => {
     });
     res.status(201).json(newPerson);
   } catch (error) {
-    console.error("Error creating person:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    const knownErrors = {
+      "Username and Email are already taken": 400,
+      "Email already taken": 400,
+      "Username already taken": 400,
+      "Please enter a valid Philippine contact number": 400,
+      "Verification requirement is required": 400,
+    };
+
+    if (error.message in knownErrors) {
+      const statusCode = knownErrors[error.message];
+      return res.status(statusCode).json({ error: error.message });
+    }
+
+    console.error("Unexpected error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const updatePerson = async (req, res) => {
   const userIdCookie = getUserIdFromJWT(req);
-
   try {
     // Extract data from the request body
     const {
-      firstName,
-      middleName,
-      lastName,
+      firstName, 
+      middleName, 
+      lastName, 
       suffix,
       username,
       password,
@@ -190,6 +258,8 @@ const updatePerson = async (req, res) => {
       personId,
     } = req.body;
 
+
+
     let profPic;
     if (req.file != null) {
       profPic = req.file.filename;
@@ -198,9 +268,42 @@ const updatePerson = async (req, res) => {
     let hashPass = "";
     if (password) {
       hashPass = await bcrypt.hash(password, 10);
-    } else {
-      console.log("password not updated");
+    } 
+
+    const checkEmail = await prisma.user.findFirst({
+      where: {
+        emailAddress: emailAddress,
+      },
+    });
+
+    const checkUsername = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+    });
+
+    if (checkEmail && checkUsername) {
+      if(checkEmail.id != userIdCookie && checkUsername.id != userIdCookie){
+        throw new Error("Username and Email are already taken");
+      }
     }
+    if (checkEmail) {
+      if(checkEmail.id != userIdCookie){
+        throw new Error("Email already taken");
+      }
+    }
+
+    if (checkUsername) {
+      if(checkUsername.id != userIdCookie){
+        throw new Error("Username already taken");
+      }
+    }
+
+    var contactNumberPattern = /^(0|\+63|\+?63|0)?[0-9]{10}$/;
+    if (!contactNumberPattern.test(contactNum)) {
+      throw new Error("Please enter a valid Philippine contact number");
+    } 
+
 
     const updatePerson = await prisma.user.update({
       where: {
@@ -239,9 +342,21 @@ const updatePerson = async (req, res) => {
     // Send a response with the newly created person
     res.status(201).json(updatePerson);
   } catch (error) {
-    console.error("Error creating person:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-    console.log(req.body);
+     if (error.message === "Username and Email are already taken") {
+      return res.status(400).json({ error: error.message });
+    } else if (
+      error.message === "Email already taken" ||
+      error.message === "Username already taken"
+    ) {
+      return res.status(400).json({ error: error.message });
+    } else if (error.message === "Verification requirement is required") {
+      return res.status(400).json({ error: error.message });
+    }else if (error.message === "Please enter a valid Philippine contact number") {
+      return res.status(400).json({ error: error.message });
+    } else {
+      console.error("Unexpected error:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
   }
 };
 

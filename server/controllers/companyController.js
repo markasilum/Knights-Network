@@ -94,7 +94,6 @@ const createCompany = async (req, res) => {
       },
     });
 
-    console.log(checkEmail, checkUsername);
     if (checkEmail && checkUsername) {
       throw new Error("Username and Email are already taken");
     }
