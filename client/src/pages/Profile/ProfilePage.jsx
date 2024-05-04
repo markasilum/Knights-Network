@@ -7,6 +7,9 @@ import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import ContactPage from "./ContactPage";
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
  const ProfilePage = () => {
   const {user} = useAuthContext()
   const [userData, setUserData] = useState(user.user);
@@ -130,8 +133,13 @@ import ContactPage from "./ContactPage";
                 <p>{userData.cityName + ","}</p>
                 <p>{userData.countryName}</p>
 
-                <p>{userData.contactNum}</p>
-                <p>{userData.emailAddress}</p>
+                <p className="mt-2">
+                  <LocalPhoneOutlinedIcon fontSize="small" />{" "}
+                  {userData.contactNum}
+                </p>
+                <p>
+                  <EmailOutlinedIcon fontSize="small" /> {userData.emailAddress}
+                </p>
               </div>
               <div className="flex flex-col col-span-1 items-end">
                 {userRole.roleName == "alumni" && (
@@ -153,37 +161,48 @@ import ContactPage from "./ContactPage";
 
               <div className="mt-5 border-t-2 border-solid border-neutral pt-2 flex flex-row gap-5 col-span-2">
                 <button
-                  className={`font-semibold active:text-info ${profileNavButton === 'about' ? 'text-accent underline'  : ''}`}
+                  className={`font-semibold active:text-info ${
+                    profileNavButton === "about" ? "text-accent underline" : ""
+                  }`}
                   onClick={() => setProfileNavButton("about")}
                 >
                   About
                 </button>
                 {userRole.roleName === "company" && (
                   <button
-                  className={`font-semibold active:text-info ${profileNavButton === 'jobs' ? 'text-accent underline'  : ''}`}
+                    className={`font-semibold active:text-info ${
+                      profileNavButton === "jobs" ? "text-accent underline" : ""
+                    }`}
                     onClick={() => setProfileNavButton("jobs")}
                   >
                     Jobs
                   </button>
                 )}
-                {userRole.roleName === "student" ||
-                  (userRole.roleName === "alumni" && (
-                    <button
-                    className={`font-semibold active:text-info ${profileNavButton === 'creds' ? 'text-accent underline'  : ''}`}
-                    onClick={() => setProfileNavButton("creds")}
-                    >
-                      Credentials
-                    </button>
-                  ))}
-                  {userRole.roleName === "company" && (
+                {(userRole.roleName === "student" ||
+                  userRole.roleName === "alumni") && (
                   <button
-                  className={`font-semibold active:text-info ${profileNavButton === 'contact' ? 'text-accent underline'  : ''}`}
-                  onClick={() => setProfileNavButton("contact")}
-                >
-                  Contact
-                </button>
+                    className={`font-semibold active:text-info ${
+                      profileNavButton === "creds"
+                        ? "text-accent underline"
+                        : ""
+                    }`}
+                    onClick={() => setProfileNavButton("creds")}
+                  >
+                    Credentials
+                  </button>
                 )}
-                
+                {userRole.roleName === "company" && (
+                  <button
+                    className={`font-semibold active:text-info ${
+                      profileNavButton === "contact"
+                        ? "text-accent underline"
+                        : ""
+                    }`}
+                    onClick={() => setProfileNavButton("contact")}
+                  >
+                    Contact
+                  </button>
+                )}
               </div>
             </div>
 
@@ -194,7 +213,10 @@ import ContactPage from "./ContactPage";
             )}
 
             {profileNavButton === "creds" && (
-              <PersonCredentials educData={educData} fetchEducation={fetchEducation}/>
+              <PersonCredentials
+                educData={educData}
+                fetchEducation={fetchEducation}
+              />
             )}
             {profileNavButton === "jobs" && (
               <CompanyJobs jobData={compJobPostData} companyData={compData} />

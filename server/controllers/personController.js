@@ -4,11 +4,23 @@ const bcrypt = require("bcrypt");
 const PDFDocument = require("pdfkit");
 
 const jwt = require("jsonwebtoken");
-
-
+const maxAge = 3 * 24 * 60 * 60; //3 days
 
 function DateToWords(dateString) {
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const date = new Date(dateString);
   const month = months[date.getMonth()];
   const day = date.getDate();
@@ -145,7 +157,10 @@ const createPerson = async (req, res) => {
     });
 
     // Send a response with the newly created person
-    res.cookie('email', emailAddress,{httpOnly:true, maxAge:maxAge*1000})
+    res.cookie("email", emailAddress, {
+      httpOnly: true,
+      maxAge: maxAge * 1000,
+    });
     res.status(201).json(newPerson);
   } catch (error) {
     console.error("Error creating person:", error);
@@ -234,131 +249,153 @@ const resumePDF = async (req, res) => {
   try {
     const { id } = req.query;
 
-  const data = await prisma.person.findUnique({
-    where: {
-      userId: id,
-    },
-    include: {
-      user: true,
-      education: {
-        include: {
-          degree: true,
+    const data = await prisma.person.findUnique({
+      where: {
+        userId: id,
+      },
+      include: {
+        user: true,
+        education: {
+          include: {
+            degree: true,
+          },
+        },
+        experience: true,
+        certification: true,
+        skills: {
+          include: {
+            skill: true,
+          },
+        },
+        personLicense: {
+          include: {
+            license: true,
+          },
         },
       },
-      experience: true,
-      certification: true,
-      skills: {
-        include: {
-          skill: true,
-        },
-      },
-      personLicense: {
-        include: {
-          license: true,
-        },
-      },
-    },
-  });
-
-  const doc = new PDFDocument({size: 'LETTER', margin: 72 * 0.5});
-  doc.registerFont('Gotham-Medium','./font/Gotham-Medium.ttf')
-  doc.registerFont('Gotham-Book','./font/Gotham-Book.ttf')
-  
-  doc.fontSize(12).font('Gotham-Medium').text(data.firstName +" "+ data.middleName + " "+data.lastName,{
-    align:'center'
-  });
-  doc.fontSize(11);
-  doc.font('Gotham-Book').text(data.user.contactNum +" | "+ data.user.emailAddress,{
-    align:'center'
-  });
-  doc.moveDown()
-  doc.font('Gotham-Medium').text("Experience",{
-    underline:true,
-    align:'center'
-  });
-  doc.moveDown()
-
-
-  data.experience.map((item)=>(
-    doc.font('Gotham-Medium').text(item.jobTitle),
-    doc.font('Gotham-Book').text(item.companyName),
-    doc.font('Gotham-Book').text(DateToWords(item.startDate)+" - "+ DateToWords(item.endDate)),
-
-    detail = item.jobDetails.replace(/\r/g, ''),
-    doc.list(detail.split('\n'),{
-      bulletRadius: 2,
-      indent: 10
-    }),
-    doc.moveDown()
-  ))
-
-  doc.font('Gotham-Medium').text("Skills",{
-    underline:true,
-    align:'center'
-  });
-  doc.moveDown()
-
-  const skillNames = data.skills.map(skill => skill.skill.skillName);
-  
-  doc.font('Gotham-Book').list(skillNames,{
-    bulletRadius: 2,
-  })
-
-  doc.moveDown()
-  doc.font('Gotham-Medium').text("Education",{
-    underline:true,
-    align:'center'
-  });
-  doc.moveDown()
-  
-  data.education.map((item)=>(
-    doc.font('Gotham-Medium').text(item.schoolName),
-    doc.font('Gotham-Book').text(item.degree.degreeName),
-    doc.font('Gotham-Book').text(DateToWords(item.startDate)+" - "+ DateToWords(item.endDate)),
-    doc.font('Gotham-Book').text( "QPI: "+item.qpi),
-    doc.font('Gotham-Book').text(item.awards),
-    doc.moveDown()
-  ))
-
-  console.log("resume create",data.personLicense)
-  if(data.personLicense.length !=0 ){
-    doc.font('Gotham-Medium').text("Licenses",{
-      underline:true,
-      align:'center'
     });
-    const licenseNames = data.personLicense.map(item => item.license.licenseName);
-    doc.font('Gotham-Book').list(licenseNames,{
-      bulletRadius: 2,
-    })
-  }
- 
-  if(data.certification){
-    doc.font('Gotham-Medium').text("Certifications",{
-      underline:true,
-      align:'center'
-    });
-    doc.moveDown()
-  
-    const certifications = data.certification.map(item => item.certName);
-    doc.font('Gotham-Book').list(certifications,{
-      bulletRadius: 2,
-    })
-  }
-  
 
-  doc.end();
-  const buffers = [];
-  doc.on("data", buffers.push.bind(buffers));
-  doc.on("end", () => {
-    const pdfData = Buffer.concat(buffers);
-    res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
-    res.send(pdfData);
-  });
-  
- 
+    const doc = new PDFDocument({ size: "LETTER", margin: 72 * 0.5 });
+    doc.registerFont("Gotham-Medium", "./font/Gotham-Medium.ttf");
+    doc.registerFont("Gotham-Book", "./font/Gotham-Book.ttf");
+
+    doc
+      .fontSize(12)
+      .font("Gotham-Medium")
+      .text(data.firstName + " " + data.middleName + " " + data.lastName, {
+        align: "center",
+      });
+    doc.fontSize(11);
+    doc
+      .font("Gotham-Book")
+      .text(data.user.contactNum + " | " + data.user.emailAddress, {
+        align: "center",
+      });
+
+    if (data.experience.length != 0) {
+      doc.moveDown();
+      doc.font("Gotham-Medium").text("Experience", {
+        underline: true,
+        align: "center",
+      });
+      doc.moveDown();
+      data.experience.map(
+        (item) => (
+          doc.font("Gotham-Medium").text(item.jobTitle),
+          doc.font("Gotham-Book").text(item.companyName),
+          doc
+            .font("Gotham-Book")
+            .text(
+              DateToWords(item.startDate) + " - " + DateToWords(item.endDate)
+            ),
+          (detail = item.jobDetails.replace(/\r/g, "")),
+          doc.list(detail.split("\n"), {
+            bulletRadius: 2,
+            indent: 10,
+          }),
+          doc.moveDown()
+        )
+      );
+    }
+
+    if (data.skills.length != 0) {
+      doc.font("Gotham-Medium").text("Skills", {
+        underline: true,
+        align: "center",
+      });
+      doc.moveDown();
+
+      const skillNames = data.skills.map((skill) => skill.skill.skillName);
+
+      doc.font("Gotham-Book").list(skillNames, {
+        bulletRadius: 2,
+      });
+    }
+
+    if (data.education.length != 0) {
+      doc.moveDown();
+      doc.font("Gotham-Medium").text("Education", {
+        underline: true,
+        align: "center",
+      });
+      doc.moveDown();
+
+      data.education.map(
+        (item) => (
+          doc.font("Gotham-Medium").text(item.schoolName),
+          doc.font("Gotham-Book").text(item.degree.degreeName),
+          doc
+            .font("Gotham-Book")
+            .text(
+              DateToWords(item.startDate) + " - " + DateToWords(item.endDate)
+            ),
+          doc.font("Gotham-Book").text("QPI: " + item.qpi),
+          doc.font("Gotham-Book").text(item.awards),
+          doc.moveDown()
+        )
+      );
+    }
+
+    if (data.personLicense.length != 0) {
+      doc.font("Gotham-Medium").text("Licenses", {
+        underline: true,
+        align: "center",
+      });
+      const licenseNames = data.personLicense.map(
+        (item) => item.license.licenseName
+      );
+      doc.font("Gotham-Book").list(licenseNames, {
+        bulletRadius: 2,
+      });
+    }
+
+    if (data.certification.length != 0) {
+      doc.font("Gotham-Medium").text("Certifications", {
+        underline: true,
+        align: "center",
+      });
+      doc.moveDown();
+
+      const certifications = data.certification.map((item) => item.certName);
+      doc.font("Gotham-Book").list(certifications, {
+        bulletRadius: 2,
+      });
+    }
+
+    doc.end();
+    const buffers = [];
+    doc.on("data", buffers.push.bind(buffers));
+    doc.on("end", () => {
+      const pdfData = Buffer.concat(buffers);
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="example.pdf"'
+      );
+      res.send(pdfData);
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 

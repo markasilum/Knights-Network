@@ -396,7 +396,7 @@ const EditCompanyProfile = () => {
                       </button>
                     )}
 
-                    {preview && (
+                    {profPic && preview && (
                       <div className="w-32 h-32">
                         <img
                           className="w-full h-full object-contain rounded-md"
@@ -404,7 +404,7 @@ const EditCompanyProfile = () => {
                         />
                       </div>
                     )}
-                    {preview && (
+                    {profPic && preview && (
                       <button
                         onClick={handleRemoveProfPic}
                         className="btn btn-info w-fit text-white ml-3"
