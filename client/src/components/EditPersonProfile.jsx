@@ -31,6 +31,8 @@ const EditPersonProfile = () => {
   const { dispatch } = useAuthContext();
   const [previewProfPic, setPreviewProfPic] = useState();
 
+  const [errors, setErrors] = useState({});
+
   const fetchUserData = async () => {
     try {
       const response = await fetch("http://localhost:3000/user/details", {
@@ -72,14 +74,12 @@ const EditPersonProfile = () => {
     fetchPersonData();
   }, []);
 
-  useEffect(()=>{
-    console.log(image)
-    console.log(previewProfPic)
-  },[image])
 
   const handleSubmit = async (event) => {
     // setIsSubmitting(true);
     event.preventDefault();
+    setErrors({})
+    const errors = {};
 
     const formData = new FormData();
     if (image) {
@@ -110,6 +110,11 @@ const EditPersonProfile = () => {
         body: formData,
         credentials: "include",
       });
+      const responseData = await response.json();
+
+      if(!response.ok){
+        throw new Error(responseData.error);
+      }
 
       const userData = await fetch(`http://localhost:3000/auth/user`, {
         credentials: "include",
@@ -122,8 +127,25 @@ const EditPersonProfile = () => {
 
       navigate("/profile");
     } catch (error) {
-      setIsSubmitting(false);
-      console.error("Error creating person:", error);
+      if (error.message == "Username already taken") {
+        setErrors({ username: "Username already taken" });
+      } else if (error.message == "Email already taken") {
+        // setErrors(errors.emailAddress = "Email already taken")
+        setErrors({ emailAddress: "Email already taken" });
+      } else if (error.message == "Username and Email are already taken") {
+        setErrors({
+          username: "Username already taken",
+          emailAddress: "Email already taken",
+        });
+      }else if(error.message === "Verification requirement is required"){
+        setErrors({
+          idPic: "Verification requirement is required",
+        })
+      }else if(error.message === "Please enter a valid Philippine contact number"){
+        setErrors({
+          invalidNumber: "Please enter a valid Philippine contact number",
+        })
+      }
     }
   };
 
@@ -232,9 +254,7 @@ const EditPersonProfile = () => {
                           <div className="flex flex-row items-center">
                             <div className="avatar">
                               <div className="w-24 rounded">
-                                <img
-                                  src={previewProfPic}
-                                />
+                                <img src={previewProfPic} />
                               </div>
                             </div>
                             <button
@@ -245,57 +265,91 @@ const EditPersonProfile = () => {
                             </button>
                           </div>
                         )}
-
                       </div>
                     </div>
                   </div>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text font-normal">Name</span>
+
+                  <div className="grid grid-cols-2 gap-2 w-full">
+                    <div className="flex flex-col">
+                      <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                          <span className="label-text font-normal">
+                            First Name*
+                          </span>
+                        </div>
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        placeholder="Firstname"
+                        className="input input-bordered w-full "
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                      />
                     </div>
-                  </label>
 
-                  <div className="grid grid-cols-2 gap-2 w-full">
-                    <input
-                      type="text"
-                      id="firstName"
-                      placeholder="Firstname"
-                      className="input input-bordered w-full "
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      id="middleName"
-                      placeholder="Middle Name"
-                      className="input input-bordered w-full"
-                      value={middleName}
-                      onChange={(e) => setMiddleName(e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      id="lastName"
-                      placeholder="Last Name"
-                      className="input input-bordered w-full "
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      id="suffix"
-                      placeholder="Suffix"
-                      className="input input-bordered w-full"
-                      value={suffix}
-                      onChange={(e) => setSuffix(e.target.value)}
-                    />
-                  </div>
+                    <div className="flex flex-col">
+                      <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                          <span className="label-text font-normal">
+                            Middle Name*
+                          </span>
+                        </div>
+                      </label>
+                      <input
+                        type="text"
+                        id="middleName"
+                        placeholder="Middle Name"
+                        className="input input-bordered w-full"
+                        value={middleName}
+                        onChange={(e) => setMiddleName(e.target.value)}
+                        required
+                      />
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-2 w-full">
                     <div>
                       <label className="form-control w-full max-w-xs">
                         <div className="label">
                           <span className="label-text font-normal">
-                            Username
+                            Last Name*
+                          </span>
+                        </div>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        placeholder="Last Name"
+                        className="input input-bordered w-full "
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                          <span className="label-text font-normal">
+                            Suffix
+                          </span>
+                        </div>
+                      </label>
+                      <input
+                        type="text"
+                        id="suffix"
+                        placeholder="Suffix"
+                        className="input input-bordered w-full"
+                        value={suffix}
+                        onChange={(e) => setSuffix(e.target.value)}
+                      />
+                    </div>
+                 
+                    <div>
+                      <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                          <span className="label-text font-normal">
+                            Username*
                           </span>
                         </div>
                       </label>
@@ -306,13 +360,20 @@ const EditPersonProfile = () => {
                         className="input input-bordered w-full "
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        required
                       />
+                      {errors.username && (
+                        <span className="text-error  font-normal h-2">
+                          {errors.username}
+                        </span>
+                      )}
                     </div>
+
                     <div>
                       <label className="form-control w-full max-w-xs">
                         <div className="label">
                           <span className="label-text font-normal">
-                            Password
+                            Password*
                           </span>
                         </div>
                       </label>
@@ -323,6 +384,7 @@ const EditPersonProfile = () => {
                         className="input input-bordered w-full placeholder-black"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        minLength={6}
                       />
                     </div>
                   </div>
@@ -368,13 +430,15 @@ const EditPersonProfile = () => {
                     />
                   </div>
 
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text font-normal">Contact</span>
-                    </div>
-                  </label>
+                  
 
                   <div className="grid grid-cols-2 gap-2 w-full">
+                  <div>
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text font-normal">Email Address*</span>
+                    </div>
+                  </label>
                     <input
                       type="text"
                       id="emailAddress"
@@ -383,7 +447,17 @@ const EditPersonProfile = () => {
                       value={emailAddress}
                       onChange={(e) => setEmailAddress(e.target.value)}
                     />
-                    <input
+                    {errors.emailAddress && (
+                      <span className="text-error">{errors.emailAddress}</span>
+                    )}
+                  </div>
+                  <div>
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text font-normal">Contact Number*</span>
+                    </div>
+                  </label>
+                  <input
                       type="text"
                       id="phoneNumber"
                       placeholder="Phone Number"
@@ -391,6 +465,11 @@ const EditPersonProfile = () => {
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                     />
+                    {errors.invalidNumber && (
+                      <span className="text-error">{errors.invalidNumber}</span>
+                    )}
+                  </div>
+                    
                   </div>
 
                   <label className="form-control w-full max-w-xs">
@@ -408,9 +487,11 @@ const EditPersonProfile = () => {
                     onChange={(e) => setBio(e.target.value)}
                   ></textarea>
 
+                  <div className="w-full flex justify-end">
                   <button type="submit" className={`btn btn-primary w-40 mt-5`}>
                     Update Account
                   </button>
+                  </div>
                 </div>
               </form>
             </div>
