@@ -31,6 +31,43 @@ const role = async (req, res) => {
     res.json(data);
   }
 
+  const deactivateAccount = async (req, res) => {
+    const userId = getUserIdFromJWT(req);
+  
+    const data = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data:{
+        isArchived: true
+      }
+    });
+    res.json(data);
+  };
+
+  const reactivateAccount = async (req, res) => {
+    const { passwordParam, emailParam } = req.body;
+    console.log(emailParam)
+
+    const userId = await prisma.user.findFirst({
+      where: {
+        emailAddress: emailParam,
+      },
+    });
+
+    const user = await prisma.user.update({
+      where: {
+       id: userId.id
+      },
+      data: {
+        isArchived: false,
+      },
+    });
+
+    console.log(userId)
+    res.json(user);
+  };
+
   const userDetails =  async (req, res) => {
     const userId = getUserIdFromJWT(req)
     const data = await prisma.user.findUnique({
@@ -192,5 +229,7 @@ module.exports ={
     userIndexCompany,
     verifyUser,
     userSetting,
-    userSettingUpdate
+    userSettingUpdate,
+    deactivateAccount,
+    reactivateAccount
 }
