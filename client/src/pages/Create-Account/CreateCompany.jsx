@@ -50,8 +50,6 @@ const CreateCompany = () => {
   
   const [errors, setErrors] = useState({});
 
-  
-
   // Validation function for email format
   const validateEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -130,14 +128,13 @@ const CreateCompany = () => {
         }
         navigate("/login");
       } catch (error) {
-        console.log(error.message)
+        
         if(error.message == "Username already taken"){
           setErrors({username: "Username already taken"})
         }else if(error.message == "Email already taken"){
           // setErrors(errors.emailAddress = "Email already taken")
           setErrors({emailAddress: "Email already taken"})
         }else if(error.message == "Username and Email are already taken"){
-          
           setErrors({username: "Username already taken", emailAddress: "Email already taken"})
         }
       }
