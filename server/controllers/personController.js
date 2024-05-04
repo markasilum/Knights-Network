@@ -184,8 +184,14 @@ const createPerson = async (req, res) => {
     // if (!idPhoto) {
     //   throw new Error("Verification requirement is required");
     // }
+    
+    let hashPass = "";
+    if(password.length >= 6){
+      hashPass = await bcrypt.hash(password, 10);
+    }else{
+      throw new Error("Password must be at least 6 characters long");
+    }
     assert(req.body, User);
-    const hashPass = await bcrypt.hash(password, 10);
     const newPerson = await prisma.user.create({
       data: {
         username,
@@ -246,6 +252,7 @@ const createPerson = async (req, res) => {
       "Username already taken": 400,
       "Please enter a valid Philippine contact number": 400,
       "Verification requirement is required": 400,
+      "Password must be at least 6 characters long":400
     };
 
     if (error.message in knownErrors) {
