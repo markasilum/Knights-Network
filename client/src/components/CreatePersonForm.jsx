@@ -106,6 +106,10 @@ const CreatePersonForm = () => {
           setErrors({
             invalidNumber: "Please enter a valid Philippine contact number",
           })
+        }else if( error.message ===  "Password must be at least 6 characters long"){
+          setErrors({
+            password: "Password must be at least 6 characters long",
+          })
         }
       }
     }
@@ -384,6 +388,11 @@ const CreatePersonForm = () => {
                 minLength={6}
                 required
               />
+              {errors.password && (
+                        <span className="text-error  font-normal h-2">
+                          {errors.password}
+                        </span>
+                      )}
             </div>
           </div>
 
