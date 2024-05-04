@@ -15,10 +15,10 @@ model User {
   id            String   @id @default(uuid())
   username      String
   password      String
-  streetAddress String
-  cityName      String
-  countryName   String
-  zipCode       String
+  streetAddress String?
+  cityName      String?
+  countryName   String?
+  zipCode       String?
   contactNum    String
   emailAddress  String
   profPic       String?
