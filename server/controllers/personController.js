@@ -91,6 +91,7 @@ const getPersonDetails = async (req, res) => {
   });
   res.json(data);
 };
+
 const getPersonCredentials = async (req, res) => {
   const { id } = req.query;
 

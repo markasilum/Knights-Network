@@ -25,6 +25,7 @@ model User {
   biography     String   @db.Text
   verified      Boolean
   isArchived  Boolean? @default(false)
+  isBanned  Boolean? @default(false)
   setting AccountSettings?
   role          Roles?
   person        Person?
