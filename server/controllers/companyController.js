@@ -339,9 +339,35 @@ const updateCompany = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+const viewCompanyProfile = async (req, res) => {
+  try {
+    
+    const {id} = req.query
+    const data = await prisma.company.findUnique({
+    where:{
+      id: id
+    },
+    include:{
+      user:true,
+      contactPerson:{
+        include:{
+          person:true
+        }
+      },
+      jobPost:true,
+      industry: true
+    }
+    })
+    res.status(200).json(data)
+  } catch (error) {
+    
+  }
+}
 module.exports = {
   getCompanyDetails,
   createCompany,
   updateCompany,
-  getContact
+  getContact,
+  viewCompanyProfile
 };

@@ -9,6 +9,7 @@ import {
 
 import TopBar from './topbar'
 import SideBar from './SideBar';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const EditPersonProfile = () => {
     const [firstName, setFirstName] = useState('');
@@ -27,44 +28,46 @@ const EditPersonProfile = () => {
     const [personId, setPersonId] = useState('');
     const [image, setImage] = useState(null);
     const navigate = useNavigate();
+    const {dispatch} = useAuthContext()
+    
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/user/details',{
+          credentials:'include'
+        });
+        const result = await response.json();
 
+            setUsername(result.username);
+            setStreetAdd(result.streetAddress)
+            setCityName(result.cityName);
+            setZipCode(result.zipCode);
+            setCountryName(result.countryName);
+            setEmailAddress(result.emailAddress);
+            setPhoneNumber(result.contactNum);
+            setBio(result.biography);
+            setImage(result.profPic);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    const fetchPersonData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/person/details',{
+          credentials:'include'
+        });
+        const result = await response.json();
+        setFirstName(result.firstName);
+        setMiddleName(result.middleName);
+        setLastName(result.lastName);
+        setSuffix(result.suffix);
+        setPersonId(result.id)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     useEffect(() => {
-        const fetchUserData = async () => {
-          try {
-            const response = await fetch('http://localhost:3000/user/details',{
-              credentials:'include'
-            });
-            const result = await response.json();
-
-                setUsername(result.username);
-                setStreetAdd(result.streetAddress)
-                setCityName(result.cityName);
-                setZipCode(result.zipCode);
-                setCountryName(result.countryName);
-                setEmailAddress(result.emailAddress);
-                setPhoneNumber(result.contactNum);
-                setBio(result.biography);
-                setImage(result.profPic);
-
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        };
-        const fetchPersonData = async () => {
-          try {
-            const response = await fetch('http://localhost:3000/person/details',{
-              credentials:'include'
-            });
-            const result = await response.json();
-            setFirstName(result.firstName);
-            setMiddleName(result.middleName);
-            setLastName(result.lastName);
-            setSuffix(result.suffix);
-            setPersonId(result.id)
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        };
+        
 
       fetchUserData();
       fetchPersonData();
@@ -99,15 +102,6 @@ const EditPersonProfile = () => {
         formData.append('personId', personId);
        
   
-        for (const value of formData.values()) {
-          console.log(value);
-        }
-  
-        // const data = new URLSearchParams();
-        
-        // for (const pair of formData.values()) {
-        //   data.append(pair[0], pair[1]);
-        // }
       try {
         // Send the article data to your server
         const response = await fetch('http://localhost:3000/person/update', {
@@ -115,6 +109,15 @@ const EditPersonProfile = () => {
           body: formData,
           credentials:'include'
         });
+
+        const userData = await fetch(`http://localhost:3000/auth/user`, {
+            credentials: "include",
+        });
+
+          const user = await userData.json();
+          if(user){
+            dispatch({ type: "LOGIN", payload: user });
+          }
 
       navigate("/profile")
       

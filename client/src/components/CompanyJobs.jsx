@@ -4,7 +4,6 @@ import ButtonNavigator from './ButtonNavigator'
 import { Link } from 'react-router-dom'
 
 const CompanyJobs = ({jobData, companyData}) => {
-4
   return (
     <div className='overflow-auto-y w-full  bg-white h-fit mt-3 p-5 flex flex-col rounded-xl mb-20 gap-2'>
         {jobData.map((job)=>(

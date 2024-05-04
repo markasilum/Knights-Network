@@ -3,13 +3,15 @@ import DateTime from "react-datetime";
 import { useState } from "react";
 import TopBar from "../../components/topbar";
 import "react-datetime/css/react-datetime.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
 import { useEffect } from "react";
 const ExperienceForm = ({fetchExperience}) => {
   const [jobTitle, setJobTitle] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [jobDetails, setJobDetails] = useState("");
-  const [startDate, setStartDate] = useState(new Date().toISOString());
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [userData, setUserData] = useState([]);
 
   const handleSubmit = async (event) => {
@@ -20,8 +22,8 @@ const ExperienceForm = ({fetchExperience}) => {
     formData.append("jobTitle", jobTitle);
     formData.append("companyName", companyName);
     formData.append("jobDetails", jobDetails);
-    formData.append("startDate", startDate);
-    formData.append("endDate", endDate);
+    formData.append("startDate", startDate.toISOString());
+    formData.append("endDate", endDate.toISOString());
 
     try {
       const response = await fetch("http://localhost:3000/experience/create", {
@@ -44,23 +46,23 @@ const ExperienceForm = ({fetchExperience}) => {
   };
 
   const handleStartDateChange = (startDate) => {
-    console.log(startDate);
-    const start = startDate.toISOString();
+    const start = new Date(startDate)
     setStartDate(start);
   };
 
   // Function to handle changes in the date-time value for end date
   const handleEndDateChange = (endDate) => {
-    const end = endDate.toISOString();
+    const end = new Date(endDate)
     setEndDate(end);
   };
 
   const handleButtonClick = (event) => {
     handleSubmit()
   };
+  
   return (
     <dialog id="add_experience" className="modal">
-      <div className="modal-box max-w-2xl mt-10  bg-base-200">
+      <div className="modal-box max-w-2xl mt-10  bg-base-200 overflow-scroll">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -75,36 +77,50 @@ const ExperienceForm = ({fetchExperience}) => {
             </div>
           </label>
 
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col w-full">
             <div className="grid grid-cols-2 gap-3">
-              <input
-                type="text"
-                id="jobtitle"
-                placeholder="Job Title"
-                className="input input-bordered w-full text-center"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-              />
-              <input
-                type="text"
-                id="companyname"
-                placeholder="Company Name"
-                className="input input-bordered w-full text-center"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-              />
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Job Title</span>
+                  </div>
+                </label>
+                <input
+                  type="text"
+                  id="jobtitle"
+                  placeholder="Job Title"
+                  className="input input-bordered w-full text-center"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Company Name</span>
+                  </div>
+                </label>
+                <input
+                  type="text"
+                  id="companyname"
+                  placeholder="Company Name"
+                  className="input input-bordered w-full text-center"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
+              </div>
             </div>
 
-            <textarea
-              type="text"
-              id="jobdetails"
-              placeholder="Job Details"
-              className="textarea textarea-bordered textarea-md h-52 w-full"
-              value={jobDetails}
-              onChange={(e) => setJobDetails(e.target.value)}
-            />
             <div className="grid grid-cols-2 gap-3">
-              <DateTime
+              <div className="flex flex-col">
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Start Date</span>
+                  </div>
+                </label>
+                
+                <DateTime
                 id="startdate"
                 dateFormat="MM-YYYY"
                 selected={startDate}
@@ -117,7 +133,16 @@ const ExperienceForm = ({fetchExperience}) => {
                 }}
               />
 
-              <DateTime
+              
+              </div>
+
+              <div className="flex flex-col">
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">End Date</span>
+                  </div>
+                </label>
+                <DateTime
                 id="enddate"
                 dateFormat="MM-YYYY"
                 selected={endDate}
@@ -128,6 +153,25 @@ const ExperienceForm = ({fetchExperience}) => {
                   className:
                     "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
                 }}
+                />
+                
+              </div>
+
+              
+            </div>
+            <div>
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-normal">Job Details</span>
+                </div>
+              </label>
+              <textarea
+                type="text"
+                id="jobdetails"
+                placeholder="Job Details"
+                className="textarea textarea-bordered textarea-md h-52 w-full"
+                value={jobDetails}
+                onChange={(e) => setJobDetails(e.target.value)}
               />
             </div>
           </div>

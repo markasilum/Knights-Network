@@ -10,7 +10,6 @@ const getUserIdFromJWT = (req) => {
 };
 
 const jobPostIndex = async (req, res) => {
-  const userIdCookie = getUserIdFromJWT(req)
 
   try {
     const jobPosts = await prisma.jobPost.findMany({

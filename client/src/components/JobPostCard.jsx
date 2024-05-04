@@ -12,7 +12,7 @@ const JobPostCard = ({ jobData }) => {
           className="bg-neutral h-fit w-full rounded-lg flex flex-col p-3"
         >
           <h1 className="font-semibold">{job.jobTitle}</h1>
-          <h2 className="font-normal">{job.company.companyName}</h2>
+          <Link className={`font-normal hover:underline decoration-1`} to={`/profile/view/${job.companyId}`}>{job.company.companyName}</Link>
           <p className="font-thin">{job.jobLoc}</p>
 
           <div className="font-thin flex flex-col mt-3">

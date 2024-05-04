@@ -31,6 +31,8 @@ const EditCompanyProfile = () => {
   const [personPhone,setPersonPhone] = useState("")
   const [position,setPosition] = useState("")
   const [preview, setPreview] = useState(null);
+  const {dispatch} = useAuthContext()
+  
 
   useEffect(()=>{
     const fetchContactData = async () => {
@@ -128,6 +130,15 @@ const EditCompanyProfile = () => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+
+      const userData = await fetch(`http://localhost:3000/auth/user`, {
+            credentials: "include",
+        });
+
+          const user = await userData.json();
+          if(user){
+            dispatch({ type: "LOGIN", payload: user });
+          }
       navigate("/profile");
     } catch (error) {
       console.error("Error updating person:", error);
