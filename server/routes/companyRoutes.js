@@ -32,5 +32,9 @@ router.get("/profile/view", companyController.viewCompanyProfile);
 router.get("/contact", companyController.getContact);
 router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'secRegistration' }, { name: 'dtiRegistration' }, { name: 'businessPermit' }]), companyController.createCompany);
 router.put("/update", upload.single('profPic'),companyController.updateCompany);
+router.post("/contact/create", upload.none(),companyController.addContact);
+router.put("/contact/update", upload.none(),companyController.updateContact);
+
+
 
 module.exports = router;

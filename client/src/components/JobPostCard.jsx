@@ -29,7 +29,7 @@ const JobPostCard = ({ jobData }) => {
             <h2>Employment Type: <span className="font-thin">{job.employmentType}</span></h2>
             <h2>Work Model: <span className="font-thin">{job.workModel}</span></h2>
             </div>
-            <ButtonNavigator path={`/jobpostdetails/${job.id}`} text={"View Details"}/>
+            <ButtonNavigator path={`/jobpost/view/${job.id}`} text={"View Details"}/>
           </div>
         </div>
       ))}

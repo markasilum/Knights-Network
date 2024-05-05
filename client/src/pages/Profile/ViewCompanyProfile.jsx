@@ -99,7 +99,7 @@ const ViewCompanyProfile = () => {
                   {userData.jobPost.map((job) => (
                     
                       <div key={job.id} >
-                        <Link to={`/jobpostdetails/${job.id}`} className="bg-neutral h-fit w-full rounded-lg flex flex-col p-3 hover:bg-info active:bg-neutral">
+                        <Link to={`/jobpost/view/${job.id}`} className="bg-neutral h-fit w-full rounded-lg flex flex-col p-3 hover:bg-info active:bg-neutral">
                         <span className="font-semibold">{job.jobTitle}</span>
                         <span className="font-normal">
                           {userData.companyName}

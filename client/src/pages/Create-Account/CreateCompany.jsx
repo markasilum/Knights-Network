@@ -408,8 +408,8 @@ const CreateCompany = () => {
                   className="input input-bordered w-full "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  // required
-                  // minLength={6}
+                  required
+                  minLength={6}
                 />
                 {errors.password && (
                   <span className="text-error  font-normal h-2">
@@ -540,14 +540,13 @@ const CreateCompany = () => {
                 </div>
               </label>
               <input
-              //to fix
                 type="text"
                 id="emailAddress"
                 placeholder="Email Address"
                 className="input input-bordered w-full "
                 value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
-                // required
+                required
               />
               {errors.emailAddress && (
                 <span className="text-error">{errors.emailAddress}</span>
@@ -691,7 +690,6 @@ const CreateCompany = () => {
                 <span className="label-text font-normal">Business Permit</span>
               </div>
             </label>
-            {/* <input type="file" id="validId" className="file-input file-input-bordered w-full" /> */}
             {!businessPermit && (
               <div>
                 <input

@@ -47,6 +47,7 @@ import CalendarPage from "./pages/Events/CalendarPage";
 import ChooseUserType from "./pages/Login/ChooseUserType";
 import { useAuthContext } from "./hooks/useAuthContext";
 import ViewCompanyProfile from "./pages/Profile/ViewCompanyProfile";
+import JobPostView from "./pages/JobPosts/JobPostView";
 
 function App() {
   const { user } = useAuthContext();
@@ -163,6 +164,10 @@ function App() {
           <Route
             path="/jobpostdetails/:jobPostId"
             element={user ? <JobPostDetails /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/jobpost/view/:jobPostId"
+            element={user ? <JobPostView /> : <Navigate to={"/login"} />}
           />
 
           <Route
