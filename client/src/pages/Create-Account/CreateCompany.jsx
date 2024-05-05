@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import TopBarGuest from "../../components/TopBarGuest";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import InputFields from "../../components/InputFields";
+import ModalValidationError from "../../components/ModalValidationError";
 
 const CreateCompany = () => {
   const navigate = useNavigate();
@@ -128,14 +129,43 @@ const CreateCompany = () => {
         }
         navigate("/login");
       } catch (error) {
-        
-        if(error.message == "Username already taken"){
-          setErrors({username: "Username already taken"})
-        }else if(error.message == "Email already taken"){
-          // setErrors(errors.emailAddress = "Email already taken")
-          setErrors({emailAddress: "Email already taken"})
-        }else if(error.message == "Username and Email are already taken"){
-          setErrors({username: "Username already taken", emailAddress: "Email already taken"})
+        console.log(error.message)
+        if (error.message == "Username already taken") {
+          setErrors({ username: "Username already taken" });
+        } else if (error.message == "Email already taken") {
+          setErrors({ emailAddress: "Email already taken" });
+        } else if (error.message == "Username and Email are already taken") {
+          setErrors({
+            username: "Username already taken",
+            emailAddress: "Email already taken",
+          });
+        }else if(error.message === "SEC Registration is required"){
+          setErrors({
+            secError: "SEC Registration is required",
+          })
+        }else if(error.message === "DTI Registration is required"){
+          setErrors({
+            dtiError: "DTI Registration is required",
+          })
+        }else if(error.message === "Business Permit is required"){
+          setErrors({
+            bpError: "Business Permit is required",
+          })
+        }else if(error.message === "Please enter a valid Philippine contact number"){
+          setErrors({
+            invalidNumber: "Please enter a valid Philippine contact number",
+          })
+        }else if( error.message ===  "Password must be at least 6 characters long"){
+          setErrors({
+            password: "Password must be at least 6 characters long",
+          })
+        }else if( error.message ===  "Person Contact invalid phone"){
+          setErrors({
+            personPhoneError: "Please enter a valid Philippine contact number",
+          })
+        }
+        else{
+          setErrors({validation: error.message})
         }
       }
     }
@@ -329,7 +359,7 @@ const CreateCompany = () => {
         <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-normal">Company Name</span>
+              <span className="label-text font-normal">Company Name*</span>
             </div>
           </label>
           <input
@@ -343,88 +373,90 @@ const CreateCompany = () => {
           />
 
           <div className="flex flex-row w-full gap-3 justify-between">
-          <div className="flex flex-col w-1/2">
-            <div>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text font-normal">Username</span>
-                </div>
-              </label>
-              <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                className="input input-bordered w-full "
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />{errors.username && (
-                <span className="text-error  font-normal h-2">{errors.username}</span>
-              )}
-            </div>
-            <div>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text font-normal">Password</span>
-                </div>
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                className="input input-bordered w-full "
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-              {errors.password && (
-              <span className="text-error  font-normal h-2">{errors.password}</span>
-            )}
-            </div>
-          </div>
-          <div className="w-1/2">
-            <div>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text font-normal">Company Logo</span>
-                </div>
-              </label>
-              {!profPic && (
-                <input
-                  type="file"
-                  id="profilePicture"
-                  className="file-input file-input-bordered w-full"
-                  onChange={handleProfPicChange}
-                />
-              )}
-              {profPic && (
-                <div className="w-full flex flex-row gap-2 justify-center items-center">
-                  <div className="w-36 h-36">
-                    <img
-                      className="w-full h-full object-contain rounded-lg"
-                      src={previewProfPic}
-                    />
+            <div className="flex flex-col w-1/2">
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Username*</span>
                   </div>
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  placeholder="Username"
+                  className="input input-bordered w-full "
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+                {errors.username && (
+                  <span className="text-error  font-normal h-2">
+                    {errors.username}
+                  </span>
+                )}
+              </div>
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Password*</span>
+                  </div>
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Password"
+                  className="input input-bordered w-full "
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  // required
+                  // minLength={6}
+                />
+                {errors.password && (
+                  <span className="text-error  font-normal h-2">
+                    {errors.password}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="w-1/2">
+              <div>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Company Logo</span>
+                  </div>
+                </label>
+                {!profPic && (
+                  <input
+                    type="file"
+                    id="profilePicture"
+                    className="file-input file-input-bordered w-full"
+                    onChange={handleProfPicChange}
+                  />
+                )}
+                {profPic && (
+                  <div className="w-full flex flex-row gap-2 justify-center items-center">
+                    <div className="w-36 h-36">
+                      <img
+                        className="w-full h-full object-contain rounded-lg"
+                        src={previewProfPic}
+                      />
+                    </div>
 
-                  <button
-                    onClick={handleRemoveProfPic}
-                    className="btn btn-info w-fit text-white ml-3"
-                  >
-                    <DeleteOutlinedIcon/>
-                  </button>
-                </div>
-              )}
+                    <button
+                      onClick={handleRemoveProfPic}
+                      className="btn btn-info w-fit text-white ml-3"
+                    >
+                      <DeleteOutlinedIcon />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          </div>
-        
-
-         
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-normal">Address</span>
+              <span className="label-text font-normal">Address*</span>
             </div>
           </label>
 
@@ -500,40 +532,47 @@ const CreateCompany = () => {
             </div>
           </div>
 
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text font-normal">Contact</span>
-            </div>
-          </label>
-
           <div className="grid grid-cols-2 gap-2 w-full">
             <div className="flex flex-col">
-            <input
-              type="email"
-              id="emailAddress"
-              placeholder="Email Address"
-              className="input input-bordered w-full "
-              value={emailAddress}
-              onChange={(e) => setEmailAddress(e.target.value)}
-              
-            />
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-normal">Email Address*</span>
+                </div>
+              </label>
+              <input
+              //to fix
+                type="text"
+                id="emailAddress"
+                placeholder="Email Address"
+                className="input input-bordered w-full "
+                value={emailAddress}
+                onChange={(e) => setEmailAddress(e.target.value)}
+                // required
+              />
               {errors.emailAddress && (
-              <span className="text-error">{errors.emailAddress}</span>
-            )}
+                <span className="text-error">{errors.emailAddress}</span>
+              )}
             </div>
-            
-            
-            <input
-              type="text"
-              id="phoneNumber"
-              placeholder="Phone Number"
-              className="input input-bordered w-full"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-          </div>
 
-          
+            <div>
+              <div className="label">
+                <span className="label-text font-normal">Contact Number*</span>
+              </div>
+              <input
+                type="text"
+                id="phoneNumber"
+                placeholder="Contact Number"
+                className="input input-bordered w-full"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+                
+              />
+              {errors.invalidNumber && (
+                <span className="text-error">{errors.invalidNumber}</span>
+              )}
+            </div>
+          </div>
 
           <label className="form-control w-full max-w-xs">
             <div className="label">
@@ -547,36 +586,106 @@ const CreateCompany = () => {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           ></textarea>
-          
-          <div className="w-full flex flex-col items-center mt-5">
-          <span className="text-lg font-normal">Contact Person</span>
-          <div className="flex flex-col w-full ">
-            <div className="flex flex-row w-full gap-2">
-            <InputFields divWid={'w-full'} id={'contactFname'} labelText={'First Name'} name={"contactFname"} placeholder={'First Name'} onChange={(e) => setFname(e.target.value)} value={fName}/>
-            <InputFields divWid={'w-full'} id={'midName'} labelText={'Middle Name'} name={"midName"} placeholder={'Middle Name'} onChange={(e) => setMidName(e.target.value)} value={midName}/>
-            </div>
-            <div className="flex flex-row gap-2">
-            <InputFields divWid={'w-full'} id={'lastName'} labelText={'Last Name'} name={"lastName"} placeholder={'Last Name'} onChange={(e) => setLastName(e.target.value)} value={lastName}/>
-            <InputFields divWid={'w-full'} id={'suffix'} labelText={'Suffix'} name={"suffix"} placeholder={'Suffix'} onChange={(e) => setSuffix(e.target.value)} value={suffix}/>
-            </div>
-            <div className="flex flex-row gap-2">
-            <div className='w-full' >
-            <label className="form-control w-full max-w-xs col-span-2" htmlFor='personEmail'>
-                <div className="label">
-                      <span className="label-text font-normal">Email</span>
-                  </div>
-            </label>
-            <input type='email' id='personEmail' name="personEmail" placeholder='Email Address' className="input input-bordered w-full " value={personEmail} onChange={(e) => setPersonEmail(e.target.value)} />
-          </div>
-            <InputFields divWid={'w-full'} id={'personPhone'} labelText={'Contact Number'} name={"personPhone"} placeholder={'Contact Number'} onChange={(e) => setPersonPhone(e.target.value)} value={personPhone}/>
-            </div>
-            <InputFields divWid={'w-full'} id={'position'} labelText={'Position'} name={"position"} placeholder={'Position Name'} onChange={(e) => setPosition(e.target.value)} value={position}/>
-          </div>
 
+          <div className="w-full flex flex-col items-center mt-5">
+            <span className="text-lg font-normal">Contact Person</span>
+            <div className="flex flex-col w-full ">
+              <div className="flex flex-row w-full gap-2">
+                <InputFields
+                  divWid={"w-full"}
+                  req={true}
+                  id={"contactFname"}
+                  labelText={"First Name"}
+                  name={"contactFname"}
+                  placeholder={"First Name"}
+                  onChange={(e) => setFname(e.target.value)}
+                  value={fName}
+                />
+                <InputFields
+                  divWid={"w-full"}
+                  id={"midName"}
+                  labelText={"Middle Name"}
+                  name={"midName"}
+                  placeholder={"Middle Name"}
+                  onChange={(e) => setMidName(e.target.value)}
+                  value={midName}
+                />
+              </div>
+              <div className="flex flex-row gap-2">
+                <InputFields
+                  divWid={"w-full"}
+                  req={true}
+                  id={"lastName"}
+                  labelText={"Last Name"}
+                  name={"lastName"}
+                  placeholder={"Last Name"}
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                />
+                <InputFields
+                  divWid={"w-full"}
+                  id={"suffix"}
+                  labelText={"Suffix"}
+                  name={"suffix"}
+                  placeholder={"Suffix"}
+                  onChange={(e) => setSuffix(e.target.value)}
+                  value={suffix}
+                />
+              </div>
+              <div className="flex flex-row gap-2">
+                <div className="w-full">
+                  <label
+                    className="form-control w-full max-w-xs col-span-2"
+                    htmlFor="personEmail"
+                  >
+                    <div className="label">
+                      <span className="label-text font-normal">Email</span>
+                    </div>
+                  </label>
+                  <input
+                    type="email"
+                    id="personEmail"
+                    name="personEmail"
+                    placeholder="Email Address"
+                    className="input input-bordered w-full "
+                    value={personEmail}
+                    onChange={(e) => setPersonEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                <InputFields
+                  divWid={"w-full"}
+                  id={"personPhone"}
+                  labelText={"Contact Number"}
+                  name={"personPhone"}
+                  placeholder={"Contact Number"}
+                  onChange={(e) => setPersonPhone(e.target.value)}
+                  value={personPhone}
+                  req={true}
+                />
+                {errors.personPhoneError && (
+                <span className="text-error">{errors.personPhoneError}</span>
+              )}
+                </div>
+              </div>
+              <InputFields
+                divWid={"w-full"}
+                id={"position"}
+                labelText={"Position"}
+                name={"position"}
+                placeholder={"Position Name"}
+                onChange={(e) => setPosition(e.target.value)}
+                value={position}
+                req={true}
+              />
+            </div>
           </div>
 
           <div className="flex flex-col mt-8 w-full items-center">
-            <span className="text-lg font-normal">Verification Requirements</span>
+            <span className="text-lg font-normal">
+              Verification Requirements
+            </span>
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text font-normal">Business Permit</span>
@@ -584,14 +693,23 @@ const CreateCompany = () => {
             </label>
             {/* <input type="file" id="validId" className="file-input file-input-bordered w-full" /> */}
             {!businessPermit && (
-              <input
+              <div>
+                <input
                 type="file"
                 id="businessPermit"
                 className="file-input file-input-bordered w-full"
                 onChange={handleBusPermitChange}
                 required
               />
+              {errors.bpError && (
+                <span className="text-error  font-normal h-2">
+                  {errors.bpError}
+                </span>
+              )}
+              </div>
+              
             )}
+           
             {businessPermit && (
               <div className="w-full flex flex-row gap-5 items-center">
                 <div className="w-2/3 h-56 max-h-56">
@@ -615,13 +733,20 @@ const CreateCompany = () => {
               </div>
             </label>
             {!dtiRegistration && (
-              <input
+              <div>
+                <input
                 type="file"
                 id="businessPermit"
                 className="file-input file-input-bordered w-full"
                 onChange={handleDtiPicChange}
                 required
               />
+               {errors.dtiError && (
+                <span className="text-error  font-normal h-2">
+                  {errors.dtiError}
+                </span>
+              )}
+              </div>
             )}
             {dtiRegistration && (
               <div className="w-full flex flex-row gap-5 items-center">
@@ -647,13 +772,21 @@ const CreateCompany = () => {
               </div>
             </label>
             {!secRegistration && (
-              <input
+              <div>
+                <input
                 type="file"
                 id="businessPermit"
                 className="file-input file-input-bordered w-full"
                 onChange={handleSecPicChange}
                 required
               />
+              {errors.secError && (
+                <span className="text-error  font-normal h-2">
+                  {errors.secError}
+                </span>
+              )}
+              </div>
+              
             )}
             {secRegistration && (
               <div className="w-full flex flex-row gap-5 items-center">
@@ -677,8 +810,16 @@ const CreateCompany = () => {
           <button type="submit" className={`btn btn-primary w-40 mt-5`}>
             Create Account
           </button>
+
+          
         </div>
       </form>
+      {errors.validation &&
+            document.getElementById("validationerror").showModal()}
+          <ModalValidationError
+            errorMessage={errors.validation}
+            setErrors={setErrors}
+          />
     </div>
   );
 };

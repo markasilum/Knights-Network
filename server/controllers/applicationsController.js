@@ -39,7 +39,7 @@ const apply = async (req, res) => {
           jobPost: true,
         },
       });
-      console.log(id)
+      // console.log(id)
   
       res.status(201).json(newApplication);
       
@@ -79,7 +79,7 @@ const apply = async (req, res) => {
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
+      // console.log(req.body)
   
     }
   }
@@ -99,7 +99,7 @@ const apply = async (req, res) => {
         });
      
         res.json(data);
-        console.log(data)
+        // console.log(data)
       
     } catch(error) {
         console.error('Error getting application:', error);
@@ -108,7 +108,6 @@ const apply = async (req, res) => {
 }
 
   const setStatus = async (req, res) => {
-    console.log(req.body)
     try{    
       const {id, status} = req.body
       const data = await prisma.application.update({
@@ -123,7 +122,6 @@ const apply = async (req, res) => {
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
   
     }
   }
@@ -143,7 +141,6 @@ const apply = async (req, res) => {
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
   
     }
   }
