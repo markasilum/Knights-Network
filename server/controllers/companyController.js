@@ -89,7 +89,7 @@ const getContact = async (req, res) => {
   const userId = getUserIdFromJWT(req);
 
   try {
-    const data = await prisma.contactPerson.findFirst({
+    const data = await prisma.companyContactPerson.findMany({
       where: {
         company:{
           userId: userId
@@ -100,8 +100,8 @@ const getContact = async (req, res) => {
       }
     });
   
-    res.json(data);
     console.log(data)
+    res.json(data);
   } catch (error) {
     console.error(error)
   }
@@ -457,10 +457,106 @@ const viewCompanyProfile = async (req, res) => {
     
   }
 }
+
+const addContact = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
+  try {
+    const
+    { 
+      firstName,
+      middleName,
+      lastName,
+      suffix,
+      personEmail,
+      personPhone,
+      positionName
+    } = req.body
+    console.log(req.body)
+
+    const data = await prisma.companyContactPerson.create({
+      data:{
+        email: personEmail,
+        phone: personPhone,
+        positionName,
+        company:{
+          connect:{
+            userId: userIdCookie
+          }
+        },
+        person:{
+          create:{
+            firstName,
+            middleName,
+            lastName,
+            suffix,
+          }
+        },
+      }
+    })
+   
+
+    res.status(200).json(data)
+  } catch (error) {
+    console.log(error) 
+  }
+
+}
+
+const updateContact = async (req, res) => {
+  const userIdCookie = getUserIdFromJWT(req)
+
+  try {
+    const
+    { 
+      id,
+      firstName,
+      middleName,
+      lastName,
+      suffix,
+      personEmail,
+      personPhone,
+      positionName
+    } = req.body
+    console.log(req.body)
+
+    const data = await prisma.companyContactPerson.update({
+      where:{
+        id: id
+      },
+      data:{
+        email: personEmail,
+        phone: personPhone,
+        positionName,
+        company:{
+          connect:{
+            userId: userIdCookie
+          }
+        },
+        person:{
+          create:{
+            firstName,
+            middleName,
+            lastName,
+            suffix,
+          }
+        },
+      }
+    })
+   
+
+    res.status(200).json(data)
+  } catch (error) {
+    console.log(error) 
+  }
+
+}
 module.exports = {
   getCompanyDetails,
   createCompany,
   updateCompany,
   getContact,
-  viewCompanyProfile
+  viewCompanyProfile,
+  addContact,
+  updateContact
 };
