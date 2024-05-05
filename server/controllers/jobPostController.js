@@ -224,6 +224,7 @@ const updateJobPost = async (req, res) => {
       skill,
       license,
     } = req.body;
+
     const parsedSalary = parseInt(salary);
     const parsedPos = parseInt(numOfPosition);
 
@@ -234,9 +235,10 @@ const updateJobPost = async (req, res) => {
 
     let appLettrBool = false;
     if (isAppLetterReq === "true") {
-      isAppLetterReq = true;
+      appLettrBool = true;
     }
 
+    console.log(appLettrBool)
     await prisma.jobPost.update({
       where:{
         id:id
@@ -759,6 +761,7 @@ const getJobApplicants = async (req, res) => {
             person: true,
           },
         },
+        applicationLetter:true
       },
     });
     // console.log(jobDetails)

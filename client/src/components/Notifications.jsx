@@ -45,7 +45,7 @@ const Notifications = () => {
         {jobData &&
           jobData.map((item, index) => (
             <li key={index} >
-              <Link to={`/jobpostdetails/${item.id}`} className="" >
+              <Link to={`/jobpost/view/${item.id}`} className="" >
                 <div className="items-start flex flex-col gap-0">
                   <div className="font-semibold text-base">{item.jobTitle}</div>
                   <div className="font-normal">

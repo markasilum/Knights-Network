@@ -157,18 +157,22 @@ const handleSubmit = async (event) => {
     );
     const getRecommendations = await recommendations.json();
 
+    const personIds = getRecommendations.map(item => item.person.id);  
+
     const notify = await fetch(
       "http://localhost:3000/recommendation/notify",
       {
         method: "POST",
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({jobPostId:responseData.id ,personId: personIds }),
         credentials:'include'
       }
     );
         
       
-      
-    
+    console.log("recommendation created", notify)
     navigateHome()
   } catch (error) {
     console.error("Error creating job post:", error);

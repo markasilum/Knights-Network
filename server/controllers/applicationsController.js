@@ -19,6 +19,11 @@ const apply = async (req, res) => {
 
     try {
       const { id } = req.body;
+      
+      let appLetterFile = null
+      if(req.file != null){
+        appLetterFile = req.file.filename
+      }
       // Create a new person record in the database using Prisma
       const newApplication = await prisma.application.create({ 
         data:{
@@ -39,8 +44,29 @@ const apply = async (req, res) => {
           jobPost: true,
         },
       });
-      // console.log(id)
-  
+
+      if(appLetterFile){
+        try {
+          const applicationLetter = await prisma.applicationLetter.create({
+            data:{
+              appLetterFile,
+              person:{
+                connect:{
+                    userId: userIdCookie
+                }
+              },
+              jobPost:{
+                connect:{
+                  id: id
+                }
+              },
+            }
+          })
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
       res.status(201).json(newApplication);
       
     } catch (error) {
