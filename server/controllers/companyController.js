@@ -100,7 +100,6 @@ const getContact = async (req, res) => {
       }
     });
   
-    console.log(data)
     res.json(data);
   } catch (error) {
     console.error(error)
@@ -518,7 +517,6 @@ const updateContact = async (req, res) => {
       personPhone,
       positionName
     } = req.body
-    console.log(req.body)
 
     const data = await prisma.companyContactPerson.update({
       where:{

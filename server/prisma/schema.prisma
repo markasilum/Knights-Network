@@ -214,7 +214,7 @@ model JobPost {
   salary            Int?
   isOpen            Boolean
   workModel         String
-  validity          DateTime
+  validity          DateTime?
   numOfPosition     Int
   isAppLetterReq    Boolean
   dateCreated       DateTime            @default(now())

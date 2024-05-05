@@ -689,6 +689,7 @@ const updateJobPost = async (req, res) => {
       })
     }   
 
+    res.status(200).json("jobpost updated")
   } catch (error) {
     console.error("Error creating job post:", error);
     res.status(500).json({ error: "Internal Server Error" });

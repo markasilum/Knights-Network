@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import InputFields from '../../components/InputFields'
 
-const AddContactPerson = () => {
+const AddContactPerson = ({fetchContactData}) => {
     const [fName,setFname] = useState("")
   const [midName,setMidName] = useState("")
   const [lastName,setLastName] = useState("")
@@ -34,7 +34,7 @@ const AddContactPerson = () => {
             throw new Error(responseData.error);
           }
           console.log(response)
-        
+          fetchContactData()
     } catch (error) {
         console.log(error)
     }
