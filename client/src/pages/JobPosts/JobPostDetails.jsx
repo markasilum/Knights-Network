@@ -36,69 +36,64 @@ const JobPostDetails = () => {
     }
   };
 
+  const fetchJobPostDetails = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/details?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobRes = await response.json();
+      setJobData(getJobRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const fetchJobPostSkills = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobSkillsRes = await response.json();
+      setJobSkills(getJobSkillsRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const fetchJobPostLicense = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobSkillsRes = await response.json();
+      setJobLicense(getJobSkillsRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchJobPostDegree = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobDegreeRes = await response.json();
+      setJobDegree(getJobDegreeRes);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-  
-    const fetchJobPostDetails = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/details?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobRes = await response.json();
-        setJobData(getJobRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchJobPostSkills = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobSkillsRes = await response.json();
-        setJobSkills(getJobSkillsRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchJobPostLicense = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobSkillsRes = await response.json();
-        setJobLicense(getJobSkillsRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const fetchJobPostDegree = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobDegreeRes = await response.json();
-        setJobDegree(getJobDegreeRes);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    
-  
-
-    
     fetchJobPostDetails();
     fetchJobPostDegree();
     fetchJobPostSkills();
@@ -159,6 +154,11 @@ const JobPostDetails = () => {
                     jobDegree={jobDegree}
                     jobSkills={jobSkills}
                     jobLicense={jobLicense}
+                    fetchApplication={fetchApplication}
+                    fetchJobPostDegree={fetchJobPostDegree}
+                    fetchJobPostDetails={fetchJobPostDetails}
+                    fetchJobPostLicense={fetchJobPostLicense}
+                    fetchJobPostSkills={fetchJobPostSkills}
                   />
                 )}
               </div>

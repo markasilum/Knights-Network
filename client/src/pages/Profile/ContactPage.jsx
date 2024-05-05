@@ -44,7 +44,7 @@ const ContactPage = () => {
          
          </div>
           <button className='hover:bg-neutral hover:rounded-full active:text-info p-1 w-fit h-fit' onClick={()=>document.getElementById("addContact").showModal()}><AddOutlinedIcon fontSize='medium'/></button>
-          <AddContactPerson/>
+          <AddContactPerson fetchContactData={fetchContactData}/>
         </div>  
   )
 }

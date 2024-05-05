@@ -107,7 +107,9 @@ const handleSubmit = async (event) => {
   formData.append('jobLoc', jobLoc);
   formData.append('workModel', workModel);
   formData.append('numOfPosition', numOfPosition);
-  formData.append('validity', validity.toISOString());
+  if(validity){
+    formData.append('validity', validity.toISOString());
+  }
   formData.append('isOpen', isOpen);
   // formData.append('degree', degree);
   formData.append('yearsExp', yearsExp);
