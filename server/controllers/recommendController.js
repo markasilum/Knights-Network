@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 const jwt = require("jsonwebtoken");
 const getRecommendation = async (req, res) => {
+  console.log("recommendation called")
   try {
     const { id } = req.query;
     const jobPost = await prisma.jobPost.findUnique({

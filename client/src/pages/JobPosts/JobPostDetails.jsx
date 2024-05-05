@@ -27,7 +27,6 @@ const JobPostDetails = () => {
         }
       );
       const getApplicationData = await response.json();
-      console.log(getApplicationData)
 
       setApplicationData(getApplicationData);
       // console.log(getApplicationData)
@@ -129,7 +128,6 @@ const JobPostDetails = () => {
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
-      {console.log(jobSkills)}
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
@@ -236,6 +234,7 @@ const JobPostDetails = () => {
                 </div>
               )}
 
+              
               {role.roleName !== "company" && applicationData && (
                 <div className="w-full flex flex-row justify-end">
                   {applicationData.status=='accepted'&&(
@@ -245,7 +244,11 @@ const JobPostDetails = () => {
                       <button key={applicationData.id} className="btn btn-error text-white">{`Application ${applicationData.status}`}</button>
 
                   )
-                  }
+                  }{applicationData.status =='pending'&&(
+                    <button key={applicationData.id} className="btn btn-info text-white">{`Application ${applicationData.status}`}</button>
+
+                )
+                }
                 </div>
               )}
             </div>
