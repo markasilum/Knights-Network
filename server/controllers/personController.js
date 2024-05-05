@@ -182,9 +182,9 @@ const createPerson = async (req, res) => {
       throw new Error("Username already taken");
     }
 
-    // if (!idPhoto) {
-    //   throw new Error("Verification requirement is required");
-    // }
+    if (!idPhoto) {
+      throw new Error("Verification requirement is required");
+    }
     
     let hashPass = "";
     if(password.length >= 6){
@@ -286,8 +286,6 @@ const updatePerson = async (req, res) => {
       biography,
       personId,
     } = req.body;
-
-    console.log("password:", req.body.password)
 
 
     let profPic;

@@ -677,7 +677,7 @@ const updateJobPost = async (req, res) => {
             }
           }
         }else{
-          console.log("empty", item)
+          // console.log("empty", item)
           await prisma.jobLicenseReq.deleteMany({
             where: {
               license:{
