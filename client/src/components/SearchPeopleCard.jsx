@@ -6,7 +6,7 @@ const SearchPeopleCard = ({personData}) => {
     <div className="overflow-auto-y w-full  bg-white h-fit grid grid-cols-2 rounded-xl mb-20 gap-3 ">
       {personData.map((person) => (
         <Link
-          to={`/profile/view/${person.id}`}
+          to={`/profile/person/view/${person.id}`}
           key={person.id}
           className="bg-neutral h-fit w-full rounded-lg flex flex-row items-start p-3 gap-3 hover:bg-info active:bg-neutral"
         >
