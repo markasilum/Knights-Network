@@ -29,7 +29,6 @@ const getPersonExperience = async (req, res) => {
     }catch(error){
       console.error('Error getting degree:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
     }
   }
 
@@ -39,7 +38,6 @@ const createExperience = async (req, res) => {
   try {
     // Extract data from the request body
     const { jobTitle, companyName, jobDetails, startDate, endDate} = req.body;
-    console.log("startDate "+startDate)
     // Create a new person record in the database using Prisma
     const newExperience = await prisma.experience.create({ 
       data:{
@@ -61,7 +59,6 @@ const createExperience = async (req, res) => {
 
     // Send a response with the newly created person
     res.status(201).json(newExperience);
-    console.log(newExperience)
   } catch (error) {
     console.error('Error creating experience:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -96,10 +93,28 @@ const updateExperience = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
 
   }
+  
+}
+
+const deleteExperience = async (req, res) => {
+  try{
+    const {id} = req.query
+    const deleteExperience = await prisma.experience.delete({ 
+      where:{
+        id: id
+      },
+    });
+    res.status(201).json("deleted experience");
+  }catch{
+    console.error('Error delete experience:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+  
 }
 
 module.exports = {
     getPersonExperience,
     createExperience,
-    updateExperience
+    updateExperience,
+    deleteExperience
 }

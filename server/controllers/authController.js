@@ -19,12 +19,27 @@ function exclude(user, keys) {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body)
     const user = await prisma.user.findFirst({
       where: {
         emailAddress: email,
       },
       include:{
-        role: true
+        role: true,
+        person: {
+          include:{
+            recommendations: true
+          }
+        },
+        company: {
+          include:{
+            industry:{
+              include:{
+                industry: true
+              }
+            }
+          }
+        }
       }
     });
 
@@ -47,13 +62,34 @@ const loginReceive = async (req, res) => {
     // console.log("login creds receive")
     try {
         const user = await loginUser({ body: { email, password } }, res);
+        if (user.verified != true) {
+          throw new Error("Pending account verification");
+        }
+
+        if (user.isArchived == true) {
+          throw new Error("Account is deactivated");
+        }
+
+        if (user.isBanned == true) {
+          throw new Error("Account is banned");
+        }
         const token = createToken(user.id)
         res.cookie('jwt', token,{httpOnly:true, maxAge:maxAge*1000})
-        console.log(user)
         res.cookie('email', user.emailAddress,{httpOnly:true, maxAge:maxAge*1000})
         res.status(200).json({ user: user});
     } catch (error) {
+      if (error.message === "Pending account verification"){
+        res.status(400).json({ error: "Pending account verification" });
+      }else if(error.message === "Account is deactivated"){
+        console.log(error.message)
+        res.status(400).json({ error: "Account is deactivated" });
+      }else if(error.message === "Account is banned"){
+        res.status(400).json({ error: "Account is banned" });
+      }
+      else{
         res.status(400).json({ error: "Invalid credentials" });
+      }
+        
 
     }    
 }
@@ -62,7 +98,6 @@ const loginReceive = async (req, res) => {
 //example
 const logoutUser = async (req, res) => {
   try {
-    console.log("logout clicked")
     res.cookie('jwt','',{maxAge:1})
     res.redirect('/login')
   } catch (error) {
@@ -73,7 +108,6 @@ const logoutUser = async (req, res) => {
 const getEmailCookie = async (req, res) => {
   try {
     const emailCookie = req.cookies
-    console.log(emailCookie)
     res.json(emailCookie.email)
   } catch (error) {
     console.log(error);
@@ -91,14 +125,27 @@ const getCurrentUser = async (req, res) => {
         id: userId,
       },
       include:{
-        role: true
+        role: true,
+        person: {
+          include:{
+            recommendations: true
+          }
+        },
+        company: {
+          include:{
+            industry:{
+              include:{
+                industry: true
+              }
+            }
+          }
+        }
       }
     });
     if (!user) {
       return res.status(400).json({ error: "User not found" });
     }
    
-    // console.log("get current user", { user: user})
     res.status(200).json({ user: user});
   } catch (error) {
     console.error(error);

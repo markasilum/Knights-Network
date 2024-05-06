@@ -19,6 +19,11 @@ const apply = async (req, res) => {
 
     try {
       const { id } = req.body;
+      
+      let appLetterFile = null
+      if(req.file != null){
+        appLetterFile = req.file.filename
+      }
       // Create a new person record in the database using Prisma
       const newApplication = await prisma.application.create({ 
         data:{
@@ -39,8 +44,29 @@ const apply = async (req, res) => {
           jobPost: true,
         },
       });
-      console.log(id)
-  
+
+      if(appLetterFile){
+        try {
+          const applicationLetter = await prisma.applicationLetter.create({
+            data:{
+              appLetterFile,
+              person:{
+                connect:{
+                    userId: userIdCookie
+                }
+              },
+              jobPost:{
+                connect:{
+                  id: id
+                }
+              },
+            }
+          })
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
       res.status(201).json(newApplication);
       
     } catch (error) {
@@ -79,43 +105,35 @@ const apply = async (req, res) => {
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
-  
-    }
-  }
-
-  const checkIfApplied = async (req, res) => {
-    const userIdCookie = getUserIdFromJWT(req)
-
-    try{    
-      const {id} = req.query
-      const data = await prisma.application.findMany({
-        where:{
-          jobPostId: id,
-          person:{
-            userId: userIdCookie
-          }
-        }
-      });
-      let exist = false;
-      
-      data.map((job)=>{
-        if(job.jobPostId != null){
-          exist = true
-        }
-      })
-      res.json(exist);
-      
-    }catch(error){
-      console.error('Error getting application:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
       // console.log(req.body)
   
     }
   }
 
+  const checkIfApplied = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req);
+
+    try {    
+        const { id } = req.query;
+        const data = await prisma.application.findFirst({
+            where: {
+                AND: [
+                    { jobPostId: id },
+                    { person: { userId: userIdCookie } }
+                ]
+            }
+        });
+     
+        res.json(data);
+        // console.log(data)
+      
+    } catch(error) {
+        console.error('Error getting application:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
   const setStatus = async (req, res) => {
-    console.log(req.body)
     try{    
       const {id, status} = req.body
       const data = await prisma.application.update({
@@ -130,7 +148,25 @@ const apply = async (req, res) => {
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
+  
+    }
+  }
+
+  const archive = async (req, res) => {
+    try{    
+      const {id} = req.body
+      const data = await prisma.application.update({
+        where:{
+          id: id,
+        },data:{
+          isArchived: true
+        }
+      });
+      
+      res.status(201).json(data);
+    }catch(error){
+      console.error('Error getting application:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
   
     }
   }
@@ -138,5 +174,6 @@ module.exports ={
   apply,
   getListOfApplications,
   checkIfApplied,
-  setStatus
+  setStatus,
+  archive
 }

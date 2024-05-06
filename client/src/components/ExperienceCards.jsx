@@ -1,58 +1,75 @@
-import React, { useEffect, useState } from 'react'
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import DateToWords from './DateFormatter';
-import ExperienceForm from '../pages/Create-Credentials/ExperienceForm';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import DateToWords from "./DateFormatter";
+import ExperienceForm from "../pages/Create-Credentials/ExperienceForm";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const ExperienceCards = () => {
-const[experience, setExperience] = useState([])
+  const [experience, setExperience] = useState([]);
 
-useEffect(()=>{
-    const fetchExperience = async () =>{
-      try {
-        const response = await fetch(`http://localhost:3000/experience/person/index`,{
-          credentials:'include'
-        });
-        const getUserResult = await response.json();
-        setExperience(getUserResult);
-        // console.log(getUserResult)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+  const fetchExperience = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/experience/person/index`,
+        {
+          credentials: "include",
+        }
+      );
+      const getUserResult = await response.json();
+      setExperience(getUserResult);
+      // console.log(getUserResult)
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  };
 
-    fetchExperience()
-    
-  },[]);
+  useEffect(() => {
+    fetchExperience();
+  }, []);
 
   return (
     <div>
-        <div className='flex flex-row justify-between border-b-2 border-solid border-neutral mb-2'>
-            <span className='font-bold'>Experience</span>
-            <div className='flex gap-3'>
-            {/* <Link to="/expform" className='font-thin underline'>Add</Link> */}
-            <button className='font-thin underline' onClick={()=>document.getElementById('add_experience').showModal()}>Add</button>
-            <Link to="/experience-edit" className='font-thin underline'>Edit</Link>
-            </div>
-            
+      <div className="flex flex-row justify-between border-b-2 border-solid border-neutral mb-2">
+        <span className="font-bold">Experience</span>
+        <div className="flex gap-3">
+          {/* <Link to="/expform" className='font-thin underline'>Add</Link> */}
+          <button
+            className="hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-success"
+            onClick={() =>
+              document.getElementById("add_experience").showModal()
+            }
+          >
+            <AddOutlinedIcon fontSize="medium"/>
+          </button>
+          <Link to="/experience-edit" className="hover:bg-neutral hover:rounded-full active:text-info p-1 hover:text-accent">
+            <EditOutlinedIcon fontSize="medium"/>
+          </Link>
         </div>
-        <ExperienceForm/>
-        
-        {experience.map((experience)=>(
-          <div key={experience.id} className='flex flex-col mb-5'>
-              <span className='font-semibold'>{experience.jobTitle}</span>
-              <span className=''>{experience.companyName}</span>
-              <p className='font-thin'>{experience.jobDetails}</p>
-              <div className='flex flex-row gap-1'>
-              <span className='font-thin'><DateToWords dateString={experience.startDate} /></span>
-              <span className='font-thin'>-</span>
-              <span className='font-thin'><DateToWords dateString={experience.endDate} /></span>
-              </div>
-             
-          </div>
-        ))}
-        
-         
       </div>
-  )
-}
+      <ExperienceForm fetchExperience={fetchExperience}/>
 
-export default ExperienceCards
+      {experience.map((experience) => (
+        <div key={experience.id} className="flex flex-col mb-5">
+          <span className="font-semibold">{experience.jobTitle}</span>
+          <span className="">{experience.companyName}</span>
+          <div className="flex flex-row gap-1 mb-2">
+            <span className="font-thin">
+              <DateToWords dateString={experience.startDate} />
+            </span>
+            <span className="font-thin">-</span>
+            <span className="font-thin">
+              <DateToWords dateString={experience.endDate} />
+            </span>
+          </div>
+          <ul className="list-disc ml-8 font-thin">
+            {experience.jobDetails.split("\r\n").map((line, index) => (
+              <li key={index}>{line}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default ExperienceCards;

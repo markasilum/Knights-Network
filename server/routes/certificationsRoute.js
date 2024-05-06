@@ -17,6 +17,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router.get('/person/index',certificationsController.getPersonCerts)
+router.delete('/delete',certificationsController.deleteCert)
 router.post('/create',upload.single('certPhoto'), certificationsController.createCert)
 router.put('/update',upload.single('certPhoto'), certificationsController.updateCert)
 

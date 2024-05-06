@@ -128,8 +128,24 @@ const updateEducation = async (req, res) => {
   }
 };
 
+const deleteEducation = async (req, res) => {
+  try {
+    const {id} = req.query
+    const data = await prisma.education.delete({
+      where:{
+        id: id
+      }
+    })
+
+    res.status(200).json("deleted education")
+  } catch (error) {
+    console.error("error deleting education", error)
+  }
+}
+
 module.exports = {
   getEducation,
   createEducation,
   updateEducation,
+  deleteEducation,
 };

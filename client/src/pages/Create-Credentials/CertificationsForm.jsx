@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TopBar from "../../components/topbar";
 
-const CertificationsForm = () => {
+const CertificationsForm = ({fetchCerts}) => {
   const [certName, setCertName] = useState("");
   const [certDetails, setCertDetails] = useState("");
   const [certPhoto, setCertPhoto] = useState("");
@@ -32,6 +32,7 @@ const CertificationsForm = () => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      fetchCerts()
     } catch (error) {
       console.error("Error creating license:", error);
     }
@@ -81,6 +82,10 @@ const CertificationsForm = () => {
     setCertPhoto(null);
     // Resetting the file input if needed
     document.getElementById("fileInput").value = "";
+  };
+
+  const handleButtonClick = (event) => {
+    handleSubmit()
   };
 
   return (
@@ -138,10 +143,19 @@ const CertificationsForm = () => {
               </button>
             )}
           </div>
-          <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-            Add Certification
-          </button>
+          
         </form>
+        <div className="modal-action">
+          <form method="dialog">
+            <button
+              type="submit"
+              className={`btn btn-primary w-40 mt-5`}
+              onClick={handleButtonClick}
+            >
+            Add Certification
+            </button>
+          </form>
+        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

@@ -46,6 +46,13 @@ import PersonUserSetting from "./pages/Profile/PersonUserSetting";
 import CalendarPage from "./pages/Events/CalendarPage";
 import ChooseUserType from "./pages/Login/ChooseUserType";
 import { useAuthContext } from "./hooks/useAuthContext";
+import ViewCompanyProfile from "./pages/Profile/ViewCompanyProfile";
+import JobPostView from "./pages/JobPosts/JobPostView";
+import SearchResultPage from "./components/SearchResultPage";
+import SearchPageCompany from "./components/SearchPageCompany";
+import SearchPagePeople from "./components/SearchPagePeople";
+import ViewPersonProfile from "./pages/Profile/ViewPersonProfile";
+import ResumeViewProfile from "./components/ResumeViewProfile";
 
 function App() {
   const { user } = useAuthContext();
@@ -90,9 +97,31 @@ function App() {
 
 
           <Route index element={user ? <ProfilePage /> : <LoginScreen />} />
+
+          <Route
+            path="/search/jobpost"
+            element={user ? <SearchResultPage/> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/search/companies"
+            element={user ? <SearchPageCompany/> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/search/people"
+            element={user ? <SearchPagePeople/> : <Navigate to={"/login"} />}
+          />
+
           <Route
             path="/profile"
             element={user ? <ProfilePage /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/profile/view/:companyId"
+            element={user ? <ViewCompanyProfile /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/profile/person/view/:personId"
+            element={user ? <ViewPersonProfile /> : <Navigate to={"/login"} />}
           />
           <Route
             path="/settings"
@@ -159,6 +188,10 @@ function App() {
             path="/jobpostdetails/:jobPostId"
             element={user ? <JobPostDetails /> : <Navigate to={"/login"} />}
           />
+          <Route
+            path="/jobpost/view/:jobPostId"
+            element={user ? <JobPostView /> : <Navigate to={"/login"} />}
+          />
 
           <Route
             path="/eventdetails/:eventId"
@@ -216,6 +249,10 @@ function App() {
           <Route
             path="/jobpost/applicants/resume/:personId"
             element={user ? <ResumeView /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/person/resume/view/:personId"
+            element={user ? <ResumeViewProfile /> : <Navigate to={"/login"} />}
           />
         </Routes>
       </Router>

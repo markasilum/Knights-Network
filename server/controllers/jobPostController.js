@@ -10,7 +10,6 @@ const getUserIdFromJWT = (req) => {
 };
 
 const jobPostIndex = async (req, res) => {
-  const userIdCookie = getUserIdFromJWT(req)
 
   try {
     const jobPosts = await prisma.jobPost.findMany({
@@ -115,7 +114,6 @@ const createJobPost = async (req, res) => {
     } = req.body;
     const parsedSalary = parseInt(salary);
     const parsedPos = parseInt(numOfPosition);
-
     let isOpenBoolean = true;
     if (isOpen === "false") {
       isOpenBoolean = false;
@@ -226,6 +224,7 @@ const updateJobPost = async (req, res) => {
       skill,
       license,
     } = req.body;
+
     const parsedSalary = parseInt(salary);
     const parsedPos = parseInt(numOfPosition);
 
@@ -236,9 +235,10 @@ const updateJobPost = async (req, res) => {
 
     let appLettrBool = false;
     if (isAppLetterReq === "true") {
-      isAppLetterReq = true;
+      appLettrBool = true;
     }
 
+    console.log(appLettrBool)
     await prisma.jobPost.update({
       where:{
         id:id
@@ -679,7 +679,7 @@ const updateJobPost = async (req, res) => {
             }
           }
         }else{
-          console.log("empty", item)
+          // console.log("empty", item)
           await prisma.jobLicenseReq.deleteMany({
             where: {
               license:{
@@ -689,12 +689,9 @@ const updateJobPost = async (req, res) => {
           })
         }
       })
-    }
-   
+    }   
 
-
-    
-
+    res.status(200).json("jobpost updated")
   } catch (error) {
     console.error("Error creating job post:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -724,6 +721,29 @@ const getJobDetails = async (req, res) => {
   }
 };
 
+const getJobsMany = async (req, res) => {
+  try {
+    // Extract the query parameter 'ids' from the request
+    const idArr  = req.body;
+    // Query the database using Prisma to fetch job post by their IDs
+    const jobDetails = await prisma.jobPost.findMany({
+      where: {
+        id:{
+          in: idArr
+        }
+      },
+      include:{
+        company: true
+      }
+    });
+    res.json(jobDetails);
+  } catch (error) {
+    // If there's an error, send an error response
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const getJobApplicants = async (req, res) => {
   try {
     // Extract the query parameter 'ids' from the request
@@ -741,6 +761,7 @@ const getJobApplicants = async (req, res) => {
             person: true,
           },
         },
+        applicationLetter:true
       },
     });
     // console.log(jobDetails)
@@ -838,4 +859,5 @@ module.exports = {
   updateJobPostStatus,
   getJobApplicants,
   updateJobPost,
+  getJobsMany,
 };

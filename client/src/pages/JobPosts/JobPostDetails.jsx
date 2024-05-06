@@ -19,89 +19,86 @@ const JobPostDetails = () => {
   const { jobPostId } = useParams();
   const[applicationData,setApplicationData] = useState([])
 
+  const fetchApplication = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/application/check?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getApplicationData = await response.json();
+
+      setApplicationData(getApplicationData);
+      // console.log(getApplicationData)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchJobPostDetails = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/details?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobRes = await response.json();
+      setJobData(getJobRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const fetchJobPostSkills = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobSkillsRes = await response.json();
+      setJobSkills(getJobSkillsRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const fetchJobPostLicense = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobSkillsRes = await response.json();
+      setJobLicense(getJobSkillsRes);
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchJobPostDegree = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`,{
+          credentials:'include'
+        }
+      );
+      const getJobDegreeRes = await response.json();
+      setJobDegree(getJobDegreeRes);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-  
-    const fetchJobPostDetails = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/details?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobRes = await response.json();
-        setJobData(getJobRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchJobPostSkills = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/skills?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobSkillsRes = await response.json();
-        setJobSkills(getJobSkillsRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    const fetchJobPostLicense = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/license?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobSkillsRes = await response.json();
-        setJobLicense(getJobSkillsRes);
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const fetchJobPostDegree = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/jobpost/requirements/degree?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getJobDegreeRes = await response.json();
-        setJobDegree(getJobDegreeRes);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const fetchApplication = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/application/check?id=${jobPostId}`,{
-            credentials:'include'
-          }
-        );
-        const getApplicationData = await response.json();
-        setApplicationData(getApplicationData);
-        // console.log(getApplicationData)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
-
-    
     fetchJobPostDetails();
     fetchJobPostDegree();
     fetchJobPostSkills();
     fetchJobPostLicense();
     fetchApplication()
-  }, []);
+  }, [jobPostId]);
 
   const handleApplication = async (event) =>{
     event.preventDefault();
@@ -118,10 +115,9 @@ const JobPostDetails = () => {
 
       if (!response.ok) {
         throw new Error(responseData.error);
-      }else{
-        console.log("Application Sent")
       }
-      
+
+      fetchApplication()  
     } catch (error) {
       console.error('Error sending application:', error);
     }
@@ -132,18 +128,17 @@ const JobPostDetails = () => {
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
-
       <div className="flex flex-row gap-2">
         <SideBar />
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-          <div className="pt-5 pr-5 pl-3 overflow-auto">
-            <div className="w-full bg-white h-fit min-h-80 p-5 rounded-xl mb-20 flex flex-col">
+          <div className="pt-2 pr-2 overflow-auto">
+            <div className="w-full bg-white h-fit min-h-80 p-5 rounded-lg mb-20 flex flex-col">
               <div className="w-full flex flex-row justify-between">
                 {/* {console.log(jobDegree)} */}
-                <div className="font-semibold text-2xl">{jobData.jobTitle}</div>
+                <div className="font-gothamBook text-3xl">{jobData.jobTitle}</div>
                 {role.roleName == "company" && (
                   <button
-                    className="font-thin underline"
+                    className="underline font-gothamLight"
                     onClick={() =>
                       document.getElementById(jobData.id).showModal()
                     }
@@ -157,17 +152,22 @@ const JobPostDetails = () => {
                     jobDegree={jobDegree}
                     jobSkills={jobSkills}
                     jobLicense={jobLicense}
+                    fetchApplication={fetchApplication}
+                    fetchJobPostDegree={fetchJobPostDegree}
+                    fetchJobPostDetails={fetchJobPostDetails}
+                    fetchJobPostLicense={fetchJobPostLicense}
+                    fetchJobPostSkills={fetchJobPostSkills}
                   />
                 )}
               </div>
 
               {jobData.company && jobData.company.companyName && (
-                <h2 className="font-semibold">{jobData.company.companyName}</h2>
+                <h2 className="font-gothamLight mt-2 text-lg">{jobData.company.companyName}</h2>
               )}
-              <div className="font-normal">{jobData.jobLoc}</div>
+              <div className="text-md">{jobData.jobLoc}</div>
 
               <div className="font-thin flex flex-col mt-3">
-                <p className="font-semibold">Job Description</p>
+                <p className="font-normal">Job Description</p>
                 <ul className="list-disc ml-6">
                   {jobData.jobDesc &&
                     jobData.jobDesc
@@ -177,7 +177,7 @@ const JobPostDetails = () => {
               </div>
 
               <div className="mt-5">
-                <div className="font-semibold">Qualifications</div>
+                <div className="font-normal">Qualifications</div>
                 <ul className="list-disc">
                   {jobDegree.length !== 0 && (
                     
@@ -194,14 +194,14 @@ const JobPostDetails = () => {
                     </li>
                   )}
                   {jobSkills != "" &&
-                    jobSkills.map((skill) => (
-                      <li key={skill} className="font-thin ml-10">
+                    jobSkills.map((skill,index) => (
+                      <li key={index} className="font-thin ml-10">
                         {skill}
                       </li>
                     ))}
                   {jobLicense != "" &&  
-                  jobLicense.map((license) => (
-                      <li key={license} className="font-thin ml-10">
+                  jobLicense.map((license,index) => (
+                      <li key={index} className="font-thin ml-10">
                         {license}
                       </li>
                     ))}
@@ -228,15 +228,27 @@ const JobPostDetails = () => {
                 </div>
               </div>
 
-              {role.roleName !== "company" && applicationData === false && (
+              {role.roleName !== "company" && !applicationData && (
                 <div className="w-full flex flex-row justify-end">
                   <ButtonPrimary text={"Apply"} onClick={handleApplication} />
                 </div>
               )}
 
-              {role.roleName !== "company" && applicationData === true && (
+              
+              {role.roleName !== "company" && applicationData && (
                 <div className="w-full flex flex-row justify-end">
-                  <ButtonSuccess text={"Application Sent"} />
+                  {applicationData.status=='accepted'&&(
+                       <ButtonSuccess key={applicationData.id} text={`Application ${applicationData.status}`} />
+                  )}
+                  {applicationData.status =='rejected'&&(
+                      <button key={applicationData.id} className="btn btn-error text-white">{`Application ${applicationData.status}`}</button>
+
+                  )
+                  }{applicationData.status =='pending'&&(
+                    <button key={applicationData.id} className="btn btn-info text-white">{`Application ${applicationData.status}`}</button>
+
+                )
+                }
                 </div>
               )}
             </div>

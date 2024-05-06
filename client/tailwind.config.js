@@ -7,7 +7,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        trajan: ["Trajan-Regular", "sans-serif"],
+        TrajanRegular: ["Trajan-Regular", "serif"],
+        sans: ["Gotham-Book", "sans-serif"],
+        gothamMedium: ["Gotham-Medium", "sans-serif"],
+        gothamLight: ["Gotham-Light", "sans-serif"],
+        palatino:['"Palatino-Normal Regular"', "serif"],
       },
     },
   },daisyui: {

@@ -61,6 +61,7 @@ const JobPostApplicants = () => {
           credentials: "include",
         }
       );
+      fetchJobPostApplicants();
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -121,24 +122,22 @@ const JobPostApplicants = () => {
                               )}
                               {applicant.status != "pending" && (
                                 <select
+                                  disabled
                                   className="select select-bordered select-xs w-24 mt-2 max-w-xs font-thin"
                                   defaultValue={applicant.status}
                                   onChange={(e) => {
-                                    handleStatusChange(
-                                      applicant.id,
-                                      e.target.value
-                                    );
+                                    handleStatusChange(applicant.id,e.target.value);
                                   }}
                                 >
-                                  <option value={applicant.status}>
+                                  <option disabled value={applicant.status}>
                                     {applicant.status}
                                   </option>
-                                  {applicant.status == "accepted" && (
+                                  {/* {applicant.status == "accepted" && (
                                     <option value="rejected">rejected</option>
                                   )}
                                   {applicant.status == "rejected" && (
                                     <option value="accepted">accepted</option>
-                                  )}
+                                  )} */}
                                 </select>
                               )}
                             </div>
