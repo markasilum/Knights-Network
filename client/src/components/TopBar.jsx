@@ -8,6 +8,7 @@ import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "../hooks/useAuthContext";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import Notifications from "./Notifications";
+import SearchBar from "./SearchBar";
 const TopBar = () => {
   const {user} = useAuthContext()
   let role
@@ -58,21 +59,7 @@ const TopBar = () => {
           </Link>
         )}
       </div>
-      <div className="form-control w-full flex flex-row justify-start text-black ">
-        <select
-          className="select select-bordered w-36 max-w-xs rounded-tl rounded-bl  rounded-none outline-none focus:outline-none focus-within:outline-none"
-          defaultValue={"Job Posts"}
-        >
-          <option value={"jobPost"}>Job Posts</option>
-          <option value={"Companies"}>Companies</option>
-          <option value={"People"}>People</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered w-1/2 text-secondary rounded-tr rounded-br  rounded-none outline-none focus:outline-none focus-within:outline-none "
-        />
-      </div>
+      <SearchBar/>
 
       {(role.roleName == 'alumni' || role.roleName == 'student')&&(
         <Notifications/>
