@@ -17,6 +17,7 @@ const certificationRoutes = require('./routes/certificationsRoute')
 const eventsRoutes = require('./routes/eventsRoutes')
 const authRoutes = require('./routes/authRoutes')
 const recommendRoutes = require('./routes/recommendRoutes')
+const searchRoutes = require('./routes/searchRoutes')
 
 var cookies = require("cookie-parser");
 const {requireAuth} = require('./middleware/authMiddleware')
@@ -50,6 +51,7 @@ app.use('/skills', skillsRoutes)
 app.use('/certification',certificationRoutes)
 app.use('/events', eventsRoutes)
 app.use('/recommendation', recommendRoutes)
+app.use('/search', searchRoutes)
 app.use('/uploads', express.static('uploads'))
 
 app.listen(port, () => {

@@ -7,12 +7,15 @@ import DatePicker from "react-datepicker";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import DateConverter from "../../components/DateConverter";
+import { formatDateToString } from "../../components/DateConverterFunction";
 const EventEdit = ({ eventData }) => {
   const navigate = useNavigate();
   const [eventId, setEventId] = useState(eventData.id);
   const [eventName, setEventName] = useState(eventData.eventName);
   const [location, setLocation] = useState(eventData.eventLocation);
-  const [date, setDate] = useState(eventData.eventDateTime);
+  const [startDate, setStartDate] = useState(eventData.startDate);
+  const [endDate, setEndDate] = useState(eventData.endDate);
+
   const [eventDetails, setEventDetails] = useState(eventData.eventDesc);
   const [image, setImage] = useState(null);
 
@@ -28,7 +31,9 @@ const EventEdit = ({ eventData }) => {
     formData.append("eventName", eventName);
     formData.append("eventLocation", location);
     formData.append("eventDesc", eventDetails);
-    formData.append("eventDateTime", date);
+    formData.append("startDate", startDate);
+    formData.append("endDate", endDate);
+
 
     for (const value of formData.values()) {
       console.log(value);
@@ -99,15 +104,20 @@ const EventEdit = ({ eventData }) => {
     document.getElementById("fileInput").value = "";
   };
 
-  const handleDate = (endDate) => {
+  const handleEndDate = (endDate) => {
     const end = endDate.toISOString();
-    setDate(end);
+    setEndDate(end);
+  };
+
+  const handleStartDate = (startDate) => {
+    const start = startDate.toISOString();
+    setStartDate(start);
   };
 
   return (
     <dialog id={eventData.id} className="modal">
-      {console.log(date)}
-      <div className="modal-box w-11/12 max-w-5xl mt-10">
+      {/* {console.log(date)} */}
+      <div className="modal-box w-11/12 max-w-5xl mt-10 overflow-scroll bg-neutral">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -155,10 +165,12 @@ const EventEdit = ({ eventData }) => {
                 </div>
               </div>
 
-              <label className="form-control w-full max-w-xs">
+              <div className="flex flex-row w-full gap-5">
+                <div className="flex flex-col">
+                <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text font-semibold">
-                    Date and Time
+                    Start Date
                   </span>
                 </div>
               </label>
@@ -166,18 +178,47 @@ const EventEdit = ({ eventData }) => {
               <DateTime
                 id="date"
                 dateFormat="MM-DD-YYYY"
-                selected={date}
+                selected={startDate}
                 timeFormat={true}
-                onChange={handleDate}
+                onChange={handleStartDate}
                 onKeyDown={(e) => {
                   e.preventDefault();
                 }}
                 inputProps={{
-                  placeholder: date,
+                  placeholder: formatDateToString(startDate),
                   className:
                     "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center placeholder-black",
                 }}
               />
+                </div>
+
+                <div className="flex flex-col">
+                <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-semibold">
+                    End Date
+                  </span>
+                </div>
+              </label>
+
+              <DateTime
+                id="date"
+                dateFormat="MM-DD-YYYY"
+                selected={endDate}
+                timeFormat={true}
+                onChange={handleEndDate}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                }}
+                inputProps={{
+                  placeholder: formatDateToString(endDate),
+                  className:
+                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center placeholder-black",
+                }}
+              />
+                </div>
+
+              </div>
              
 
               <div>

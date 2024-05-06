@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import TopBar from "../../components/topbar";
 
-const SkillsForm = () => {
+const SkillsForm = ({fetchSkills}) => {
   const [skillName, setSkillName] = useState("");
 
   const handleSubmit = async (event) => {
 
     const formData = new FormData();
-
     formData.append("skillName", skillName);
     try {
       const response = await fetch("http://localhost:3000/skills/create", {
@@ -22,11 +21,15 @@ const SkillsForm = () => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      fetchSkills()
     } catch (error) {
       console.error("Error creating education:", error);
     }
   };
 
+  const handleButtonClick = (event) => {
+    handleSubmit()
+  };
   return (
     <dialog id="add_skill" className="modal">
       
@@ -52,10 +55,19 @@ const SkillsForm = () => {
             value={skillName}
             onChange={(e) => setSkillName(e.target.value)}
           />
-          <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-            Add Skill
-          </button>
+          
         </form>
+        <div className="modal-action">
+          <form method="dialog">
+            <button
+              type="submit"
+              className={`btn btn-primary w-40 mt-5`}
+              onClick={handleButtonClick}
+            >
+               Add Skill
+            </button>
+          </form>
+        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

@@ -12,7 +12,7 @@ const JobPostCard = ({ jobData }) => {
           className="bg-neutral h-fit w-full rounded-lg flex flex-col p-3"
         >
           <h1 className="font-semibold">{job.jobTitle}</h1>
-          <h2 className="font-normal">{job.company.companyName}</h2>
+          <Link className={`font-normal hover:underline decoration-1`} to={`/profile/view/${job.companyId}`}>{job.company.companyName}</Link>
           <p className="font-thin">{job.jobLoc}</p>
 
           <div className="font-thin flex flex-col mt-3">
@@ -29,7 +29,7 @@ const JobPostCard = ({ jobData }) => {
             <h2>Employment Type: <span className="font-thin">{job.employmentType}</span></h2>
             <h2>Work Model: <span className="font-thin">{job.workModel}</span></h2>
             </div>
-            <ButtonNavigator path={`/jobpostdetails/${job.id}`} text={"View Details"}/>
+            <ButtonNavigator path={`/jobpost/view/${job.id}`} text={"View Details"}/>
           </div>
         </div>
       ))}

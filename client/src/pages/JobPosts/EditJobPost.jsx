@@ -6,9 +6,9 @@ import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
-const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
+const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense,  fetchJobPostDetails,fetchJobPostDegree,fetchJobPostSkills,fetchJobPostLicense,fetchApplication}) => {
   const navigate = useNavigate();
-  const [jobId, setJobId] = useState(jobData.jobId || '');
+  const [jobId, setJobId] = useState(jobData?.jobId || '');
   const [jobTitle, setJobTitle] = useState(jobData.jobTitle || '');
   const [jobDesc, setJobDesc] = useState(jobData.jobDesc || '');
   const [employmentType, setEmploymentType] = useState(jobData.employmentType || '');
@@ -86,8 +86,6 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
   
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-
     const formData = new FormData();
     formData.append("id", jobId);
     formData.append("jobTitle", jobTitle);
@@ -97,7 +95,9 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
     formData.append("jobLoc", jobLoc);
     formData.append("workModel", workModel);
     formData.append("numOfPosition", numOfPosition);
-    formData.append("validity", validity);
+    if(validity){
+      formData.append("validity", validity);
+    }
     formData.append("isOpen", isOpen);
     // formData.append('degree', degree);
     formData.append("yearsExp", yearsExp);
@@ -126,7 +126,12 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
         credentials:'include'
       });
 
-      
+      fetchJobPostDetails();
+      fetchJobPostDegree();
+      fetchJobPostSkills();
+      fetchJobPostLicense();
+      fetchApplication();
+
     } catch (error) {
       console.error("Error updating job post:", error);
     }
@@ -163,6 +168,9 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
       }
   }, [jobDegree, jobSkills, jobLicense]);
 
+  const handleButtonClick = (event) => {
+    handleSubmit()
+  };
   return (
     <dialog id={jobData.id} className="modal">
       {/* {console.log(jobLicense)} */}
@@ -291,13 +299,16 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense }) => {
                 }}
               />
            
-        
-            
-            
-            <button type="submit" className={`btn btn-primary w-40 mt-10 col-span-2`}>Update Job Post</button>
-
-      
+            {/* <button type="submit" className={`btn btn-primary w-40 mt-10 col-span-2`}>Update Job Post</button> */}
         </form>
+        <div className="modal-action">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button type="submit" className={`btn btn-primary w-40 mt-5`} onClick={handleButtonClick}>
+              Update
+            </button>
+          </form>
+        </div>
         </div>
       </div>
       <form method="dialog" className="modal-backdrop">

@@ -3,10 +3,29 @@ import TopBar from "./topbar";
 import SideBar from "./SideBar";
 import { Link, useParams } from "react-router-dom";
 import DateToWords from "./DateFormatter";
+import ButtonPrimary from "./ButtonPrimary";
 
 const ResumeView = () => {
   const { personId } = useParams();
   const [personData, setPersonData] = useState(null);
+
+  const downloadResume = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/person/resume/download?id=${personData.userId}`,
+        {
+          headers: {
+            credentials: "include",
+          },
+        }
+      );
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     const getPersonCredentials = async () => {
@@ -154,11 +173,15 @@ const ResumeView = () => {
                     ))}
                   </ul>
                 </div>
-
+                <div className="flex flex-row justify-end w-full">
+                <ButtonPrimary text={"Downlod PDF"} onClick={downloadResume}/>
+          </div>
 
               </div>
             )}
+           
           </div>
+          
         </div>
       </div>
     </div>

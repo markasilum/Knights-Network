@@ -5,7 +5,7 @@ import TopBar from "../../components/topbar";
 import "react-datetime/css/react-datetime.css";
 import { useEffect } from "react";
 
-const LicenseForm = () => {
+const LicenseForm = ({fetchLicense}) => {
   const [licenseName, setLicenseName] = useState("");
   const [licensePic, setLicensePic] = useState("");
   const [licenseValidity, setLicenseValidity] = useState(new Date().toISOString());
@@ -33,6 +33,8 @@ const LicenseForm = () => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+
+      fetchLicense()
     } catch (error) {
       console.error("Error creating license:", error);
     }
@@ -91,6 +93,9 @@ const LicenseForm = () => {
     document.getElementById("fileInput").value = "";
   };
 
+  const handleButtonClick = (event) => {
+    handleSubmit()
+  };
   return (
     <dialog id="add_license" className="modal">
       <div className="modal-box max-w-2xl bg-base-200">
@@ -152,11 +157,20 @@ const LicenseForm = () => {
                 </button>
               )}
             </div>
-            <button type="submit" className={`btn btn-primary w-40 mt-5`}>
-              Add License
-            </button>
+           
           {/* </div> */}
         </form>
+        <div className="modal-action">
+          <form method="dialog">
+            <button
+              type="submit"
+              className={`btn btn-primary w-40 mt-5`}
+              onClick={handleButtonClick}
+            >
+             Add License
+            </button>
+          </form>
+        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

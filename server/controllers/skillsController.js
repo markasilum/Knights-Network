@@ -113,9 +113,23 @@ const createPersonSkill = async (req, res) => {
       // console.log(req.body)
     }
   };
-
+  const deleteSkill = async (req, res) => {
+    try {
+      const {id} = req.query
+      const data = await prisma.personSkill.delete({
+        where:{
+          id: id
+        }
+      })
+  
+      res.status(200).json("deleted license")
+    } catch (error) {
+      console.error("error deleting license", error)
+    }
+  }
 module.exports = {
     createPersonSkill,
     getPersonSkills,
     updatePersonSkill,
+    deleteSkill
 }

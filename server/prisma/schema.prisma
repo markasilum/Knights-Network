@@ -12,40 +12,41 @@ datasource db {
 
 //User model
 model User {
-  id            String   @id @default(uuid())
+  id            String           @id @default(uuid())
   username      String
   password      String
-  streetAddress String
-  cityName      String
-  countryName   String
-  zipCode       String
+  streetAddress String?
+  cityName      String?
+  countryName   String?
+  zipCode       String?
   contactNum    String
   emailAddress  String
   profPic       String?
-  biography     String   @db.Text
+  biography     String           @db.Text
   verified      Boolean
-  isArchived  Boolean? @default(false)
-  setting AccountSettings?
+  isArchived    Boolean?         @default(false)
+  isBanned      Boolean?         @default(false)
+  setting       AccountSettings?
   role          Roles?
   person        Person?
   company       Company?
 }
 
-model AccountSettings{
-  id String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String @unique
-  receiveJobReco Boolean @default(true) 
-  isJobSearching Boolean @default(true) 
-  allowViewResume Boolean @default(true) 
-  allowDownloadResume Boolean @default(true) 
+model AccountSettings {
+  id                  String  @id @default(uuid())
+  user                User    @relation(fields: [userId], references: [id])
+  userId              String  @unique
+  receiveJobReco      Boolean @default(true)
+  isJobSearching      Boolean @default(true)
+  allowViewResume     Boolean @default(true)
+  allowDownloadResume Boolean @default(true)
 }
 
 //Profiling Module and Resume Module Tables
 model Person {
   id                String                  @id @default(uuid())
-  user              User                    @relation(fields: [userId], references: [id])
-  userId            String                  @unique
+  user              User?                   @relation(fields: [userId], references: [id])
+  userId            String?                 @unique
   firstName         String
   middleName        String
   lastName          String
@@ -62,6 +63,8 @@ model Person {
   personLicense     PersonLicense[]
   applicationLetter ApplicationLetter[]
   application       Application[]
+  contactPerson     CompanyContactPerson?
+  recommendations   JobRecommendation[]
 }
 
 model Education {
@@ -96,8 +99,8 @@ model Experience {
 }
 
 model Certification {
-  id          String @id @default(uuid())
-  person      Person @relation(fields: [personId], references: [id])
+  id          String  @id @default(uuid())
+  person      Person  @relation(fields: [personId], references: [id])
   personId    String
   certName    String
   certDetails String?
@@ -160,6 +163,19 @@ model Company {
   industry      CompIndustry[]
   jobPost       JobPost[]
   companyEvents CompanyEvents[]
+  contactPerson CompanyContactPerson[]
+}
+
+model CompanyContactPerson{
+  id           String  @id @default(uuid())
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String
+  person       Person  @relation(fields: [personId], references: [id])
+  personId     String  @unique
+  email        String
+  phone        String
+  positionName String
+
 }
 
 model CompanyVerificationReqs {
@@ -181,7 +197,7 @@ model CompIndustry {
 
 model Industry {
   id           String         @id @default(uuid())
-  industryName String
+  industryName String         @unique
   compIndustry CompIndustry[]
 }
 
@@ -195,10 +211,10 @@ model JobPost {
   jobDesc           String              @db.Text
   jobLoc            String
   employmentType    String
-  salary            Int
+  salary            Int?
   isOpen            Boolean
   workModel         String
-  validity          DateTime
+  validity          DateTime?
   numOfPosition     Int
   isAppLetterReq    Boolean
   dateCreated       DateTime            @default(now())
@@ -208,21 +224,31 @@ model JobPost {
   jobSkillsReq      JobSkillsReq[]
   jobLicenseReq     JobLicenseReq[]
   jobDegreeReq      JobDegreeReq[]
+  jobRecommendation JobRecommendation[]
 }
 
 model ApplicationLetter {
   id            String  @id @default(uuid())
-  appLetterFile Boolean
+  appLetterFile String
   person        Person  @relation(fields: [personId], references: [id])
   personId      String
   jobPost       JobPost @relation(fields: [jobPostId], references: [id])
   jobPostId     String
 }
 
+model JobRecommendation {
+  id        String  @id @default(uuid())
+  person    Person  @relation(fields: [personId], references: [id])
+  personId  String
+  jobPost   JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId String
+}
+
 model Application {
   id          String   @id @default(uuid())
   dateCreated DateTime @default(now())
   status      String
+  isArchived  Boolean  @default(false)
   person      Person   @relation(fields: [personId], references: [id])
   personId    String
   jobPost     JobPost  @relation(fields: [jobPostId], references: [id])
@@ -263,7 +289,8 @@ model Events {
   id            String          @id @default(uuid())
   eventName     String
   eventDesc     String          @db.Text
-  eventDateTime DateTime
+  startDate     DateTime?
+  endDate       DateTime?
   eventLocation String
   eventPhoto    String?
   companyEvents CompanyEvents[]
@@ -277,5 +304,3 @@ model CompanyEvents {
   company   Company @relation(fields: [companyId], references: [id])
   companyId String
 }
-
-

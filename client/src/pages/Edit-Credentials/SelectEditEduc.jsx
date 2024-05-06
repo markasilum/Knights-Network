@@ -4,59 +4,67 @@ import SideBar from "../../components/SideBar";
 import { useState } from "react";
 import { useEffect } from "react";
 import EditEducation from "./EditEducation";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import DateToWords from "../../components/DateFormatter";
+import DeleteEducation from "./DeleteEducation";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 const SelectEditEduc = () => {
   const [degree, setDegree] = useState([]);
   const [educData, setEducData] = useState([]);
-  const[indivDegree, setIndivDegree] = useState("");
+
+  const fetchEducation = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/education/index",{
+        credentials:'include'
+      });
+      const getEducRes = await response.json();
+      // setDegreeId(getEducRes.map(educ => educ.degreeId))
+      setEducData(getEducRes);
+
+      const degreeIds = getEducRes.map((educ) => educ.degreeId);
+
+      const fetchDegree = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`,{
+              credentials:'include'
+            }
+          );
+          const getUserResult = await response.json();
+          setDegree(getUserResult);
+          // console.log(getUserResult)
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchDegree();
+
+      // console.log(getEducRes)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchEducation = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/education/index",{
-          credentials:'include'
-        });
-        const getEducRes = await response.json();
-        // setDegreeId(getEducRes.map(educ => educ.degreeId))
-        setEducData(getEducRes);
-
-        const degreeIds = getEducRes.map((educ) => educ.degreeId);
-
-        const fetchDegree = async () => {
-          try {
-            const response = await fetch(
-              `http://localhost:3000/degree/index?ids=${degreeIds.join(",")}`,{
-                credentials:'include'
-              }
-            );
-            const getUserResult = await response.json();
-            setDegree(getUserResult);
-            // console.log(getUserResult)
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-
-        fetchDegree();
-
-        // console.log(getEducRes)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchEducation();
   }, []);
 
-  function getDegree(id){
-    let degreeName = ""
-    degree.map((deg)=>{
-        if(id = deg.id){
-            degreeName = deg.degreeName
+  const handleDelete = async (id) =>{
+    try {
+      const response = await fetch(
+        `http://localhost:3000/education/delete?id=${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
         }
-    })
-    // console.log(degreeName)
-    return degreeName
-
-  }
+      );
+      fetchEducation();
+    } catch (error) {
+      console.error("Error deleting education:", error);
+  };
+}
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
@@ -65,7 +73,7 @@ const SelectEditEduc = () => {
         <SideBar />
 
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
-          <div className="pt-5 pr-5 pl-3 overflow-scroll">
+          <div className="pt-2 pr-2 overflow-scroll">
             <div className="w-full bg-white h-fit p-5 rounded-xl mb-2">
               <div className="flex flex-col">
               <div className='font-semibold mb-5'>Edit Education</div>
@@ -92,12 +100,12 @@ const SelectEditEduc = () => {
                     
 
                     </div>
-                    <div className="mb-3">
-                    <button className='font-thin underline' onClick={()=>document.getElementById(education.id).showModal()}>Edit</button>
-                    
-
+                    <div className="mb-3 flex flex-row gap-3">
+                        <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(education.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
+                        <button className="hover:text-error hover:bg-neutral hover:rounded-full active:text-info p-1" onClick={()=>document.getElementById(education.degreeId).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>                             
                     </div>
-                        <EditEducation educationData={education} degreeData={degree}/>
+                    <EditEducation educationData={education} degreeData={degree}/>
+                    <DeleteEducation education={education} handleDelete={handleDelete}/>
 
                   </div>
                 ))}

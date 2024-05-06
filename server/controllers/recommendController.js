@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 const jwt = require("jsonwebtoken");
 const getRecommendation = async (req, res) => {
+  console.log("recommendation called")
   try {
     const { id } = req.query;
     const jobPost = await prisma.jobPost.findUnique({
@@ -74,15 +75,30 @@ const getRecommendation = async (req, res) => {
       )
       .filter((userId) => userId !== null);
 
-    function removePrepositions(originalString) {
-      // Create a regular expression to match common prepositions globally and case insensitive
-      const regex =
-        /\b(?:for|in|with|on|at|by|of|to|from|through|and|skills|skill|a|proficient|about|abilities|convey|detail-oriented|including)\b/gi;
-      // Replace all occurrences of the specified prepositions with an empty string
-      let modifiedString = originalString.replace(regex, "");
-      modifiedString = modifiedString.trim();
-      return modifiedString;
-    }
+      const phrases = [
+        "Strong", "verbal", "and", "written", "communication", "skills",
+        "Proficient", "interpersonal", "abilities",
+        "Demonstrated", "capacity", "for", "effective", "teamwork",
+        "Aptitude", "for", "collaborative", "problem-solving",
+        "Ability", "to", "liaise", "effectively", "across", "departments",
+        "Skilled", "in", "fostering", "positive", "working", "relationships",
+        "Strong", "collaborator", "with", "a", "team-oriented", "approach",
+        "Effective", "communicator", "with", "diverse", "audiences",
+        "Demonstrated", "capacity", "for", "clear", "and", "concise", "communication",
+        "Proven", "ability", "to", "work", "autonomously", "and", "in", "a", "team", "setting",
+        "for", "in", "with", "on", "at", "by", "of", "to", "from", "through", "and", "skills", "skill", 
+        "a", "proficient", "about", "abilities", "convey", "detail-oriented", "including", "collaboration", 
+        "team", "excellent", "communication", "interpersonal", "independent", "such", "as", "part", "ability", 
+        "proficiency", "work", "independently"
+    ];
+
+      function removePrepositions(originalString) {
+        // Create a regular expression to match common prepositions globally and case insensitive
+        const regex = new RegExp('\\b(?:' + phrases.join('|') + ')\\b', 'gi');
+        // Replace all occurrences of the specified filter words with an empty string
+        let modifiedString = originalString.replace(regex, "").replace(/\s{2,}/g, " ").trim();
+        return modifiedString;
+      }
     const skillNames = jobPost.jobSkillsReq.map((item) => item.skill.skillName);
 
     const filteredSkillName = skillNames.map((item) =>
@@ -94,9 +110,11 @@ const getRecommendation = async (req, res) => {
     // Iterate through each phrase
     filteredSkillName.forEach((phrase) => {
       // Split the phrase into words using whitespace as the delimiter
-      const words = phrase.split(/\s+/);
-      // Add each word to the wordsArray
-      wordsArray = wordsArray.concat(words);
+      // Add each word to the wordsArray'
+      if(phrase!=""){
+        const words = phrase.split(/\s+/);
+        wordsArray = wordsArray.concat(words);
+      }
     });
 
     const personWithSkill = await prisma.skills.findMany({
@@ -229,11 +247,39 @@ const getRecommendation = async (req, res) => {
 
 
     res.json(userDetails);
+    
   } catch (error) {
     console.log("error", error);
   }
 };
 
+const storeRecommendation = async (req, res) => {
+  try {
+    const { jobPostId, personId } = req.body;
+    
+
+    await Promise.all(personId.map(async (person) => {
+      try {
+        await prisma.jobRecommendation.create({
+          data: {
+            personId: person,
+            jobPostId: jobPostId
+          },
+        });
+      } catch (error) {
+        console.error(`Error storing recommendation for person ${person}:`, error);
+        throw error; // Rethrow the error to ensure Promise.all catches it
+      }
+    }));
+    console.log(req.body)
+    res.status(200).json({ message: "Recommendations stored successfully" });
+  } catch (error) {
+    console.error("Error storing recommendations:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   getRecommendation,
+  storeRecommendation,
 };

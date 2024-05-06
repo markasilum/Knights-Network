@@ -47,8 +47,10 @@ const createPersonLicense = async (req, res) => {
     try {
       // Extract data from the request body
       const { licenseValidity, licenseName } = req.body;
-      const licensePic = req.file.filename
-
+      let licensePic
+      if(req.file != null){
+      licensePic = req.file.filename
+    }
       const newLicense = await prisma.personLicense.create({
         data: {
           licenseValidity,
@@ -124,8 +126,24 @@ const createPersonLicense = async (req, res) => {
       // console.log(req.body)
     }
   };
+
+  const deleteLicense = async (req, res) => {
+    try {
+      const {id} = req.query
+      const data = await prisma.personLicense.delete({
+        where:{
+          id: id
+        }
+      })
+  
+      res.status(200).json("deleted license")
+    } catch (error) {
+      console.error("error deleting license", error)
+    }
+  }
 module.exports = {
     createPersonLicense,
     getPersonLicenses,
     updatePersonLicense,
+    deleteLicense
 }

@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UniversitySealWhite from "../assets/UniversitySealWhite.png";
-
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { useAuthContext } from "../hooks/useAuthContext";
-
-const TopBar = () => {
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+import Notifications from "./Notifications";
+import SearchBar from "./SearchBar";
+const TopBar = ({catProp, query}) => {
   const {user} = useAuthContext()
   let role
   if(user){
@@ -18,49 +20,52 @@ const TopBar = () => {
 
   return (
     <div className="navbar bg-primary text-base-100 text-2xl max-h-14 flex flex-row w-full">
-      <div className="flex flex-row w-[38%]">
+      <div className="flex flex-row w-[45%]">
         <img src={UniversitySealWhite} className="h-12 w-12 m-3" />
         {role.roleName == "alumni" && (
           <Link to="/home">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
         {role.roleName == "student" && (
           <Link to="/home">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
         {role.roleName == "company" && (
           <Link to="/jobpost/dashboard">
-            <p className="bg-primary font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
         {role.roleName == "admin" && (
-          <Link to="/events">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+          <Link to="/eventslist">
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
 
         {!role && (
           <Link to="/login">
-            <p className="bg-primary font-sans font-thin">KNIGHTS NETWORK</p>
+            <p className="bg-primary font-TrajanRegular font-thin">
+              KNIGHTS NETWORK
+            </p>
           </Link>
         )}
       </div>
-      <div className="form-control w-full flex flex-row justify-start text-black ">
-        <select className="select select-bordered w-36 max-w-xs rounded-tl rounded-bl  rounded-none outline-none focus:outline-none focus-within:outline-none"    defaultValue={"Job Posts"}>
-          <option value={"jobPost"}>Job Posts</option>
-          <option value={"Companies"}>Companies</option>
-          <option value={"People"}>People</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered w-1/2 text-secondary rounded-tr rounded-br  rounded-none outline-none focus:outline-none focus-within:outline-none "
-        />
-      </div>
+      <SearchBar catprop={catProp} query={query}/>
 
-      <div className="dropdown dropdown-left">
+      {(role.roleName == 'alumni' || role.roleName == 'student')&&(
+        <Notifications/>
+      )}
+
+      <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">
           <svg
             className="swap-off fill-white"
@@ -74,16 +79,19 @@ const TopBar = () => {
         </div>
         <ul
           tabIndex={0}
-          className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-56 mt-4 text-black "
+          className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-xl w-56 mt-4 text-black "
         >
-          <li>
+          {(role.roleName == 'alumni' || role.roleName == 'student')&&(
+            <li>
             <Link to={"/settings"}>
               <SettingsIcon />
               Settings
             </Link>
           </li>
+          )}
+          
           <li>
-            <LogoutButton/>
+            <LogoutButton />
           </li>
         </ul>
       </div>

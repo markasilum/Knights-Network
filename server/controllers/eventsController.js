@@ -13,7 +13,7 @@ const getEventsList = async (req, res) => {
         const jobPosts = await prisma.events.findMany({
           orderBy:[
             {
-              eventDateTime: 'desc'
+              startDate: 'desc'
             }
           ],
         })
@@ -28,7 +28,7 @@ const getEventsList = async (req, res) => {
 };
 const createEvent = async (req, res) => {
   try {
-    const { eventName, eventLocation, eventDesc, eventDateTime } = req.body;
+    const { eventName, eventLocation, eventDesc, startDate, endDate } = req.body;
     let eventPhoto
 
     if(req.file != null){
@@ -41,23 +41,22 @@ const createEvent = async (req, res) => {
         eventPhoto,
         eventLocation,
         eventDesc,
-        eventDateTime,
+        startDate,
+        endDate
       },
     });
 
     // Send a response with the newly created person
     res.status(201).json(newEvent);
-    // console.log(newEducation);
   } catch (error) {
     console.error("Error creating experience:", error);
     res.status(500).json({ error: "Internal Server Error" });
-    // console.log(req.body)
   }
 };
 
 const updateEvent = async (req, res) => {
   try {
-    const { eventId, eventName, eventLocation, eventDesc, eventDateTime } = req.body;
+    const { eventId, eventName, eventLocation, eventDesc, startDate, endDate } = req.body;
     let eventPhoto
 
     if(req.file != null){
@@ -73,32 +72,28 @@ const updateEvent = async (req, res) => {
         eventPhoto,
         eventLocation,
         eventDesc,
-        eventDateTime,
+        startDate,
+        endDate,
       },
     });
 
     // Send a response with the newly created person
     res.status(201).json(newEvent);
-    // console.log(newEducation);
   } catch (error) {
     console.error("Error updating event:", error);
     res.status(500).json({ error: "Internal Server Error" });
-    // console.log(req.body)
   }
 };
 
 const getEventDetails = async (req, res) => {
     try {
-        // Extract the query parameter 'ids' from the request
         const { id } = req.query;
-        console.log(req.query)
-        // Query the database using Prisma to fetch job post by their IDs
+        
         const eventDetails = await prisma.events.findUnique({
             where: {
                 id: id 
             },
         });
-        console.log(eventDetails)
         res.json(eventDetails);
     } catch (error) {
         // If there's an error, send an error response
@@ -150,14 +145,40 @@ const getEventDetails = async (req, res) => {
         }
       });
 
-      console.log(data)
       
       res.json(data);
       
     }catch(error){
       console.error('Error getting application:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
+    }
+  }
+
+  const getJoinedEvents = async (req, res) => {
+    const userIdCookie = getUserIdFromJWT(req)
+
+    try{    
+      const data = await prisma.events.findMany({
+        where:{
+          companyEvents:{
+            some:{
+              company:{
+                userId:userIdCookie
+              }
+            }
+          }
+        },orderBy:{
+          startDate:'desc'
+        }
+        
+      });
+
+      
+      res.json(data);
+      
+    }catch(error){
+      console.error('Error getting company events:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -176,20 +197,16 @@ const getEventDetails = async (req, res) => {
           }
         }
       });
-
-      console.log(data)
       
       res.json(data);
       
     }catch(error){
       console.error('Error getting event partners:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
     }
   }
 
   const setStatus = async (req, res) => {
-    console.log(req.body)
     try{    
       const {id, status} = req.body
       const data = await prisma.companyEvents.update({
@@ -204,7 +221,6 @@ const getEventDetails = async (req, res) => {
     }catch(error){
       console.error('Error setting company event status:', error);
       res.status(500).json({ error: 'Internal Server Error' });
-      console.log(req.body)
   
     }
   }
@@ -217,5 +233,6 @@ module.exports = {
   joinEvent,
   checkIfJoined,
   getPartners,
-  setStatus
+  setStatus,
+  getJoinedEvents
 };
