@@ -6,6 +6,12 @@ import ButtonNavigator from './ButtonNavigator';
 const JobPostCardResult = ({jobData}) => {
   return (
     <div className="overflow-auto-y w-full  bg-white h-fit flex flex-col rounded-xl mb-20 gap-3">
+      {jobData.length == 0&&(
+          <div className='p-5 bg-neutral rounded-lg'>
+          <div >Oops! It seems that your search didn't yield any results. </div>
+          <div>Try refining your search terms</div>
+        </div>
+      )}
       {jobData.map((job) => (
         <Link
           to={`/jobpost/view/${job.id}`}

@@ -49,6 +49,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import ViewCompanyProfile from "./pages/Profile/ViewCompanyProfile";
 import JobPostView from "./pages/JobPosts/JobPostView";
 import SearchResultPage from "./components/SearchResultPage";
+import SearchPageCompany from "./components/SearchPageCompany";
 
 function App() {
   const { user } = useAuthContext();
@@ -95,8 +96,12 @@ function App() {
           <Route index element={user ? <ProfilePage /> : <LoginScreen />} />
 
           <Route
-            path="/search/result"
+            path="/search/jobpost"
             element={user ? <SearchResultPage/> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/search/companies"
+            element={user ? <SearchPageCompany/> : <Navigate to={"/login"} />}
           />
 
           <Route
