@@ -94,6 +94,26 @@ const searchJobPost = async (req, res) => {
     res.status(200).json(jobDetails);
   } catch (error) {}
 };
+const searchCompanies = async (req, res) => {
+  try {
+    const {search}= req.query
+    const companies = await prisma.company.findMany({
+      where:{
+        companyName:{
+          contains: search
+        }
+      },
+      include:{
+        user: true
+      }
+    })
+
+    res.status(200).json(companies)
+  } catch (error) {
+    console.log(error)
+  }
+}
 module.exports = {
   searchJobPost,
+  searchCompanies,
 };

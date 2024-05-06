@@ -9,7 +9,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import Notifications from "./Notifications";
 import SearchBar from "./SearchBar";
-const TopBar = () => {
+const TopBar = ({catProp, query}) => {
   const {user} = useAuthContext()
   let role
   if(user){
@@ -59,7 +59,7 @@ const TopBar = () => {
           </Link>
         )}
       </div>
-      <SearchBar/>
+      <SearchBar catprop={catProp} query={query}/>
 
       {(role.roleName == 'alumni' || role.roleName == 'student')&&(
         <Notifications/>
