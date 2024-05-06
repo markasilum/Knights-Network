@@ -92,6 +92,21 @@ const getPersonDetails = async (req, res) => {
   res.json(data);
 };
 
+const getPersonPreferences = async (req, res) => {
+
+  const {id} = req.query
+  console.log("called")
+  console.log(id)
+
+  const data = await prisma.accountSettings.findUnique({
+    where: {
+      userId: id
+    },
+  });
+  console.log(data)
+  res.json(data);
+};
+
 const getPersonCredentials = async (req, res) => {
   const { id } = req.query;
 
@@ -553,4 +568,5 @@ module.exports = {
   updatePerson,
   getPersonCredentials,
   resumePDF,
+  getPersonPreferences
 };

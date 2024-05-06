@@ -86,10 +86,8 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
-
       <div className="flex flex-row gap-2">
         <SideBar />
-
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
           <div className="pt-2 pr-2 overflow-scroll">
             <div className="w-full bg-white h-fit min-h-80 p-5 grid grid-cols-2 rounded-xl mb-2">
