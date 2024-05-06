@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import ButtonPrimary from "../../components/ButtonPrimary";
 import ButtonSuccess from "../../components/ButtonSuccess";
@@ -179,21 +179,12 @@ const JobPostView = () => {
                   {jobData.jobTitle}
                 </div>
 
-                {jobData.length != 0 && (
-                  <EditJobPost
-                    jobData={jobData}
-                    jobDegree={jobDegree}
-                    jobSkills={jobSkills}
-                    jobLicense={jobLicense}
-                  />
-                )}
               </div>
 
               {jobData.company && jobData.company.companyName && (
-                <h2 className="font-gothamLight mt-2 text-lg">
-                  {jobData.company.companyName}
-                </h2>
+                  <Link className={`font-gothamLight mt-2 text-lg hover:underline decoration-1`} to={`/profile/view/${jobData.companyId}`}>{jobData.company.companyName}</Link>
               )}
+            
               <div className="text-md">{jobData.jobLoc}</div>
 
               <div className="font-thin flex flex-col mt-3">
