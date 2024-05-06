@@ -48,6 +48,7 @@ import ChooseUserType from "./pages/Login/ChooseUserType";
 import { useAuthContext } from "./hooks/useAuthContext";
 import ViewCompanyProfile from "./pages/Profile/ViewCompanyProfile";
 import JobPostView from "./pages/JobPosts/JobPostView";
+import SearchResultPage from "./components/SearchResultPage";
 
 function App() {
   const { user } = useAuthContext();
@@ -92,6 +93,12 @@ function App() {
 
 
           <Route index element={user ? <ProfilePage /> : <LoginScreen />} />
+
+          <Route
+            path="/search/result"
+            element={user ? <SearchResultPage/> : <Navigate to={"/login"} />}
+          />
+
           <Route
             path="/profile"
             element={user ? <ProfilePage /> : <Navigate to={"/login"} />}

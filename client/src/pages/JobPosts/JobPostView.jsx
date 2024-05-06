@@ -13,12 +13,13 @@ const JobPostView = () => {
   const role = user.user.role;
 
   const [jobData, setJobData] = useState([]);
-  const [appLetterFile, setAppLetterFile] = useState(null);
+  const [appLetterFile, setAppLetterFile] = useState("");
   const [jobSkills, setJobSkills] = useState([]);
   const [jobLicense, setJobLicense] = useState([]);
   const [jobDegree, setJobDegree] = useState([]);
   const { jobPostId } = useParams();
   const [applicationData, setApplicationData] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const fetchApplication = async () => {
     try {
@@ -108,13 +109,18 @@ const JobPostView = () => {
 
   const handleApplication = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
+    setErrors({})
+    try {
+      const formData = new FormData();
     formData.append("id", jobData.id);
     if (appLetterFile) {
       console.log(appLetterFile);
       formData.append("appLetterFile", appLetterFile);
     }
-    try {
+
+    if(jobData.isAppLetterReq == true && appLetterFile == ""){
+      throw new Error("Application letter required");
+    }
       const response = await fetch("http://localhost:3000/application/create", {
         method: "POST",
         body: formData,
@@ -128,6 +134,9 @@ const JobPostView = () => {
 
       fetchApplication();
     } catch (error) {
+      if (error.message == "Application letter required") {
+        setErrors({ appLetError: "Application letter required" });
+      } 
       console.error("Error sending application:", error);
     }
   };
@@ -260,6 +269,7 @@ const JobPostView = () => {
                         Remove File
                       </button>
                     )}
+                    <div className="flex flex-col items-end">
                     <input
                       id="fileInput"
                       type="file"
@@ -267,6 +277,14 @@ const JobPostView = () => {
                       onChange={handleFileChange}
                       required
                     />
+                    {errors.appLetError && (
+                  <span className="text-error  font-normal h-2">
+                    {errors.appLetError}
+                  </span>
+                )}
+                    </div>
+                    
+                    
                   </div>
                 </div>
               )}
