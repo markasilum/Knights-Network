@@ -14,7 +14,7 @@ const SearchBar = ({catprop,query}) => {
     }else if(searchCategory == 'companies'){
       setPlaceHolder("Search by company name")
     }else{
-      setPlaceHolder("Search")
+      setPlaceHolder("Search by first name, middle name, last name")
     }
   },[searchCategory])
 
@@ -40,8 +40,28 @@ const SearchBar = ({catprop,query}) => {
       setResult(responseData);
     } catch (error) {}
   };
+  
   const searchPeople = async () => {
-    console.log("call search people api")
+    try {
+      const response = await fetch(
+        `http://localhost:3000/search/people?search=${searchWord}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      const responseData = await response.json();
+      navigate("/search/people", {
+        state: 
+        { 
+          result: responseData,
+          category: searchCategory,
+          search: searchWord
+
+        },
+      });
+      setResult(responseData);
+    } catch (error) {}
   };
   const searchCompanies = async () => {
     try {

@@ -4,6 +4,6 @@ const searchController = require('../controllers/searchController')
 
 router.get("/jobpost", searchController.searchJobPost);
 router.get("/companies",searchController.searchCompanies);
-// router.get("/index/alumni", userController.userIndexAlumni)
+router.get("/people", searchController.searchPeople)
 
 module.exports = router;

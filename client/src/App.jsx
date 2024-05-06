@@ -50,6 +50,8 @@ import ViewCompanyProfile from "./pages/Profile/ViewCompanyProfile";
 import JobPostView from "./pages/JobPosts/JobPostView";
 import SearchResultPage from "./components/SearchResultPage";
 import SearchPageCompany from "./components/SearchPageCompany";
+import SearchPagePeople from "./components/SearchPagePeople";
+import ViewPersonProfile from "./pages/Profile/ViewPersonProfile";
 
 function App() {
   const { user } = useAuthContext();
@@ -103,6 +105,10 @@ function App() {
             path="/search/companies"
             element={user ? <SearchPageCompany/> : <Navigate to={"/login"} />}
           />
+          <Route
+            path="/search/people"
+            element={user ? <SearchPagePeople/> : <Navigate to={"/login"} />}
+          />
 
           <Route
             path="/profile"
@@ -111,6 +117,10 @@ function App() {
           <Route
             path="/profile/view/:companyId"
             element={user ? <ViewCompanyProfile /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/profile/view/:personId"
+            element={user ? <ViewPersonProfile /> : <Navigate to={"/login"} />}
           />
           <Route
             path="/settings"
