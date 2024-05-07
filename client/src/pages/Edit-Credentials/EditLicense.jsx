@@ -1,16 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import DateTime from "react-datetime";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
 
-const EditLicense = ({licenseData}) => {
-  const[id, setId] = useState(licenseData.id);
+const EditLicense = ({ licenseData, fetchLicense }) => {
+  const [id, setId] = useState(licenseData.id);
   const [licenseName, setLicenseName] = useState(licenseData.licenseName);
   const [licensePic, setLicensePic] = useState(licenseData.licensePic);
-  const [licenseValidity, setLicenseValidity] = useState(licenseData.licenseValidity);
+  const [licenseValidity, setLicenseValidity] = useState(
+    licenseData.licenseValidity
+  );
+  const[errors, setErrors] = useState({})
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    
+    event.preventDefault()
+    setErrors({})
+    const isoStartDate =
+    licenseValidity instanceof Date && licenseValidity !== ""
+      ? licenseValidity.toISOString()
+      : licenseValidity;
+
     const formData = new FormData();
 
     if (licensePic) {
@@ -18,14 +28,13 @@ const EditLicense = ({licenseData}) => {
     }
     formData.append("licId", id);
     formData.append("licenseName", licenseName);
-    formData.append("licenseValidity", licenseValidity);
+    formData.append("licenseValidity", isoStartDate);
 
     try {
-        
       const response = await fetch("http://localhost:3000/license/update", {
         method: "PUT",
         body: formData,
-        credentials:'include'
+        credentials: "include",
       });
 
       const responseData = await response.json();
@@ -33,10 +42,18 @@ const EditLicense = ({licenseData}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
-      navigate(0)
 
+      const dialog = document.getElementById(licenseData.id);
+      dialog.close();
+      
+      fetchLicense()
     } catch (error) {
       console.error("Error creating license:", error);
+      if(error.message == "License name is required"){
+        setErrors({licenseErr:"License name is required"})
+      }else if(error.message == "License validity is required"){
+        setErrors({validityErr:"License validity is required"})
+      }
     }
   };
 
@@ -94,12 +111,12 @@ const EditLicense = ({licenseData}) => {
   };
 
   const handleButtonClick = (event) => {
-    handleSubmit()
+    handleSubmit();
   };
   return (
     <dialog id={licenseData.id} className="modal">
       <div className="modal-box max-w-2xl bg-base-200">
-      <form method="dialog">
+        <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
@@ -107,79 +124,105 @@ const EditLicense = ({licenseData}) => {
         </form>
         <form onSubmit={handleSubmit}>
           {/* <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl"> */}
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text font-bold">Edit License</span>
-              </div>
-            </label>
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text font-bold">Edit License</span>
+            </div>
+          </label>
 
-            <div className="grid grid-cols-2 gap-2 w-full">
-              <input
-                type="text"
-                id="licenseName"
-                placeholder="License Name"
-                className="input input-bordered w-full text-center"
-                value={licenseName}
-                onChange={(e) => setLicenseName(e.target.value)}
-              />
-
-              <DateTime
-                className="mb-3"
-                id="startdate"
-                dateFormat="MM-YYYY"
-                selected={licenseValidity}
-                value={licenseValidity.slice(0,7)}
-                timeFormat={false}
-                onChange={handleDateChange}
-                inputProps={{
-                  placeholder: "License Validity",
-                  className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-                }}
-              />
-              <label className="form-control w-full max-w-xs">
+          <div className="grid grid-cols-2 gap-2 w-full">
+           <div>
+           <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">License Pic</span>
+                  <span className="label-text font-normal">License Name</span>
                 </div>
               </label>
-              {!licensePic &&(
-                <input
+            <input
+              type="text"
+              id="licenseName"
+              placeholder="License Name"
+              className="input input-bordered w-full text-center"
+              value={licenseName}
+              onChange={(e) => setLicenseName(e.target.value)}
+            />
+            {errors.licenseErr && (
+                <span className="text-error  text-xs h-2">
+                  {errors.licenseErr}
+                </span>
+              )}
+           </div>
+
+            <div className="flex flex-col w-full">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-normal">Expires on:</span>
+                </div>
+              </label>
+              <div className="flex flex-col w-full items-center justify-center bg-white rounded-md input input-bordered">
+                <DatePicker
+                  id="startdate"
+                  selected={licenseValidity}
+                  onChange={(date) => setLicenseValidity(date)}
+                  isClearable
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  placeholderText="mm/dd/yy"
+                  dropdownMode="select"
+                  className=" outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                />
+              </div>
+              {errors.validityErr && (
+                <span className="text-error  text-xs h-2">
+                  {errors.validityErr}
+                </span>
+              )}
+            </div>
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text">License Pic</span>
+              </div>
+            </label>
+            {!licensePic && (
+              <input
                 type="file"
                 id="licensepic"
                 placeholder="License Pic"
                 className="file-input file-input-bordered w-full col-span-2"
                 onChange={handleFileChange}
               />
-              
-              )}
-              {
-                licensePic &&(
-                   <div className='col-span-2 flex flex-row items-center'>
-                         <img className='col-span-2 max-w-96' src={`http://localhost:3000/uploads/licensePic/${licenseData.licensePic}`}/>
-                         
-                         <button onClick={handleRemoveImage} className="btn btn-error text-white ml-3 w-48">Remove Image</button>
-                   </div>
-                )
-              }
-             
-            </div>
-            
-          {/* </div> */}
-        </form>
-        <div className="modal-action">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button type="submit" className={`btn btn-primary w-40 mt-5`} onClick={handleButtonClick}>
+            )}
+            {licensePic && (
+              <div className="col-span-2 flex flex-row items-center">
+                <img
+                  className="col-span-2 max-w-96"
+                  src={`http://localhost:3000/uploads/licensePic/${licenseData.licensePic}`}
+                />
+
+                <button
+                  onClick={handleRemoveImage}
+                  className="btn btn-error text-white ml-3 w-48"
+                >
+                  Remove Image
+                </button>
+              </div>
+            )}
+          </div>
+
+          <button
+              type="submit"
+              className={`btn btn-primary w-40 mt-5`}
+              onClick={handleSubmit}
+            >
               Update
             </button>
-          </form>
-        </div>
+        </form>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
     </dialog>
-  )
-}
+  );
+};
 
-export default EditLicense
+export default EditLicense;

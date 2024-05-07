@@ -5,8 +5,10 @@ const CertificationsForm = ({fetchCerts}) => {
   const [certName, setCertName] = useState("");
   const [certDetails, setCertDetails] = useState("");
   const [certPhoto, setCertPhoto] = useState("");
+  const [errors, setErrors] = useState({})
   const handleSubmit = async (event) => {
-
+    event.preventDefault()
+    setErrors({})
     const formData = new FormData();
 
     if (certPhoto) {
@@ -32,9 +34,18 @@ const CertificationsForm = ({fetchCerts}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+      const dialog = document.getElementById("add_cert");
+      dialog.close();
       fetchCerts()
+      setCertName("")
+      setCertDetails("")
+      setCertPhoto("")
+      document.getElementById("certPic").value = "";
     } catch (error) {
       console.error("Error creating license:", error);
+      if(error.message == "Certification name is required"){
+        setErrors({certErr:"Certification name is required"})
+      }
     }
   };
 
@@ -81,7 +92,7 @@ const CertificationsForm = ({fetchCerts}) => {
   const handleRemoveImage = () => {
     setCertPhoto(null);
     // Resetting the file input if needed
-    document.getElementById("fileInput").value = "";
+    document.getElementById("certPic").value = "";
   };
 
   const handleButtonClick = (event) => {
@@ -98,13 +109,14 @@ const CertificationsForm = ({fetchCerts}) => {
           </button>
         </form>
         <form onSubmit={handleSubmit}>
+          
+
+          <div className="flex flex-col w-full">
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text font-bold">Certification</span>
+              <span className="label-text text-normal">Certification Name</span>
             </div>
           </label>
-
-          <div className="flex flex-col gap-2 w-full">
             <input
               type="text"
               id="certName"
@@ -112,7 +124,19 @@ const CertificationsForm = ({fetchCerts}) => {
               className="input input-bordered w-full text-center"
               value={certName}
               onChange={(e) => setCertName(e.target.value)}
+              required
             />
+            {errors.certErr && (
+                <span className="text-error ml-2  text-xs h-2">
+                  {errors.certErr}
+                </span>
+              )}
+
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text text-normal">Certification details</span>
+                </div>
+              </label>
             <textarea
               type="text"
               id="certDetails"
@@ -129,7 +153,7 @@ const CertificationsForm = ({fetchCerts}) => {
             </label>
             <input
               type="file"
-              id="licensepic"
+              id="certPic"
               placeholder="License Pic"
               className="file-input file-input-bordered w-full col-span-2"
               onChange={handleFileChange}
@@ -137,25 +161,23 @@ const CertificationsForm = ({fetchCerts}) => {
             {certPhoto && (
               <button
                 onClick={handleRemoveImage}
-                className="btn btn-error text-white ml-3"
+                className="btn btn-error text-white mt-3 w-fit"
               >
                 Remove Image
               </button>
             )}
           </div>
-          
-        </form>
-        <div className="modal-action">
-          <form method="dialog">
-            <button
+         <div className="w-full flex justify-end">
+         <button
               type="submit"
               className={`btn btn-primary w-40 mt-5`}
-              onClick={handleButtonClick}
+              onClick={handleSubmit}
             >
             Add Certification
             </button>
-          </form>
-        </div>
+         </div>
+        </form>
+        
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

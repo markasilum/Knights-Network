@@ -95,7 +95,7 @@ model Experience {
   jobDetails  String   @db.Text
   companyName String
   startDate   DateTime @db.Date
-  endDate     DateTime @db.Date
+  endDate     DateTime? @db.Date
 }
 
 model Certification {
@@ -136,7 +136,7 @@ model PersonLicense {
   license         PRCLicenses @relation(fields: [licenseId], references: [id])
   licenseId       String
   licensePic      String?
-  licenseValidity DateTime    @db.Date
+  licenseValidity DateTime?    @db.Date
 }
 
 model PRCLicenses {

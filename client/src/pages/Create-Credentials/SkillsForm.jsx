@@ -22,6 +22,7 @@ const SkillsForm = ({fetchSkills}) => {
         throw new Error(responseData.error);
       }
       fetchSkills()
+      setSkillName("")
     } catch (error) {
       console.error("Error creating education:", error);
     }

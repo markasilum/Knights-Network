@@ -69,7 +69,7 @@ const SelectEditExperience = () => {
                     <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(experience.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
                     <button className="hover:text-error hover:rounded-full hover:bg-neutral active:text-info p-1" onClick={()=>document.getElementById(experience.jobTitle).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>
 
-                    <EditExperience expData={experience}/>
+                    <EditExperience expData={experience} fetchExperience={fetchExperience}/>
                     <DeleteExperience experience={experience} handleDelete={handleDelete}/>
                     </div>
                   </div>

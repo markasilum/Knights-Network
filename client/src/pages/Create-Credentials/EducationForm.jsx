@@ -4,26 +4,41 @@ import "react-datetime/css/react-datetime.css";
 import { useState } from "react";
 import TopBar from "../../components/topbar";
 import { useEffect } from "react";
-const EducationForm = ({fetchEducation, fetchDegree}) => {
+import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
+
+const EducationForm = ({fetchEducation}) => {
+  const navigate = useNavigate()
   const [schoolName, setSchoolName] = useState("");
   const [degree, setDegree] = useState("");
   const [qpi, setQpi] = useState("");
-  const [startDate, setStartDate] = useState(new Date().toISOString());
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [awards, setAwards] = useState("");
   const [userData, setUserData] = useState([]);
-
+  const[errors, setErrors] = useState({})
+  
   const handleSubmit = async (event) => {
-    // event.preventDefault();
+    event.preventDefault()
+    setErrors({})
+    const isoStartDate =
+    startDate instanceof Date && startDate !== ""
+      ? startDate.toISOString()
+      : startDate;
+  const isoEndDate =
+    endDate instanceof Date && endDate !== ""
+      ? endDate.toISOString()
+      : endDate;
+
     const formData = new FormData();
 
     formData.append("schoolName", schoolName);
     formData.append("degree", degree);
     formData.append("qpi", qpi);
-    formData.append("startDate", startDate);
-    formData.append("endDate", endDate);
+    formData.append("startDate", isoStartDate);
+    formData.append("endDate", isoEndDate);
     formData.append("awards", awards);
-
+    console.log(isoEndDate)
     try {
       const response = await fetch("http://localhost:3000/education/create", {
         method: "POST",
@@ -37,10 +52,29 @@ const EducationForm = ({fetchEducation, fetchDegree}) => {
       if (!response.ok) {
         throw new Error(responseData.error);
       }
+
+      const dialog = document.getElementById("add_education");
+      dialog.close();
+
       fetchEducation()
-      fetchDegree()
+      setSchoolName("")
+      setDegree("")
+      setQpi("")
+      setStartDate(null)
+      setEndDate(null)
+      setAwards("")
+
     } catch (error) {
       console.error("Error creating education:", error);
+      if(error.message == "School Name is required"){
+        setErrors({schoolErr:"School Name is required"})
+      }else if(error.message == "Start date is required"){
+        setErrors({startErr:"Start date is required"})
+      }
+      else if(error.message == "Degree is required"){
+        setErrors({degreeErr:"Degree is required"})
+      }
+
     }
   };
 
@@ -65,7 +99,7 @@ const EducationForm = ({fetchEducation, fetchDegree}) => {
       <div className="modal-box max-w-2xl bg-base-200">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" >
             ✕
           </button>
         </form>
@@ -74,25 +108,59 @@ const EducationForm = ({fetchEducation, fetchDegree}) => {
             <div className="label">
               <span className="label-text font-bold">Add Education</span>
             </div>
-          </label>  
+          </label>
 
-          <div className="flex flex-col gap-2 w-full">
-            <input
-              type="text"
-              id="schoolName"
-              placeholder="University"
-              className="input input-bordered w-full text-center"
-              value={schoolName}
-              onChange={(e) => setSchoolName(e.target.value)}
-            />
-            <input
-              type="text"
-              id="degree"
-              placeholder="Degree"
-              className="input input-bordered w-full text-center"
-              value={degree}
-              onChange={(e) => setDegree(e.target.value)}
-            />
+          <div className="flex flex-col w-full">
+            <div className="flex-flex-col">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text text-normal">School Name</span>
+                </div>
+              </label>
+              <input
+                type="text"
+                id="schoolName"
+                placeholder="University"
+                className="input input-bordered w-full text-center"
+                value={schoolName}
+                onChange={(e) => setSchoolName(e.target.value)}
+                required
+              />
+              {errors.schoolErr && (
+                <span className="text-error ml-2  text-xs h-2">
+                  {errors.schoolErr}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-normal">Degree Name</span>
+                </div>
+              </label>
+              <input
+                type="text"
+                id="degree"
+                placeholder="Degree"
+                className="input input-bordered w-full text-center"
+                value={degree}
+                onChange={(e) => setDegree(e.target.value)}
+                required
+              />
+               {errors.degreeErr && (
+                <span className="text-error  ml-2 text-xs h-2">
+                  {errors.degreeErr}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col">
+            <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-normal">QPI</span>
+                </div>
+              </label>
             <input
               type="text"
               id="qpi"
@@ -101,33 +169,65 @@ const EducationForm = ({fetchEducation, fetchDegree}) => {
               value={qpi}
               onChange={(e) => setQpi(e.target.value)}
             />
-            <div className="grid grid-cols-2 gap-3">
-              <DateTime
-                id="startdate"
-                dateFormat="YYYY-MM"
-                selected={startDate}
-                timeFormat={false}
-                onChange={handleStartDateChange}
-                inputProps={{
-                  placeholder: "Start Date",
-                  className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-                }}
-              />
-
-              <DateTime
-                id="enddate"
-                dateFormat="YYYY-MM"
-                selected={endDate}
-                timeFormat={false}
-                onChange={handleEndDateChange}
-                inputProps={{
-                  placeholder: "End Date",
-                  className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-                }}
-              />
             </div>
+            <div className="flex flex-row w-full gap-3">
+              <div className="flex flex-col w-full">
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">Start Date</span>
+                  </div>
+                </label>
+                <div className="flex flex-col w-full items-center justify-center bg-white rounded-md input input-bordered">
+                  <DatePicker
+                    id="startdate"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    isClearable
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    placeholderText="mm/dd/yy"
+                    dropdownMode="select"
+                    className=" outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                  />
+                </div>
+                {errors.startErr && (
+                  <span className="text-error  text-xs h-2">
+                    {errors.startErr}
+                  </span>
+                )}
+               
+              </div>
+
+              <div className="flex flex-col w-full">
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text font-normal">End Date</span>
+                  </div>
+                </label>
+                <div className="flex flex-col w-full items-center justify-center bg-white rounded-md input input-bordered">
+                  <DatePicker
+                    id="enddate"
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    isClearable
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    placeholderText="or expected end date"
+                    dropdownMode="select"
+                    className=" outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                  />
+                </div>
+              </div>
+            </div>
+
+           <div className="flex flex-col">
+           <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text text-normal">Awards</span>
+                </div>
+              </label>
             <input
               type="text"
               id="awards"
@@ -136,20 +236,18 @@ const EducationForm = ({fetchEducation, fetchDegree}) => {
               value={awards}
               onChange={(e) => setAwards(e.target.value)}
             />
+           </div>
           </div>
-         
-        </form>
-        <div className="modal-action">
-          <form method="dialog">
-            <button
-              type="submit"
-              className={`btn btn-primary w-40 mt-5`}
-              onClick={handleButtonClick}
-            >
+
+          <button
+            type="submit"
+            className={`btn btn-primary w-40 mt-5`}
+            onClick={handleSubmit}
+          >
             Create Education
-            </button>
-          </form>
-        </div>
+          </button>
+        </form>
+        <div className="modal-action"></div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
