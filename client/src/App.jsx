@@ -59,6 +59,7 @@ import SurveyDetails from "./pages/Survey/SurveyDetails";
 import SurveyList from "./pages/Survey/SurveyList";
 import AnswerSurvey from "./pages/Survey/AnswerSurvey";
 import SurveyViewAnswers from "./pages/Survey/SurveyViewAnswers";
+import ResumeLogs from "./components/ResumeLogs";
 
 function App() {
   const { user } = useAuthContext();
@@ -283,6 +284,10 @@ function App() {
           <Route
             path="/surveys/answers/view/:surveyId"
             element={user ? <SurveyViewAnswers /> : <Navigate to={"/login"} />}
+          />
+           <Route
+            path="/resume/logs"
+            element={user ? <ResumeLogs /> : <Navigate to={"/login"} />}
           />
         </Routes>
       </Router>

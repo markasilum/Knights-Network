@@ -30,6 +30,18 @@ model User {
   role          Roles?
   person        Person?
   company       Company?
+  viewer        ResumeLogs[] @relation("ResumeViewer")
+  owner         ResumeLogs[] @relation("ResumeOwner")
+}
+
+model ResumeLogs {
+  id             String  @id @default(uuid())
+  resumeViewer   User    @relation("ResumeViewer", fields: [viewerId], references: [id])
+  viewerId String
+  resumeOwner    User    @relation("ResumeOwner", fields: [ownerId], references: [id])
+  ownerId  String
+  action         String
+  dateCreated    DateTime     @default(now())
 }
 
 model AccountSettings {
@@ -88,13 +100,13 @@ model Degree {
 }
 
 model Experience {
-  id          String   @id @default(uuid())
-  person      Person   @relation(fields: [personId], references: [id])
+  id          String    @id @default(uuid())
+  person      Person    @relation(fields: [personId], references: [id])
   personId    String
   jobTitle    String
-  jobDetails  String   @db.Text
+  jobDetails  String    @db.Text
   companyName String
-  startDate   DateTime @db.Date
+  startDate   DateTime  @db.Date
   endDate     DateTime? @db.Date
 }
 
@@ -136,7 +148,7 @@ model PersonLicense {
   license         PRCLicenses @relation(fields: [licenseId], references: [id])
   licenseId       String
   licensePic      String?
-  licenseValidity DateTime?    @db.Date
+  licenseValidity DateTime?   @db.Date
 }
 
 model PRCLicenses {
@@ -164,19 +176,18 @@ model Company {
   jobPost       JobPost[]
   companyEvents CompanyEvents[]
   contactPerson CompanyContactPerson[]
-  answers SurveyAnswers[]
+  answers       SurveyAnswers[]
 }
 
-model CompanyContactPerson{
+model CompanyContactPerson {
   id           String  @id @default(uuid())
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String
+  company      Company @relation(fields: [companyId], references: [id])
+  companyId    String
   person       Person  @relation(fields: [personId], references: [id])
   personId     String  @unique
   email        String
   phone        String
   positionName String
-
 }
 
 model CompanyVerificationReqs {
@@ -306,26 +317,28 @@ model CompanyEvents {
   companyId String
 }
 
-model Survey{
-  id String @id @default(uuid())
-  name String
-  dateCreated  DateTime   @default(now())
-  questions SurveyQuestions[]
+model Survey {
+  id          String            @id @default(uuid())
+  name        String
+  dateCreated DateTime          @default(now())
+  questions   SurveyQuestions[]
 }
 
-model SurveyQuestions{
-  id String @id @default(uuid())
-  survey     Survey  @relation(fields: [surveyId], references: [id])
-  surveyId   String
+model SurveyQuestions {
+  id           String          @id @default(uuid())
+  survey       Survey          @relation(fields: [surveyId], references: [id])
+  surveyId     String
   questionText String
-  answers SurveyAnswers[]
+  answers      SurveyAnswers[]
 }
 
-model SurveyAnswers{
-  id String @id @default(uuid())
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String
-  question     SurveyQuestions  @relation(fields: [questionId], references: [id])
-  questionId   String
+model SurveyAnswers {
+  id          String          @id @default(uuid())
+  company     Company         @relation(fields: [companyId], references: [id])
+  companyId   String
+  question    SurveyQuestions @relation(fields: [questionId], references: [id])
+  questionId  String
   answerValue Int
 }
+
+

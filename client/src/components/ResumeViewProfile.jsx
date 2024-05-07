@@ -4,11 +4,14 @@ import SideBar from "./SideBar";
 import { Link, useParams } from "react-router-dom";
 import DateToWords from "./DateFormatter";
 import ButtonPrimary from "./ButtonPrimary";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const ResumeViewProfile = () => {
     const { personId } = useParams();
     const [personData, setPersonData] = useState("");
     const [personPref, setPersonPref] = useState("");
+
+    const {user} = useAuthContext()
   
     const downloadResume = async () => {
       try {
@@ -27,6 +30,20 @@ const ResumeViewProfile = () => {
         console.error("Error fetching data:", error);
       }
     };
+
+    const downloadResumeLog = async () => {
+      try {
+          const response = await fetch("http://localhost:3000/user/resume/log", {
+              method: "POST",
+              body: JSON.stringify({"ownerId": personData.userId, "viewerId": user.user.id, "action": "download"}),
+              credentials: 'include',
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+      } catch (error) {}
+  
+    }
   
     useEffect(() => {
       const getPersonCredentials = async () => {
@@ -64,6 +81,11 @@ const ResumeViewProfile = () => {
 
     },[personData])
   
+    const handleButtonClick = () => {
+      // Call both functions when the button is clicked
+      downloadResume();
+      downloadResumeLog();
+    };
     return (
       <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
         
@@ -197,7 +219,7 @@ const ResumeViewProfile = () => {
                   {personPref&&(
                     personPref.allowDownloadResume == true &&(
                         <div className="flex flex-row justify-end w-full">
-                        <ButtonPrimary text={"Downlod PDF"} onClick={downloadResume}/>
+                        <ButtonPrimary text={"Downlod PDF"} onClick={handleButtonClick}/>
                           </div>
                       )
                   )}

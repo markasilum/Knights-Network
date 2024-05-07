@@ -11,6 +11,9 @@ router.get("/verify", userController.verifyUser)
 router.get("/setting", userController.userSetting)
 router.get("/archive", userController.deactivateAccount)
 router.post("/reactivate", userController.reactivateAccount)
+router.post("/resume/log", userController.resumeLog)
+router.get("/resume/log/view", userController.getResumeLog);
+
 
 
 router.put("/setting/update", userController.userSettingUpdate)
