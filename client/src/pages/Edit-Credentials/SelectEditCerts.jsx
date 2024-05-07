@@ -55,7 +55,7 @@ const SelectEditCerts = () => {
           <div className="pt-2 pr-2 overflow-scroll">
             <div className="w-full bg-white h-fit p-5 rounded-xl mb-2">
               <div className="flex flex-col">
-              <div className='font-semibold mb-5'>Edit Experience</div>
+              <div className='font-semibold mb-5'>Edit Licenses</div>
                 <div className="border-b-2 border-dashed border-info"></div>
                 {certs.map((cert) => (
                   <div key={cert.id} className="flex flex-row justify-between items-center border-b-2 border-dashed border-info mt-2">
@@ -66,7 +66,7 @@ const SelectEditCerts = () => {
                     <div className="mb-3 flex gap-3">
                     <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(cert.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
                     <button className="hover:text-error hover:rounded-full hover:bg-neutral active:text-info p-1" onClick={()=>document.getElementById("delete"+cert.id).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>                   
-                    <EditCerts certData={cert}/>
+                    <EditCerts certData={cert} fetchCerts={fetchCerts}/>
                     <DeleteCert cert={cert} handleDelete={handleDelete}/>
                     </div>
                   </div>

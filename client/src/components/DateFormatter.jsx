@@ -30,8 +30,12 @@ function getOrdinalSuffix(number) {
 }
 
 function DateToWords({ dateString }) {
-    const dateOnly = dateString.split("T")[0];
-    const dateInWords = formatDateToWords(dateOnly);
+    let dateOnly
+    let dateInWords
+    if(dateString){
+         dateOnly = dateString.split("T")[0];
+         dateInWords = formatDateToWords(dateOnly);
+    }
 
     return <div>{dateInWords}</div>;
 }

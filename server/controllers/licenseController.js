@@ -47,13 +47,22 @@ const createPersonLicense = async (req, res) => {
     try {
       // Extract data from the request body
       const { licenseValidity, licenseName } = req.body;
+
       let licensePic
       if(req.file != null){
       licensePic = req.file.filename
     }
+
+    let licenseValidityCon
+    if(licenseValidity=="null"){
+      licenseValidityCon= null
+    }else{
+      licenseValidityCon= licenseValidity
+    }
+
       const newLicense = await prisma.personLicense.create({
         data: {
-          licenseValidity,
+          licenseValidity:licenseValidityCon,
           licensePic,
           person: {
             connect: {
@@ -86,7 +95,6 @@ const createPersonLicense = async (req, res) => {
     }
   };
   const updatePersonLicense = async (req, res) => {
-    console.log(req.body)
     try {
       // Extract data from the request body
       const { licId, licenseValidity, licenseName } = req.body;
@@ -94,13 +102,27 @@ const createPersonLicense = async (req, res) => {
       if(req.file != null){
       licensePic = req.file.filename
     }
+    let licenseValidityCon
+    if(licenseValidity=="null"){
+      licenseValidityCon= null
+    }else{
+      licenseValidityCon= licenseValidity
+    }
+
+    if(!licenseName){
+      throw new Error("License name is required")
+    }
+
+    if(!licenseValidityCon){
+      throw new Error("License validity is required")
+    }
 
       const updateLicense = await prisma.personLicense.update({
         where:{
           id: licId
         },
         data: {
-          licenseValidity,
+          licenseValidity:licenseValidityCon,
           licensePic,
           license: {
             connectOrCreate: {
@@ -122,7 +144,7 @@ const createPersonLicense = async (req, res) => {
       res.status(201).json(updateLicense);
     } catch (error) {
       console.error("Error updating license:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: error.message });
       // console.log(req.body)
     }
   };
