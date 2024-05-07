@@ -53,6 +53,9 @@ import SearchPageCompany from "./components/SearchPageCompany";
 import SearchPagePeople from "./components/SearchPagePeople";
 import ViewPersonProfile from "./pages/Profile/ViewPersonProfile";
 import ResumeViewProfile from "./components/ResumeViewProfile";
+import SurveyDashboard from "./pages/Events/SurveyDashboard";
+import CreateSurveyForm from "./pages/Events/CreateSurveyForm";
+import SurveyDetails from "./pages/Events/SurveyDetails";
 
 function App() {
   const { user } = useAuthContext();
@@ -253,6 +256,18 @@ function App() {
           <Route
             path="/person/resume/view/:personId"
             element={user ? <ResumeViewProfile /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/surveys"
+            element={user ? <SurveyDashboard /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/surveys/create"
+            element={user ? <CreateSurveyForm /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/surveys/details/:surveyId"
+            element={user ? <SurveyDetails /> : <Navigate to={"/login"} />}
           />
         </Routes>
       </Router>
