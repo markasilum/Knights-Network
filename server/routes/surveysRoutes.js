@@ -5,7 +5,9 @@ const upload = multer();
 const surveyController = require('../controllers/surveysController')
 
 router.post("/create", upload.none(),surveyController.createSurvey)
+router.post("/submit/answer", upload.none(),surveyController.answerSurvey)
 router.get("/index",surveyController.getSurveyIndex)
+router.get("/answers",surveyController.getSurveyAnswers)
 router.get("/details",surveyController.getSurveyDetails)
 
 

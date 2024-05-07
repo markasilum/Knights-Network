@@ -3,14 +3,16 @@ import SidebarButton from "./SidebarButton";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import CreateAccount from "../pages/Create-Account/CreateAccount";
 import HomePage from "../pages/Profile/ProfilePage";
-import PersonIcon from '@mui/icons-material/Person';
-import FeedIcon from '@mui/icons-material/Feed';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
-import EventIcon from '@mui/icons-material/Event';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import FeedOutlinedIcon from '@mui/icons-material/FeedOutlined';
+import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
+import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import { useAuthContext } from "../hooks/useAuthContext";
-import PeopleIcon from '@mui/icons-material/People';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import HomeIcon from '@mui/icons-material/Home';
+
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
 const SideBar = () => {
   const {user} = useAuthContext()
   const role = user.user.role
@@ -18,31 +20,31 @@ const SideBar = () => {
 
   const companySidebar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-      <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onClick={"/profile"} />
-      <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/jobpost/dashboard"} />
+      <SidebarButton text={"Profile"} icon={<PersonOutlinedIcon fontSize="large"/>} onClick={"/profile"} />
+      <SidebarButton text={"Job Posts"} icon={<FeedOutlinedIcon fontSize="large"/>} onClick={"/jobpost/dashboard"} />
       <SidebarButton text={"Home"} icon={<HomeIcon fontSize="large"/>} onClick={"/home"} />
-      <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
-      <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'} />
-      <SidebarButton text={"Surveys"}  onClick={'/surveys/view'} />
+      <SidebarButton text={"Events"} icon={<EventOutlinedIcon fontSize="large"/> } onClick={"/events"}/>
+      <SidebarButton text={"Calendar"} icon={<CalendarMonthOutlinedIcon fontSize="large"/>} onClick={'/events/calendar'} />
+      <SidebarButton text={"Surveys"} icon={<PollOutlinedIcon/>} onClick={'/surveys/view'} />
     </ul>
   )
 
   const alumniSideBar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-      <SidebarButton text={"Profile"} icon={<PersonIcon fontSize="large"/>} onClick={"/profile"} />
-      <SidebarButton text={"Job Posts"} icon={<FeedIcon fontSize="large"/>} onClick={"/home"} />
-      <SidebarButton text={"Applications"} icon={<ContactPageIcon fontSize="large"/>} onClick={"/applications"} />
-      <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
-      <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'}/>
+      <SidebarButton text={"Profile"} icon={<PersonOutlinedIcon fontSize="large"/>} onClick={"/profile"} />
+      <SidebarButton text={"Job Posts"} icon={<FeedOutlinedIcon fontSize="large"/>} onClick={"/home"} />
+      <SidebarButton text={"Applications"} icon={<ContactPageOutlinedIcon fontSize="large"/>} onClick={"/applications"} />
+      <SidebarButton text={"Events"} icon={<EventOutlinedIcon fontSize="large"/> } onClick={"/events"}/>
+      <SidebarButton text={"Calendar"} icon={<CalendarMonthOutlinedIcon fontSize="large"/>} onClick={'/events/calendar'}/>
     </ul>
   )
 
   const adminSideBar = (
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
-    <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/eventslist"} />
-    <SidebarButton text={"Users"}  icon={<PeopleIcon fontSize="large"/>}  onClick={"/verify-users/alumni"} />
-    <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'} />
-    <SidebarButton text={"Surveys"}  onClick={'/surveys'} />
+    <SidebarButton text={"Events"} icon={<EventOutlinedIcon fontSize="large"/> } onClick={"/eventslist"} />
+    <SidebarButton text={"Users"}  icon={<GroupOutlinedIcon fontSize="large"/>}  onClick={"/verify-users/alumni"} />
+    <SidebarButton text={"Calendar"} icon={<CalendarMonthOutlinedIcon fontSize="large"/>} onClick={'/events/calendar'} />
+    <SidebarButton text={"Surveys"} icon={<PollOutlinedIcon fontSize="large"/>} onClick={'/surveys'} />
   </ul>
   
   )

@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import TopBar from "../../components/topbar";
 import SideBar from "../../components/SideBar";
 import DateConverter from "../../components/DateConverter";
 import ButtonPrimary from "../../components/ButtonPrimary";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const AnswerSurvey = () => {
-  const [surveyData, setSurveyData] = useState();
+const navigate= useNavigate()
+const{user} = useAuthContext()
+    
+const companyId = user.user.company.id
+  
   const [answers, setAnswers] = useState([]);
+  const [surveyData, setSurveyData] = useState();
   const { surveyId } = useParams();
 
   useEffect(() => {
@@ -28,24 +34,59 @@ const AnswerSurvey = () => {
     getDetails();
   }, []);
 
-  const updateAnswers = (itemId, radioValue) => {
+  const updateAnswers = (questionId, answerValue) => {
     setAnswers(prevAnswers => {
-        const existingIndex = prevAnswers.findIndex(item => item.id === itemId);
-        if (existingIndex !== -1) {
-          // Update the existing item
-          const updatedAnswers = [...prevAnswers];
-          updatedAnswers[existingIndex] = { id: itemId, value: radioValue };
-          return updatedAnswers;
-        } else {
-          // Add a new item
-          return [...prevAnswers, { id: itemId, value: radioValue }];
-        }
-      });
-   
+      const existingIndex = prevAnswers.findIndex(item => item.questionId === questionId);
+      if (existingIndex !== -1) {
+        // Update the existing item
+        const updatedAnswers = [...prevAnswers];
+        updatedAnswers[existingIndex] = { questionId: questionId, answerValue: answerValue };
+        return updatedAnswers;
+      } else {
+        // Add a new item
+        return [...prevAnswers, { questionId: questionId, answerValue: answerValue }];
+      }
+    });
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+  
+    const updatedAnswers = answers.map(answer => ({
+      ...answer,
+      companyId: companyId
+    }));
+  
+    const formData = new FormData();
+    
+    updatedAnswers.forEach((answer, index) => {
+      Object.entries(answer).forEach(([key, value]) => {
+        formData.append(`answers[${index}][${key}]`, value);
+      });
+    });
+  
+    try {
+      const response = await fetch("http://localhost:3000/survey/submit/answer", {
+        method: "POST",
+        body: formData,
+        credentials: 'include'
+      });
+  
+      const responseData = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(responseData.error);
+      }
+  
+      navigate("/surveys/view"); // Navigate to the view page after successful submission
+      
+    } catch (error) {
+      console.error("Error submitting survey answers:", error);
+    }
+  };
+  
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
-        { console.log(answers)}
       <TopBar />
       <div className="flex flex-row gap-2">
         <SideBar />
@@ -134,7 +175,7 @@ const AnswerSurvey = () => {
                 ))}
 
                 <div className="w-full flex justify-end">
-                <ButtonPrimary text={"Submit"}/>
+                <ButtonPrimary text={"Submit"} onClick={handleSubmit}/>
                 </div>
             </div>
           </div>
