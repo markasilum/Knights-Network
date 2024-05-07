@@ -5,7 +5,24 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DateToWords from "../../components/DateFormatter";
 import ButtonNavigator from "../../components/ButtonNavigator";
-const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,preferences }) => {
+import { useAuthContext } from "../../hooks/useAuthContext";
+const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,preferences, userId }) => {
+
+  const{user} = useAuthContext()
+
+  const viewResume = async () => {
+    try {
+        const response = await fetch("http://localhost:3000/user/resume/log", {
+            method: "POST",
+            body: JSON.stringify({"ownerId": userId, "viewerId": user.user.id, "action": "view"}),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (error) {}
+
+  }
   return (
     <div className="overflow-auto-y w-full  bg-white h-fit mt-2 p-4 flex flex-col rounded-xl mb-20 gap-2">
       <div>
@@ -97,8 +114,8 @@ const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,p
 
       {preferences.allowViewResume == true &&(
         <div className='w-full flex flex-row justify-end'>
-        <ButtonNavigator path={`/person/resume/view/${personId}`} text={"View Resume"}/>
-      </div> 
+          <ButtonNavigator path={`/person/resume/view/${personId}`} text={"View Resume"} onClick={viewResume}/>
+        </div> 
       )}  
     </div>
   );

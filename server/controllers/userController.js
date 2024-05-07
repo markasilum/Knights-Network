@@ -220,6 +220,46 @@ const role = async (req, res) => {
     }
   }
 
+  const resumeLog =  async (req, res) => {
+    try {
+      const { ownerId, viewerId, action } = req.body;
+      const data = await prisma.resumeLogs.create({
+        data:{
+          viewerId: viewerId,
+          ownerId:ownerId,
+          action:action,
+        }
+      });
+      res.status(201).json(data);
+    } catch (error) {
+      console.error("Error getting company index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  const getResumeLog =  async (req, res) => {
+    try {
+      const {id} = req.query;
+      const data = await prisma.resumeLogs.findMany({
+        where:{
+          ownerId: id
+        },
+        include:{
+          resumeViewer:{
+            select:{
+              company: true,
+              person:true,
+            }
+          }
+        }
+      });
+      res.status(201).json(data);
+    } catch (error) {
+      console.error("Error getting company index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
 
 module.exports ={
     role,
@@ -231,5 +271,7 @@ module.exports ={
     userSetting,
     userSettingUpdate,
     deactivateAccount,
-    reactivateAccount
+    reactivateAccount,
+    resumeLog,
+    getResumeLog
 }

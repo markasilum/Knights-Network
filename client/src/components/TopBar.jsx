@@ -9,6 +9,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import Notifications from "./Notifications";
 import SearchBar from "./SearchBar";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 const TopBar = ({catProp, query}) => {
   const {user} = useAuthContext()
   let role
@@ -86,6 +87,15 @@ const TopBar = ({catProp, query}) => {
             <Link to={"/settings"}>
               <SettingsIcon />
               Settings
+            </Link>
+          </li>
+          )}
+
+        {(role.roleName == 'alumni' || role.roleName == 'student')&&(
+            <li>
+            <Link to={"/resume/logs"}>
+              <VisibilityOutlinedIcon/>
+              Resume Logs
             </Link>
           </li>
           )}
