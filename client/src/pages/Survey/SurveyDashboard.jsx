@@ -35,7 +35,7 @@ const SurveyDashboard = () => {
        <SideBar/>
         <div className="flex flex-col w-9/12  h-screen  bg-neutral">
             <div className="pt-2 pr-2 overflow-x-auto">
-            <div className="w-full h-fit min-h-80 p-3 rounded-xl mb-20 flex flex-col bg-white">
+            <div className="w-full h-fit min-h-80 p-3 rounded-xl mb-20 flex flex-col bg-white justify-between">
              
                 <table className="table bg-white rounded-xl">
                     <thead>
@@ -51,7 +51,7 @@ const SurveyDashboard = () => {
                         <tr key={survey.id} className=' align-center hover'>
                             <td>{survey.name}</td>
                             <td><Link className="underline" to={`/surveys/details/${survey.id}`}>View Questions</Link></td>
-                            <td><Link className="underline" to={`/survey/partners/${survey.id}`}>View Answers</Link></td>
+                            <td><Link className="underline" to={`/surveys/answers/view/${survey.id}`}>View Answers</Link></td>
                             <td><DateConverter isoString={survey.dateCreated}/></td>
                             
                         </tr>

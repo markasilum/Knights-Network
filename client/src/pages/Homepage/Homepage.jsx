@@ -33,14 +33,7 @@ const Homepage = () => {
         <SideBar/>
         <div className="flex flex-col w-9/12  h-screen  bg-neutral ">
             <div className="">
-                <div className="w-full bg-white h-screen p-5 pt-0 mb-20 overflow-y-auto">
-                <div className="absolute flex flex-row gap-2 items-center pt-3 pb-3 bg-white w-full max-w-[801px]">
-                    <div className="font-thin"><Link to={'/home'} className="underline decoration-1	text-accent font-semibold">Home</Link></div>
-                    {role!= 'company'&&(
-                      <div className="font-thin"><Link to={'/home/recommendation'} className="underline decoration-1	font-semibold">Recommended</Link></div>
-                    )}           
-                </div>
-                    <div className="h-14"></div>
+                <div className="w-full bg-white h-screen p-5 pt-5 mb-20 overflow-y-auto">
                     <JobPostCard jobData={jobPosts}/>
                 </div>
             </div>
