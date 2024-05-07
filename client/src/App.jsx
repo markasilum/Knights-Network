@@ -53,9 +53,11 @@ import SearchPageCompany from "./components/SearchPageCompany";
 import SearchPagePeople from "./components/SearchPagePeople";
 import ViewPersonProfile from "./pages/Profile/ViewPersonProfile";
 import ResumeViewProfile from "./components/ResumeViewProfile";
-import SurveyDashboard from "./pages/Events/SurveyDashboard";
-import CreateSurveyForm from "./pages/Events/CreateSurveyForm";
-import SurveyDetails from "./pages/Events/SurveyDetails";
+import SurveyDashboard from "./pages/Survey/SurveyDashboard";
+import CreateSurveyForm from "./pages/Survey/CreateSurveyForm";
+import SurveyDetails from "./pages/Survey/SurveyDetails";
+import SurveyList from "./pages/Survey/SurveyList";
+import AnswerSurvey from "./pages/Survey/AnswerSurvey";
 
 function App() {
   const { user } = useAuthContext();
@@ -268,6 +270,14 @@ function App() {
           <Route
             path="/surveys/details/:surveyId"
             element={user ? <SurveyDetails /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/surveys/view"
+            element={user ? <SurveyList /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="/surveys/answer/:surveyId"
+            element={user ? <AnswerSurvey /> : <Navigate to={"/login"} />}
           />
         </Routes>
       </Router>
