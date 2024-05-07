@@ -41,6 +41,7 @@ const SideBar = () => {
     <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/eventslist"} />
     <SidebarButton text={"Users"}  icon={<PeopleIcon fontSize="large"/>}  onClick={"/verify-users/alumni"} />
     <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'} />
+    <SidebarButton text={"Surveys"}  onClick={'/surveys'} />
   </ul>
   
   )
