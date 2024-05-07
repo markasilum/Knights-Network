@@ -23,6 +23,7 @@ const SideBar = () => {
       <SidebarButton text={"Home"} icon={<HomeIcon fontSize="large"/>} onClick={"/home"} />
       <SidebarButton text={"Events"} icon={<EventIcon fontSize="large"/> } onClick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthIcon fontSize="large"/>} onClick={'/events/calendar'} />
+      <SidebarButton text={"Surveys"}  onClick={'/surveys/view'} />
     </ul>
   )
 

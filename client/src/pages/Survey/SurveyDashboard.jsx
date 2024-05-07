@@ -8,7 +8,6 @@ import ButtonNavigator from '../../components/ButtonNavigator'
 
 const SurveyDashboard = () => {
     const[surveyData,setSurveyData] = useState([])
-  const [filterStat, setFilterStat] = useState('upcoming')
 
   useEffect(()=>{
     const getSurveyIndex = async () =>{
