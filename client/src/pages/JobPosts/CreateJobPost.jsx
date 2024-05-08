@@ -27,6 +27,7 @@ const [degree, setDegree] = useState([{degreeName:""}]);
 const [licenseName, setLicenseName] = useState([{licenseName:""}]);
 const [skills, setSkill] = useState([{skillName:""}]);
 const [isAppLetterReq, setIsAppLetterReq] = useState(false);
+const[errors, setErrors] = useState({})
 
 
 // useEffect(()=>{console.log(isAppLetterReq)})
@@ -174,12 +175,15 @@ const handleSubmit = async (event) => {
         credentials:'include'
       }
     );
-        
-      
-    console.log("recommendation created", notify)
+    
     navigateHome()
   } catch (error) {
     console.error("Error creating job post:", error);
+    if(error.message == "Number of positions is not a valid number"){
+      setErrors({positionErr:"Number of positions is not a valid number"})
+    }else if(error.message == "Salary is not a valid number"){
+      setErrors({salaryErr:"Salary is not a valid number"})
+    }
   }
 };
 
@@ -226,6 +230,7 @@ const handleValidity = (endDate) => {
                     onChange={(e) => setEmploymentType(e.target.value)}
                     req={true}
                   />
+                  <div>
                   <InputFields
                     id={"salary"}
                     labelText={"Salary"}
@@ -233,6 +238,12 @@ const handleValidity = (endDate) => {
                     value={salary}
                     onChange={(e) => setSalary(e.target.value)}
                   />
+                   {errors.salaryErr && (
+                    <span className="text-error ml-2  text-xs h-2">
+                      {errors.salaryErr}
+                    </span>
+                  )}
+                  </div>
                   <InputFields
                     id={"jobLoc"}
                     labelText={"Job Location*"}
@@ -249,6 +260,7 @@ const handleValidity = (endDate) => {
                     onChange={(e) => setWorkModel(e.target.value)}
                     req={true}
                   />
+                  <div>
                   <InputFields
                     id={"numOfPosition"}
                     labelText={"Number of Positions*"}
@@ -257,6 +269,12 @@ const handleValidity = (endDate) => {
                     onChange={(e) => setNumOfPosition(e.target.value)}
                     req={true}
                   />
+                  {errors.positionErr && (
+                    <span className="text-error ml-2  text-xs h-2">
+                      {errors.positionErr}
+                    </span>
+                  )}
+                  </div>
                   <div className="col-span-2">
                     <span className="label-text font-bold">Qualifications</span>
                   </div>
@@ -411,10 +429,12 @@ const handleValidity = (endDate) => {
                   </div>
           
           
-                  <DatePicker
+                  <div className="flex flex-col w-fit items-center bg-white rounded-md">
+                <DatePicker
                   id="validity"
                   selected={validity}
                   onChange={(date) => setValidity(date)}
+          
                   isClearable
                   peekNextMonth
                   showMonthDropdown
@@ -422,6 +442,7 @@ const handleValidity = (endDate) => {
                   dropdownMode="select"
                   className="input outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
                 />
+              </div>
                 
 
                   <button
