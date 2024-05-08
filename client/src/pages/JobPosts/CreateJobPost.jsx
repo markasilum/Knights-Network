@@ -7,6 +7,7 @@ import TextAreaInput from '../../components/TextAreaInput';
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css"
 import SideBar from '../../components/SideBar';
 const CreateJobPost = () => {
@@ -26,8 +27,7 @@ const [degree, setDegree] = useState([{degreeName:""}]);
 const [licenseName, setLicenseName] = useState([{licenseName:""}]);
 const [skills, setSkill] = useState([{skillName:""}]);
 const [isAppLetterReq, setIsAppLetterReq] = useState(false);
-const [dateCreated, setDateCreated] = useState(new Date().toISOString());
-const [dateUpdated, setDateUpdated] = useState(new Date().toISOString());
+
 
 // useEffect(()=>{console.log(isAppLetterReq)})
 
@@ -97,6 +97,10 @@ const navigateHome = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
   
+  const isoValidityDate =
+    validity instanceof Date && validity !== ""
+        ? dayjs(validity).format('YYYY-MM-DDTHH:mm:ss[Z]')
+        : validity;
   
   const formData = new FormData();
 
@@ -108,7 +112,7 @@ const handleSubmit = async (event) => {
   formData.append('workModel', workModel);
   formData.append('numOfPosition', numOfPosition);
   if(validity){
-    formData.append('validity', validity.toISOString());
+    formData.append('validity', isoValidityDate);
   }
   formData.append('isOpen', isOpen);
   // formData.append('degree', degree);
@@ -407,17 +411,17 @@ const handleValidity = (endDate) => {
                   </div>
           
           
-                <DatePicker
-                selected={validity}
-                onChange={handleValidity}
-                showTimeSelect
-                timeFormat="h:mm aa"
-                timeIntervals={15}
-                timeCaption="time"
-                dateFormat="MMMM d, yyyy h:mm aa"
-                placeholderText='mm/dd/yy'
-                className='flex flex-row w-full justify-center items-center align-middle input input-bordered bg-white text-center'
-              />
+                  <DatePicker
+                  id="validity"
+                  selected={validity}
+                  onChange={(date) => setValidity(date)}
+                  isClearable
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  className="input outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                />
                 
 
                   <button

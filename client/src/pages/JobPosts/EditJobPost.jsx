@@ -6,6 +6,10 @@ import InputFields from "../../components/InputFields";
 import TextAreaInput from "../../components/TextAreaInput";
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
+import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
+
+
 const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense,  fetchJobPostDetails,fetchJobPostDegree,fetchJobPostSkills,fetchJobPostLicense,fetchApplication}) => {
   const navigate = useNavigate();
   const [jobId, setJobId] = useState(jobData?.jobId || '');
@@ -16,7 +20,7 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense,  fetchJobPostD
   const [jobLoc, setJobLoc] = useState(jobData.jobLoc || '');
   const [workModel, setWorkModel] = useState(jobData.workModel || '');
   const [numOfPosition, setNumOfPosition] = useState(jobData.numOfPosition || '');
-  const [validity, setValidity] = useState(jobData.validity || '');
+  const [validity, setValidity] = useState(jobData.validity || null);
   const [isOpen, setIsOpen] = useState(jobData.isOpen || '');
   const [yearsExp, setYearExp] = useState(jobData.yearsExp || '');
   const [degree, setDegree] = useState([{degreeName:""}] || '');
@@ -89,6 +93,12 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense,  fetchJobPostD
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    const isoValidityDate =
+    validity instanceof Date && validity !== ""
+        ? dayjs(validity).format('YYYY-MM-DDTHH:mm:ss[Z]')
+        : validity;
+
     const formData = new FormData();
     formData.append("id", jobId);
     formData.append("jobTitle", jobTitle);
@@ -98,9 +108,7 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense,  fetchJobPostD
     formData.append("jobLoc", jobLoc);
     formData.append("workModel", workModel);
     formData.append("numOfPosition", numOfPosition);
-    if(validity){
-      formData.append("validity", validity);
-    }
+    formData.append("validity", isoValidityDate);
     formData.append("isOpen", isOpen);
     // formData.append('degree', degree);
     formData.append("yearsExp", yearsExp);
@@ -286,20 +294,20 @@ const EditJobPost = ({ jobData, jobDegree, jobSkills, jobLicense,  fetchJobPostD
             <div className='col-span-2'>
                  <span className="label-text">Validity</span>
             </div>
-            <DateTime
-                id="isOpen"
-                selected={validity}
-                timeFormat={false}
-                onChange={handleValidity}
-                onKeyDown={(e) => {
-                  e.preventDefault();
-                }}
-                inputProps={{
-                  placeholder: "Open Until",
-                  className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-                }}
-              />
+            <div className="flex flex-col w-fit items-center bg-white rounded-md">
+                <DatePicker
+                  id="validity"
+                  selected={validity}
+                  onChange={(date) => setValidity(date)}
+          
+                  isClearable
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  className="input outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                />
+              </div>
            
             <button type="submit" className={`btn btn-primary w-40 mt-10 col-span-2`} onClick={handleSubmit}>Update Job Post</button>
         </form>

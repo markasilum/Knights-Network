@@ -15,6 +15,8 @@ router.post("/resume/log", userController.resumeLog)
 router.get("/resume/log/view", userController.getResumeLog);
 router.get("/admin/archive", userController.archiveUser);
 router.get("/admin/unarchive", userController.unArchiveUser);
+router.post("/admin/send", userController.sendEmail);
+
 
 
 

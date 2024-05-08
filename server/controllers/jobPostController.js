@@ -115,6 +115,18 @@ const createJobPost = async (req, res) => {
     let salaryWithoutCommas = salary.replace(/[, ]/g, '');
     const parsedSalary = parseInt(salaryWithoutCommas );
     const parsedPos = parseInt(numOfPosition);
+
+    validity = (validity === 'null') ? null : validity;
+
+    if (isNaN(parsedPos)) {
+      throw new Error("Number of positions is not a valid number");
+    }
+    if (isNaN(parsedSalary)) {
+      throw new Error("Salary is not a valid number");
+    }
+
+
+
     let isOpenBoolean = true;
     if (isOpen === "false") {
       isOpenBoolean = false;
@@ -239,7 +251,7 @@ const updateJobPost = async (req, res) => {
       appLettrBool = true;
     }
 
-    console.log(appLettrBool)
+    validity = (validity === 'null') ? null : validity;
     await prisma.jobPost.update({
       where:{
         id:id
@@ -856,6 +868,33 @@ const jobReqDegree = async (req, res) => {
   }
 };
 
+const autoCloseJobPost = async () => {
+  try {
+      const currentDate = new Date().toISOString();
+      
+      // Find all job posts with a validity date equal to the current date
+      const jobPostsToUpdate = await prisma.jobPost.findMany({
+          where: {
+              validity: {
+                  lte: currentDate // Get only the date part
+              }
+          }
+      });
+
+      // Update the isOpen status of job posts
+      for (const jobPost of jobPostsToUpdate) {
+          await prisma.jobPost.update({
+              where: { id: jobPost.id },
+              data: { isOpen: false } // Set isOpen to true for job posts with matching validity date
+          });
+      }
+
+      console.log(currentDate);
+  } catch (error) {
+      console.error('Error updating job post statuses:', error.message);
+  }
+};
+
 module.exports = {
   jobPostIndex,
   companyJobPostIndex,
@@ -868,4 +907,5 @@ module.exports = {
   getJobApplicants,
   updateJobPost,
   getJobsMany,
+  autoCloseJobPost,
 };
