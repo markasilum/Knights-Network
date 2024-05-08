@@ -10,6 +10,7 @@ import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import { useAuthContext } from "../hooks/useAuthContext";
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import HomeIcon from '@mui/icons-material/Home';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
@@ -22,10 +23,10 @@ const SideBar = () => {
     <ul className="menu menu-lg bg-base-100  w-3/12 h-screen p-5 gap-3">
       <SidebarButton text={"Profile"} icon={<PersonOutlinedIcon fontSize="large"/>} onClick={"/profile"} />
       <SidebarButton text={"Job Posts"} icon={<FeedOutlinedIcon fontSize="large"/>} onClick={"/jobpost/dashboard"} />
-      <SidebarButton text={"Home"} icon={<HomeIcon fontSize="large"/>} onClick={"/home"} />
+      <SidebarButton text={"Home"} icon={<HomeOutlinedIcon fontSize="large"/>} onClick={"/home"} />
       <SidebarButton text={"Events"} icon={<EventOutlinedIcon fontSize="large"/> } onClick={"/events"}/>
       <SidebarButton text={"Calendar"} icon={<CalendarMonthOutlinedIcon fontSize="large"/>} onClick={'/events/calendar'} />
-      <SidebarButton text={"Surveys"} icon={<PollOutlinedIcon/>} onClick={'/surveys/view'} />
+      <SidebarButton text={"Surveys"} icon={<PollOutlinedIcon fontSize="large"/>} onClick={'/surveys/view'} />
     </ul>
   )
 

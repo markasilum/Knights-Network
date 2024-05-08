@@ -119,9 +119,15 @@ const getPersonCredentials = async (req, res) => {
       education: {
         include: {
           degree: true,
-        },
+        },orderBy:{
+          startDate:"desc"
+        }
       },
-      experience: true,
+      experience:{
+        orderBy:{
+          startDate:"desc"
+        }
+      },
       certification: true,
       skills: {
         include: {
@@ -462,23 +468,25 @@ const resumePDF = async (req, res) => {
         align: "center",
       });
       doc.moveDown();
-      data.experience.map(
-        (item) => (
-          doc.font("Gotham-Medium").text(item.jobTitle),
-          doc.font("Gotham-Book").text(item.companyName),
+      data.experience.map((item) => {
+        doc.font("Gotham-Medium").text(item.jobTitle);
+        doc.font("Gotham-Book").text(item.companyName);
+        if (item.endDate) {
           doc
             .font("Gotham-Book")
-            .text(
-              DateToWords(item.startDate) + " - " + DateToWords(item.endDate)
-            ),
-          (detail = item.jobDetails.replace(/\r/g, "")),
-          doc.list(detail.split("\n"), {
-            bulletRadius: 2,
-            indent: 10,
-          }),
-          doc.moveDown()
-        )
-      );
+            .text(DateToWords(item.startDate) + " - " + DateToWords(item.endDate));
+        } else {
+          doc
+            .font("Gotham-Book")
+            .text(DateToWords(item.startDate) + " - " + "present");
+        }
+        let detail = item.jobDetails.replace(/\r/g, "");
+        doc.list(detail.split("\n"), {
+          bulletRadius: 2,
+          indent: 10,
+        });
+        doc.moveDown();
+      });
     }
 
     if (data.skills.length != 0) {
@@ -502,21 +510,24 @@ const resumePDF = async (req, res) => {
         align: "center",
       });
       doc.moveDown();
+      
 
-      data.education.map(
-        (item) => (
-          doc.font("Gotham-Medium").text(item.schoolName),
-          doc.font("Gotham-Book").text(item.degree.degreeName),
+      data.education.map((item) => {
+        doc.font("Gotham-Medium").text(item.schoolName);
+        doc.font("Gotham-Book").text(item.degree.degreeName);
+        if (item.endDate) {
           doc
             .font("Gotham-Book")
-            .text(
-              DateToWords(item.startDate) + " - " + DateToWords(item.endDate)
-            ),
-          doc.font("Gotham-Book").text("QPI: " + item.qpi),
-          doc.font("Gotham-Book").text(item.awards),
-          doc.moveDown()
-        )
-      );
+            .text(DateToWords(item.startDate) + " - " + DateToWords(item.endDate));
+        } else {
+          doc
+            .font("Gotham-Book")
+            .text(DateToWords(item.startDate) + " - " + "present");
+        }
+        doc.font("Gotham-Book").text("QPI: " + item.qpi);
+        doc.font("Gotham-Book").text(item.awards);
+        doc.moveDown();
+      });
     }
 
     if (data.personLicense.length != 0) {
