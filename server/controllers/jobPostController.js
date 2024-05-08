@@ -210,7 +210,7 @@ const createJobPost = async (req, res) => {
     // console.log(newJobPost);
   } catch (error) {
     console.error("Error creating job post:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
     // console.log(req.body)
   }
 };
