@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
 
 
 const jwt = require("jsonwebtoken");
@@ -17,6 +18,34 @@ function exclude(user, keys) {
     Object.entries(user).filter(([key]) => !keys.includes(key))
   );
 }
+
+
+
+const sendEmail = async (req, res) => {
+  try {
+    console.log("send email called");
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'mecasilum@addu.edu.ph',
+        pass: 'vwjyycjdfmiolqyi'
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: "mecasilum@addu.edu.ph",
+      to: "markasilum13@gmail.com",
+      subject: "nodemailer test",
+      text: "hello world"
+    });
+
+    res.status(200).json(info);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const role = async (req, res) => {
     const userId = getUserIdFromJWT(req)
 
@@ -322,5 +351,6 @@ module.exports ={
     resumeLog,
     getResumeLog,
     archiveUser,
-    unArchiveUser
+    unArchiveUser,
+    sendEmail,
 }
