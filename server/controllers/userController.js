@@ -45,6 +45,34 @@ const role = async (req, res) => {
     res.json(data);
   };
 
+  const archiveUser = async (req, res) => {
+    const {id} = req.query
+  
+    const data = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data:{
+        isBanned: true
+      }
+    });
+    res.json(data);
+  };
+
+  const unArchiveUser = async (req, res) => {
+    const {id} = req.query
+  
+    const data = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data:{
+        isBanned: false
+      }
+    });
+    res.json(data);
+  };
+
   const reactivateAccount = async (req, res) => {
     const { passwordParam, emailParam } = req.body;
     console.log(emailParam)
@@ -134,9 +162,15 @@ const role = async (req, res) => {
             }
           }
         },
+        orderBy: {
+          user: {
+            person: {
+              firstName: 'asc'
+            }
+          }
+        }
       });
       res.status(201).json(data);
-      console.log(data)
       
     } catch (error) {
       console.error("Error getting alumni index:", error);
@@ -159,6 +193,12 @@ const role = async (req, res) => {
                   verifiReq: true
                 }
               }
+            }
+          }
+        },orderBy: {
+          user: {
+            person: {
+              firstName: 'asc'
             }
           }
         }
@@ -186,6 +226,13 @@ const role = async (req, res) => {
                   verifiReq:true
                 }
               }
+            }
+          }
+        },
+        orderBy:{
+          user:{
+            company:{
+              companyName: 'asc'
             }
           }
         }
@@ -273,5 +320,7 @@ module.exports ={
     deactivateAccount,
     reactivateAccount,
     resumeLog,
-    getResumeLog
+    getResumeLog,
+    archiveUser,
+    unArchiveUser
 }

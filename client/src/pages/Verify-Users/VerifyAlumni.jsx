@@ -9,21 +9,21 @@ const VerifyAlumni = () => {
     const[userData, setUserData] = useState(null)
     
     
-    
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/user/index/alumni",{
+          credentials:'include'
+        });
+        const getUsersResult = await response.json();
+        setUserData(getUsersResult[0].user)
+        setUsers(getUsersResult);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
   useEffect(() => {
 
-    const fetchUsers = async () => {
-        try {
-          const response = await fetch("http://localhost:3000/user/index/alumni",{
-            credentials:'include'
-          });
-          const getUsersResult = await response.json();
-          setUserData(getUsersResult[0].user)
-          setUsers(getUsersResult);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
+   
 
       fetchUsers()
   }, []);
@@ -66,7 +66,7 @@ const VerifyAlumni = () => {
                 </div>
                 <div className="divider divider-horizontal h-[90%]"></div>
 
-                <PersonUserDataCard userData={userData}/>
+                <PersonUserDataCard userData={userData} fetchUsers={fetchUsers}/>
 
 
               </div>
