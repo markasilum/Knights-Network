@@ -39,9 +39,16 @@ const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,p
                 <DateToWords dateString={experience.startDate} />
               </span>
               <span className="font-thin">-</span>
-              <span className="font-thin">
+              {experience.endDate&&(
+                <span className="font-thin">
                 <DateToWords dateString={experience.endDate} />
               </span>
+              )}
+              {!experience.endDate&&(
+                <span className="font-thin">
+                present
+              </span>
+              )}
             </div>
             <ul className="list-disc ml-8 font-thin">
               {experience.jobDetails.split("\r\n").map((line, index) => (
@@ -76,7 +83,12 @@ const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,p
               <div className='flex flex-row gap-1'>
               <span className='font-thin'><DateToWords dateString={education.startDate} /></span>
               <span className='font-thin'>-</span>
-              <span className='font-thin'><DateToWords dateString={education.endDate} /></span>
+              {education.endDate&&(
+                  <span className='font-thin'><DateToWords dateString={education.endDate} /></span>
+              )}
+              {!education.endDate&&(
+                  <span className='font-thin'>present</span>
+              )}
               </div>
               <span className='font-thin'>{"QPI: " +education.qpi}</span>
               <span className='font-thin'>{education.awards}</span>
