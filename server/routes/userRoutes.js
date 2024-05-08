@@ -13,6 +13,8 @@ router.get("/archive", userController.deactivateAccount)
 router.post("/reactivate", userController.reactivateAccount)
 router.post("/resume/log", userController.resumeLog)
 router.get("/resume/log/view", userController.getResumeLog);
+router.get("/admin/archive", userController.archiveUser);
+router.get("/admin/unarchive", userController.unArchiveUser);
 
 
 
