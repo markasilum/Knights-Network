@@ -84,7 +84,7 @@ const loginReceive = async (req, res) => {
         console.log(error.message)
         res.status(400).json({ error: "Account is deactivated" });
       }else if(error.message === "Account is banned"){
-        res.status(400).json({ error: "Account is banned" });
+        res.status(400).json({ error: "Account is banned, contact administrator" });
       }
       else{
         res.status(400).json({ error: "Invalid credentials" });

@@ -23,7 +23,9 @@ function exclude(user, keys) {
 
 const sendEmail = async (req, res) => {
   try {
-    console.log("send email called");
+    const {email} = req.body
+
+    console.log("email sent to:", email)
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -34,12 +36,13 @@ const sendEmail = async (req, res) => {
 
     const info = await transporter.sendMail({
       from: "mecasilum@addu.edu.ph",
-      to: "markasilum13@gmail.com",
-      subject: "nodemailer test",
-      text: "hello world"
+      to: email,
+      subject: "Knights Network Account Verification",
+      text: "Knights Network Account Verified"
     });
 
     res.status(200).json(info);
+    console.log("sent email");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });

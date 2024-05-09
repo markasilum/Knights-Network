@@ -33,6 +33,11 @@ const VerifyStudents = () => {
     console.log(userData)
   }
 
+  
+  const handleButtonClick = (event) => {
+    handleSubmit()
+  };
+
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       {/* {console.log(userData)} */}

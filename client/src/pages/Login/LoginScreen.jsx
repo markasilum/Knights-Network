@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import MondalPendingVerification from '../../components/ModalPendingVerification';
 import ModalPendingVerification from '../../components/ModalPendingVerification';
 import ModalAccountReactivate from '../../components/ModalAccountReactivate';
+import ModalAccountBanned from '../../components/ModalAccountBanned';
 const LoginScreen = () => {
   const navigate = useNavigate()
 
@@ -83,8 +84,8 @@ const LoginScreen = () => {
         setErrorMessage({ verification: "Pending account verification" });
       } else if(error.message === "Account is deactivated"){
         setErrorMessage({ deactivate: "Account is deactivated" });
-      } else if(error.message === "Account is banned"){
-        setErrorMessage({ banned: "Account is banned" });
+      } else if(error.message === "Account is banned, contact administrator"){
+        setErrorMessage({ banned: "Account is banned, contact administrator" });
       } 
     }
   };
@@ -159,6 +160,9 @@ const LoginScreen = () => {
               
               {errorMessage.deactivate &&
                 document.getElementById("deactivated").showModal()}
+
+            {errorMessage.banned &&
+                document.getElementById("banned").showModal()}
             </div>
             <div className="w-full flex flex-col justify-center items-center gap-3 mt-4">
               <button
@@ -184,6 +188,7 @@ const LoginScreen = () => {
 
           <ModalPendingVerification setErrorMessage={setErrorMessage} />
           <ModalAccountReactivate setErrorMessage={setErrorMessage} email={email} password={password}/>
+          <ModalAccountBanned setErrorMessage={setErrorMessage}/>
         </div>
       </div>
     </div>

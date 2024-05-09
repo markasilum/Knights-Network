@@ -4,6 +4,29 @@ import ViewDocumentModal from "./ViewDocumentModel";
 
 const PersonUserDataCard = ({ userData, fetchUsers }) => {
 
+  const handleSendEmail = async (event) => {
+    const formData = new FormData();
+
+    formData.append("email", userData.emailAddress);
+    try {
+        const response = await fetch("http://localhost:3000/user/admin/send", {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+          });
+  
+          const responseData = await response.json();
+  
+          if (!response.ok) {
+            throw new Error(responseData.error);
+          }
+          console.log(response)
+    } catch (error) {
+        console.log(error)
+    }
+
+  }
+
   const handleSubmit = async (event) => {
     try {
       const response = await fetch(`http://localhost:3000/user/verify?id=${userData.id}`, {
@@ -21,6 +44,7 @@ const PersonUserDataCard = ({ userData, fetchUsers }) => {
       }
 
       fetchUsers()
+      handleSendEmail()
     } catch (error) {
       console.error("Error verifying user:", error);
     }
@@ -66,6 +90,8 @@ const PersonUserDataCard = ({ userData, fetchUsers }) => {
     }
 
   }
+
+  
   return (
     <div className="w-2/3 border-2 rounded-lg h-fit max-h-[90%] p-3 bg-neutral">
       {/* {userData &&(
