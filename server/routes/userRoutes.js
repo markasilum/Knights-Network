@@ -1,6 +1,8 @@
 const express = require("express");
+const multer  = require('multer');
 const router = express.Router();
 const userController = require('../controllers/userController')
+const upload = multer();
 
 router.get("/role", userController.role);
 router.get("/details",userController.userDetails);
@@ -15,7 +17,7 @@ router.post("/resume/log", userController.resumeLog)
 router.get("/resume/log/view", userController.getResumeLog);
 router.get("/admin/archive", userController.archiveUser);
 router.get("/admin/unarchive", userController.unArchiveUser);
-router.post("/admin/send", userController.sendEmail);
+router.post("/admin/send", upload.none(), userController.sendEmail);
 
 
 
