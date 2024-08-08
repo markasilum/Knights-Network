@@ -332,9 +332,10 @@ const role = async (req, res) => {
           }
         }
       });
+
       res.status(201).json(data);
     } catch (error) {
-      console.error("Error getting company index:", error);
+      console.error("Error getting resume log:", error);
      res.status(500).json({ error: "Internal Server Error" });
     }
   }

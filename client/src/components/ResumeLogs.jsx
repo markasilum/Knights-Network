@@ -51,7 +51,6 @@ const ResumeLogs = () => {
                
                                   
                 <tbody>
-
                   {viewerData&&(
                     viewerData.map((data) => (
                         <tr key={data.id} className=" align-center hover">
@@ -68,15 +67,6 @@ const ResumeLogs = () => {
                                 <td>{data.action}</td>
                                 <td><DateConverter isoString={data.dateCreated}/></td>
                             
-                          {/* <td>{survey.name}</td>
-                          <td className="flex justify-end">
-                            <Link
-                              className="btn btn-success btn-xs text-white"
-                              to={`/surveys/answer/${survey.id}`}
-                            >
-                              Answer Survey
-                            </Link>
-                          </td> */}
                           
                         </tr>
                       ))
