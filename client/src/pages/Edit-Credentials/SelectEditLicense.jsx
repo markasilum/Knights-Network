@@ -64,7 +64,7 @@ const SelectEditLicense = () => {
                     <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(license.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
                     <button className="hover:text-error hover:rounded-full hover:bg-neutral active:text-info p-1" onClick={()=>document.getElementById("delete"+license.id).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>
       
-                      <EditLicense licenseData={license}/>
+                      <EditLicense licenseData={license} fetchLicense={fetchLicense}/>
                       <DeleteLicense license={license} handleDelete={handleDelete}/>
                     </div>
                   </div>

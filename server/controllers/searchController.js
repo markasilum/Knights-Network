@@ -125,8 +125,13 @@ const searchPeople = async (req, res) => {
           { lastName: { contains: search } }
         ],
         user:{
-          isNot: null
-        }
+          role: {
+            roleName: {
+              not: 'admin'
+            }
+          }
+        },
+       
       },
       include: {
         user: true

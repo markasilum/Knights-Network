@@ -7,6 +7,7 @@ import TextAreaInput from '../../components/TextAreaInput';
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css"
 import SideBar from '../../components/SideBar';
 const CreateJobPost = () => {
@@ -26,8 +27,8 @@ const [degree, setDegree] = useState([{degreeName:""}]);
 const [licenseName, setLicenseName] = useState([{licenseName:""}]);
 const [skills, setSkill] = useState([{skillName:""}]);
 const [isAppLetterReq, setIsAppLetterReq] = useState(false);
-const [dateCreated, setDateCreated] = useState(new Date().toISOString());
-const [dateUpdated, setDateUpdated] = useState(new Date().toISOString());
+const[errors, setErrors] = useState({})
+
 
 // useEffect(()=>{console.log(isAppLetterReq)})
 
@@ -97,6 +98,10 @@ const navigateHome = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
   
+  const isoValidityDate =
+    validity instanceof Date && validity !== ""
+        ? dayjs(validity).format('YYYY-MM-DDTHH:mm:ss[Z]')
+        : validity;
   
   const formData = new FormData();
 
@@ -108,7 +113,7 @@ const handleSubmit = async (event) => {
   formData.append('workModel', workModel);
   formData.append('numOfPosition', numOfPosition);
   if(validity){
-    formData.append('validity', validity.toISOString());
+    formData.append('validity', isoValidityDate);
   }
   formData.append('isOpen', isOpen);
   // formData.append('degree', degree);
@@ -170,12 +175,15 @@ const handleSubmit = async (event) => {
         credentials:'include'
       }
     );
-        
-      
-    console.log("recommendation created", notify)
+    
     navigateHome()
   } catch (error) {
     console.error("Error creating job post:", error);
+    if(error.message == "Number of positions is not a valid number"){
+      setErrors({positionErr:"Number of positions is not a valid number"})
+    }else if(error.message == "Salary is not a valid number"){
+      setErrors({salaryErr:"Salary is not a valid number"})
+    }
   }
 };
 
@@ -222,6 +230,7 @@ const handleValidity = (endDate) => {
                     onChange={(e) => setEmploymentType(e.target.value)}
                     req={true}
                   />
+                  <div>
                   <InputFields
                     id={"salary"}
                     labelText={"Salary"}
@@ -229,6 +238,12 @@ const handleValidity = (endDate) => {
                     value={salary}
                     onChange={(e) => setSalary(e.target.value)}
                   />
+                   {errors.salaryErr && (
+                    <span className="text-error ml-2  text-xs h-2">
+                      {errors.salaryErr}
+                    </span>
+                  )}
+                  </div>
                   <InputFields
                     id={"jobLoc"}
                     labelText={"Job Location*"}
@@ -245,6 +260,7 @@ const handleValidity = (endDate) => {
                     onChange={(e) => setWorkModel(e.target.value)}
                     req={true}
                   />
+                  <div>
                   <InputFields
                     id={"numOfPosition"}
                     labelText={"Number of Positions*"}
@@ -253,6 +269,12 @@ const handleValidity = (endDate) => {
                     onChange={(e) => setNumOfPosition(e.target.value)}
                     req={true}
                   />
+                  {errors.positionErr && (
+                    <span className="text-error ml-2  text-xs h-2">
+                      {errors.positionErr}
+                    </span>
+                  )}
+                  </div>
                   <div className="col-span-2">
                     <span className="label-text font-bold">Qualifications</span>
                   </div>
@@ -407,17 +429,20 @@ const handleValidity = (endDate) => {
                   </div>
           
           
+                  <div className="flex flex-col w-fit items-center bg-white rounded-md">
                 <DatePicker
-                selected={validity}
-                onChange={handleValidity}
-                showTimeSelect
-                timeFormat="h:mm aa"
-                timeIntervals={15}
-                timeCaption="time"
-                dateFormat="MMMM d, yyyy h:mm aa"
-                placeholderText='mm/dd/yy'
-                className='flex flex-row w-full justify-center items-center align-middle input input-bordered bg-white text-center'
-              />
+                  id="validity"
+                  selected={validity}
+                  onChange={(date) => setValidity(date)}
+          
+                  isClearable
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  className="input outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                />
+              </div>
                 
 
                   <button

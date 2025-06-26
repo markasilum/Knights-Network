@@ -112,8 +112,21 @@ const createJobPost = async (req, res) => {
       skill,
       license,
     } = req.body;
-    const parsedSalary = parseInt(salary);
+    let salaryWithoutCommas = salary.replace(/[, ]/g, '');
+    const parsedSalary = parseInt(salaryWithoutCommas );
     const parsedPos = parseInt(numOfPosition);
+
+    validity = (validity === 'null') ? null : validity;
+
+    if (isNaN(parsedPos)) {
+      throw new Error("Number of positions is not a valid number");
+    }
+    if (isNaN(parsedSalary)) {
+      throw new Error("Salary is not a valid number");
+    }
+
+
+
     let isOpenBoolean = true;
     if (isOpen === "false") {
       isOpenBoolean = false;
@@ -197,7 +210,7 @@ const createJobPost = async (req, res) => {
     // console.log(newJobPost);
   } catch (error) {
     console.error("Error creating job post:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
     // console.log(req.body)
   }
 };
@@ -238,7 +251,7 @@ const updateJobPost = async (req, res) => {
       appLettrBool = true;
     }
 
-    console.log(appLettrBool)
+    validity = (validity === 'null') ? null : validity;
     await prisma.jobPost.update({
       where:{
         id:id
@@ -262,7 +275,6 @@ const updateJobPost = async (req, res) => {
         },
       }})
 
-    const degreeNamesArray = degree.map(degree => degree.degreeName);
 
     const jobDegreeReqIds= await prisma.jobDegreeReq.findMany({
       where:{
@@ -273,12 +285,9 @@ const updateJobPost = async (req, res) => {
       }
     })
 
+    if(degree){
+      const degreeNamesArray = degree.map(degree => degree.degreeName);
     if (degreeNamesArray.length > jobDegreeReqIds.length) {
-      // console.log("added new item");
-      //if naa new item, create the item.
-      //compare name sa new item sa names inside sa jobDegreeReq
-      //ang name na wala match ang new added item
-
       for (const item of degreeNamesArray) {
         if (!jobDegreeReqIds.some((req) => req.degree.degreeName === item)) {
           // Item not found in jobDegreeReqIds, return it or perform any desired action
@@ -400,13 +409,22 @@ const updateJobPost = async (req, res) => {
         });
       }
     }
+    }else{
+      await prisma.jobDegreeReq.deleteMany({
+        where:{
+          jobPostId:id
+        },
+      })
+    }
+
+    
 
     //SKILLS UPDATE
     //get skillName from skillObject
-    const skillNamesArray = skill.map(skill => skill.skillName);
 
-    //get jobSkillsReq
-    const jobSkillsReq= await prisma.jobSkillsReq.findMany({
+    if(skill){
+      const skillNamesArray = skill.map(skill => skill.skillName);
+      const jobSkillsReq= await prisma.jobSkillsReq.findMany({
       where:{
         jobPostId:id
       },
@@ -414,7 +432,6 @@ const updateJobPost = async (req, res) => {
         skill:true
       }
     })
-
     if(skillNamesArray.length > jobSkillsReq.length){
       //added new skills
       for (const item of skillNamesArray) {
@@ -538,6 +555,16 @@ const updateJobPost = async (req, res) => {
         });
       }
     }
+    }else{
+      await prisma.jobSkillsReq.deleteMany({
+        where:{
+          jobPostId:id
+        },
+      })
+    }
+    
+
+    
 
     //LICENSE UPDATE
     // console.log(license)
@@ -551,9 +578,6 @@ const updateJobPost = async (req, res) => {
     })
    
     if(license){
-      license.map(async (item)=>{
-        if(item.licenseName != ""){
-           //get licenseName from license object
             const licenseNamesArray = license.map(license => license.licenseName)
           if(licenseNamesArray.length > jobLicenseReq.length){
             //added skill
@@ -678,18 +702,14 @@ const updateJobPost = async (req, res) => {
               });
             }
           }
-        }else{
-          // console.log("empty", item)
+        }
+        else{
           await prisma.jobLicenseReq.deleteMany({
-            where: {
-              license:{
-                licenseName: item.licenseName
-              }
+            where:{
+              jobPostId:id
             },
           })
-        }
-      })
-    }   
+      } 
 
     res.status(200).json("jobpost updated")
   } catch (error) {
@@ -848,6 +868,33 @@ const jobReqDegree = async (req, res) => {
   }
 };
 
+const autoCloseJobPost = async () => {
+  try {
+      const currentDate = new Date().toISOString();
+      
+      // Find all job posts with a validity date equal to the current date
+      const jobPostsToUpdate = await prisma.jobPost.findMany({
+          where: {
+              validity: {
+                  lte: currentDate // Get only the date part
+              }
+          }
+      });
+
+      // Update the isOpen status of job posts
+      for (const jobPost of jobPostsToUpdate) {
+          await prisma.jobPost.update({
+              where: { id: jobPost.id },
+              data: { isOpen: false } // Set isOpen to true for job posts with matching validity date
+          });
+      }
+
+      console.log(currentDate);
+  } catch (error) {
+      console.error('Error updating job post statuses:', error.message);
+  }
+};
+
 module.exports = {
   jobPostIndex,
   companyJobPostIndex,
@@ -860,4 +907,5 @@ module.exports = {
   getJobApplicants,
   updateJobPost,
   getJobsMany,
+  autoCloseJobPost,
 };

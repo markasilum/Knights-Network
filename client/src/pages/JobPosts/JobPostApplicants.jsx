@@ -67,6 +67,11 @@ const JobPostApplicants = () => {
     }
   };
 
+  const openAppLetter = (fileName) => {
+    const pdfUrl = `http://localhost:3000/uploads/applicationLetters/${fileName}`;
+    window.open(pdfUrl, '_blank');
+  };
+
   return (
     <div className="w-9/12 bg-neutral  h-screen flex flex-col shadow-xl">
       <TopBar />
@@ -89,7 +94,11 @@ const JobPostApplicants = () => {
 
                   <div className="flex flex-col gap-3 h-full max-h-[150%] overflow-scroll">
                     {jobData.application &&
-                      jobData.application.map((applicant) => (
+                      jobData.application.map((applicant) => {
+                        const matchingLetter = jobData.applicationLetter.find(
+                          (letter) => letter.personId === applicant.person.id
+                        );
+                        return(
                         <div
                           key={applicant.id}
                           className="bg-neutral p-3 flex flex-row justify-between rounded-md "
@@ -142,16 +151,23 @@ const JobPostApplicants = () => {
                               )}
                             </div>
                           </div>
+                          <div className="flex flex-col">
                           <div className="h-full flex items-center">
                             <Link
-                              className="underline decoration-1 font-thin"
+                              className="underline decoration-1 font-thin hover:text-primary"
                               to={`/jobpost/applicants/resume/${applicant.person.id}`}
                             >
                               View Resume
                             </Link>
                           </div>
+                          {jobData.isAppLetterReq && matchingLetter && (
+                            <div className="h-full flex items-center">
+                              <button onClick={() => openAppLetter(matchingLetter.appLetterFile)} className="underline decoration-1">Application Letter</button>
+                            </div>
+                          )}
+                          </div>
                         </div>
-                      ))}
+                      )})}
                   
                   </div>
                 </div>

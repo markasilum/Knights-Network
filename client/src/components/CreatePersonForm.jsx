@@ -59,9 +59,13 @@ const CreatePersonForm = () => {
       formData.append("firstName", firstName);
       formData.append("middleName", middleName);
       formData.append("lastName", lastName);
-      formData.append("maidenLastName", maidenLastName);
+      if(maidenLastName){
+        formData.append("maidenLastName", maidenLastName);
+      }
+      if(birthDate){
+        formData.append("birthdate", birthDate.toISOString());
+      }
       formData.append("suffix", suffix);
-      formData.append("birthdate", birthDate.toISOString());
       formData.append("username", username);
       formData.append("password", password);
       formData.append("streetAddress", streetAddress);

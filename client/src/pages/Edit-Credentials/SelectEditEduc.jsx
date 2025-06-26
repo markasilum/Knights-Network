@@ -104,7 +104,7 @@ const SelectEditEduc = () => {
                         <button className='hover:bg-neutral hover:rounded-full active:text-info p-1' onClick={()=>document.getElementById(education.id).showModal()}><EditOutlinedIcon fontSize='medium'/></button>
                         <button className="hover:text-error hover:bg-neutral hover:rounded-full active:text-info p-1" onClick={()=>document.getElementById(education.degreeId).showModal()}><DeleteOutlinedIcon fontSize="medium"/></button>                             
                     </div>
-                    <EditEducation educationData={education} degreeData={degree}/>
+                    <EditEducation educationData={education} fetchEducation={fetchEducation}/>
                     <DeleteEducation education={education} handleDelete={handleDelete}/>
 
                   </div>

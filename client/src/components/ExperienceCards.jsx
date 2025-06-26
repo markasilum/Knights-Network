@@ -57,15 +57,23 @@ const ExperienceCards = () => {
               <DateToWords dateString={experience.startDate} />
             </span>
             <span className="font-thin">-</span>
-            <span className="font-thin">
+            {experience.endDate&&(
+              <span className="font-thin">
               <DateToWords dateString={experience.endDate} />
             </span>
+            )}
+            {!experience.endDate&&(
+              <span className="font-thin">present</span>
+            )}
           </div>
-          <ul className="list-disc ml-8 font-thin">
-            {experience.jobDetails.split("\r\n").map((line, index) => (
-              <li key={index}>{line}</li>
-            ))}
-          </ul>
+          {experience.jobDetails&&(
+             <ul className="list-disc ml-8 font-thin">
+             {experience.jobDetails.split("\r\n").map((line, index) => (
+               <li key={index}>{line}</li>
+             ))}
+           </ul>
+          )}
+         
         </div>
       ))}
     </div>

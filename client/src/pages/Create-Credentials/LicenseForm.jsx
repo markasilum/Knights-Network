@@ -4,21 +4,33 @@ import { useState } from "react";
 import TopBar from "../../components/topbar";
 import "react-datetime/css/react-datetime.css";
 import { useEffect } from "react";
+import DatePicker from "react-datepicker";
 
 const LicenseForm = ({fetchLicense}) => {
   const [licenseName, setLicenseName] = useState("");
   const [licensePic, setLicensePic] = useState("");
-  const [licenseValidity, setLicenseValidity] = useState(new Date().toISOString());
-
+  const [licenseValidity, setLicenseValidity] = useState(null);
+  const [errors, setErrors]= useState({})
   const handleSubmit = async (event) => {
+
+    event.preventDefault()
+    setErrors({})
+    const isoStartDate =
+    licenseValidity instanceof Date && licenseValidity !== ""
+      ? licenseValidity.toISOString()
+      : licenseValidity;
+
     const formData = new FormData();
 
     if (licensePic) {
       formData.append("licensePic", licensePic);
     }
 
+    if(isoStartDate){
+      formData.append("licenseValidity", isoStartDate);
+    }
+
     formData.append("licenseName", licenseName);
-    formData.append("licenseValidity", licenseValidity);
 
     try {
       const response = await fetch("http://localhost:3000/license/create", {
@@ -34,7 +46,14 @@ const LicenseForm = ({fetchLicense}) => {
         throw new Error(responseData.error);
       }
 
+      const dialog = document.getElementById("add_license");
+      dialog.close();
+
+
       fetchLicense()
+      setLicenseName("")
+      setLicensePic("")
+      setLicenseValidity(null)
     } catch (error) {
       console.error("Error creating license:", error);
     }
@@ -98,8 +117,8 @@ const LicenseForm = ({fetchLicense}) => {
   };
   return (
     <dialog id="add_license" className="modal">
-      <div className="modal-box max-w-2xl bg-base-200">
-      <form method="dialog">
+      <div className="modal-box max-w-2xl bg-base-200 overflow-scroll">
+        <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
@@ -107,13 +126,19 @@ const LicenseForm = ({fetchLicense}) => {
         </form>
         <form onSubmit={handleSubmit}>
           {/* <div className="flex flex-col bg-base-200 shadow-xl p-10 mt-5 rounded-xl"> */}
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text font-bold">License</span>
-              </div>
-            </label>
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text font-bold">Add License</span>
+            </div>
+          </label>
 
-            <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="grid grid-cols-2 gap-2 w-full">
+            <div>
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text font-normal">License Name</span>
+                </div>
+              </label>
               <input
                 type="text"
                 id="licenseName"
@@ -122,55 +147,67 @@ const LicenseForm = ({fetchLicense}) => {
                 value={licenseName}
                 onChange={(e) => setLicenseName(e.target.value)}
               />
+            </div>
 
-              <DateTime
-                className="mb-3"
-                id="startdate"
-                dateFormat="YYYY-MM"
-                selected={licenseValidity}
-                timeFormat={false}
-                onChange={handleDateChange}
-                inputProps={{
-                  placeholder: "License Validity",
-                  className:
-                    "flex flex-col w-full justify-center items-center input input-bordered bg-white text-center",
-                }}
-              />
+            <div className="flex flex-col w-full">
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">License Pic</span>
+                  <span className="label-text font-normal">Expires on:</span>
                 </div>
               </label>
-              <input
-                type="file"
-                id="licensepic"
-                placeholder="License Pic"
-                className="file-input file-input-bordered w-full col-span-2"
-                onChange={handleFileChange}
-              />
-              {licensePic && (
-                <button
-                  onClick={handleRemoveImage}
-                  className="btn btn-error text-white ml-3"
-                >
-                  Remove Image
-                </button>
+              <div className="flex flex-col w-full items-center justify-center bg-white rounded-md input input-bordered">
+                <DatePicker
+                  id="startdate"
+                  selected={licenseValidity}
+                  onChange={(date) => setLicenseValidity(date)}
+                  isClearable
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  placeholderText="mm/dd/yy"
+                  dropdownMode="select"
+                  className=" outline-none focus:outline-none focus-within:outline-none focus-within:border-none bg-white text-center"
+                />
+              </div>
+              {errors.startErr && (
+                <span className="text-error  text-xs h-2">
+                  {errors.startErr}
+                </span>
               )}
             </div>
-           
-          {/* </div> */}
-        </form>
-        <div className="modal-action">
-          <form method="dialog">
-            <button
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text">License Pic <span className="text-xs">[optional]</span></span>
+              </div>
+            </label>
+            <input
+              type="file"
+              id="licensepic"
+              placeholder="License Pic"
+              className="file-input file-input-bordered w-full col-span-2"
+              onChange={handleFileChange}
+            />
+            {licensePic && (
+              <button
+                onClick={handleRemoveImage}
+                className="btn btn-error text-white ml-3"
+              >
+                Remove Image
+              </button>
+            )}
+          </div>
+
+          <div className="w-full flex justify-end">
+          <button
               type="submit"
               className={`btn btn-primary w-40 mt-5`}
-              onClick={handleButtonClick}
+              onClick={handleSubmit}
             >
-             Add License
+              Add License
             </button>
-          </form>
-        </div>
+          </div>
+        </form>
+        
       </div>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>

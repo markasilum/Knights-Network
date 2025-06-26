@@ -549,6 +549,22 @@ const updateContact = async (req, res) => {
   }
 
 }
+
+const deleteContact = async (req, res) => {
+  try {
+    const {id} = req.query
+
+    const data = await prisma.companyContactPerson.delete({
+      where:{
+        id: id
+      }
+    })
+
+    res.status(200).json("deleted contact person")
+  } catch (error) {
+    console.error("error deleting education", error)
+  }
+}
 module.exports = {
   getCompanyDetails,
   createCompany,
@@ -556,5 +572,6 @@ module.exports = {
   getContact,
   viewCompanyProfile,
   addContact,
-  updateContact
+  updateContact,
+  deleteContact
 };

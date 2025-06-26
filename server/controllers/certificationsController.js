@@ -47,9 +47,15 @@ const createCert = async (req, res) => {
       // Extract data from the request body
       const { certName, certDetails } = req.body;
       let certPhoto
-      if(certPhoto) {
+      if(req.file != null) {
         certPhoto = req.file.filename
       } 
+
+      if(!certName){
+        throw new Error("Certification name is required")
+      }
+
+      console.log(certPhoto)
 
       const newCert = await prisma.certification.create({
         data: {
@@ -71,7 +77,7 @@ const createCert = async (req, res) => {
       res.status(201).json(newCert);
     } catch (error) {
       console.error("Error creating license:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: error.message });
       // console.log(req.body)
     }
   };
@@ -83,6 +89,10 @@ const createCert = async (req, res) => {
       let certPhoto
       if(req.file != null){
        certPhoto = req.file.filename
+      }
+
+      if(!certName){
+        throw new Error("Certification name is required")
       }
 
       const newCert = await prisma.certification.update({
@@ -101,7 +111,7 @@ const createCert = async (req, res) => {
       res.status(201).json(newCert);
     } catch (error) {
       console.error("Error creating license:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: error.message });
       // console.log(req.body)
     }
   };

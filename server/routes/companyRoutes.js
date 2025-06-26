@@ -34,6 +34,8 @@ router.post("/create", upload.fields([{ name: 'profPic' }, { name: 'secRegistrat
 router.put("/update", upload.single('profPic'),companyController.updateCompany);
 router.post("/contact/create", upload.none(),companyController.addContact);
 router.put("/contact/update", upload.none(),companyController.updateContact);
+router.delete("/contact/delete", companyController.deleteContact);
+
 
 
 

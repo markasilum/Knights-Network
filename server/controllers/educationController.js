@@ -24,7 +24,7 @@ const getEducation = async (req, res) => {
       include:{
         degree:true
       },orderBy:{
-        endDate:"desc"
+        startDate:"desc"
       }
     });
 
@@ -40,14 +40,36 @@ const createEducation = async (req, res) => {
   try {
     // Extract data from the request body
     const { schoolName, degree, qpi, startDate, endDate, awards } = req.body;
-    // console.log("startDate " + startDate);
-    // Create a new person record in the database using Prisma
+    let startDateCon
+    let endDateCon
+    if(startDate=="null"){
+      startDateCon= null
+    }else{
+      startDateCon= startDate
+    }
+
+    if(endDate=="null"){
+      endDateCon= null
+    }else{
+      endDateCon= endDate
+    }
+
+    if(!schoolName){
+      throw new Error("School Name is required")
+    }
+    if(!degree){
+      throw new Error("Degree is required")
+    }
+
+    if(startDateCon==null){
+      throw new Error("Start date is required")
+    }
     const newEducation = await prisma.education.create({
       data: {
         schoolName,
         qpi,
         startDate,
-        endDate,
+        endDate:endDateCon,
         awards,
         person: {
           connect: {
@@ -75,7 +97,7 @@ const createEducation = async (req, res) => {
     res.status(201).json(newEducation);
   } catch (error) {
     console.error("Error creating person:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
     // console.log(req.body)
   }
 };
@@ -85,8 +107,30 @@ const updateEducation = async (req, res) => {
   try {
     // Extract data from the request body
     const { id, schoolName, degree, qpi, startDate, endDate, awards } = req.body;
-    // console.log("startDate " + startDate);
-    // Create a new person record in the database using Prisma
+    let startDateCon
+    let endDateCon
+    if(startDate=="null"){
+      startDateCon= null
+    }else{
+      startDateCon= startDate
+    }
+
+    if(endDate=="null"){
+      endDateCon= null
+    }else{
+      endDateCon= endDate
+    }
+
+    if(!schoolName){
+      throw new Error("School Name is required")
+    }
+    if(!degree){
+      throw new Error("Degree is required")
+    }
+
+    if(startDateCon==null){
+      throw new Error("Start date is required")
+    }
     const newEducation = await prisma.education.update({
       where:{
         id:id
@@ -94,8 +138,8 @@ const updateEducation = async (req, res) => {
       data: {
         schoolName,
         qpi,
-        startDate,
-        endDate,
+        startDate: startDateCon,
+        endDate: endDateCon,
         awards,
         person: {
           connect: {
@@ -123,7 +167,7 @@ const updateEducation = async (req, res) => {
     res.status(201).json(newEducation);
   } catch (error) {
     console.error("Error creating person:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message});
     // console.log(req.body)
   }
 };
