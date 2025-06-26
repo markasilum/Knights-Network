@@ -19,7 +19,7 @@ const authRoutes = require('./routes/authRoutes')
 const recommendRoutes = require('./routes/recommendRoutes')
 const searchRoutes = require('./routes/searchRoutes')
 const surveyRoutes = require('./routes/surveysRoutes')
-
+const swaggerDocs = require('./utils/swagger')
 
 var cookies = require("cookie-parser");
 const {requireAuth} = require('./middleware/authMiddleware')
@@ -59,6 +59,8 @@ app.use('/uploads', express.static('uploads'))
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+
+    swaggerDocs(app, port)
   });
   
 
