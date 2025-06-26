@@ -22,7 +22,9 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
     "pdfkit": "^0.15.0",
-    "superstruct": "^1.0.4"
+    "superstruct": "^1.0.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.3",
