@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
 
 
 const jwt = require("jsonwebtoken");
@@ -17,6 +18,37 @@ function exclude(user, keys) {
     Object.entries(user).filter(([key]) => !keys.includes(key))
   );
 }
+
+
+
+const sendEmail = async (req, res) => {
+  try {
+    const {email} = req.body
+
+    console.log("email sent to:", email)
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: '***REMOVED***',
+        pass: '***REMOVED***'
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: "***REMOVED***",
+      to: email,
+      subject: "Knights Network Account Verification",
+      text: "Knights Network Account Verified"
+    });
+
+    res.status(200).json(info);
+    console.log("sent email");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const role = async (req, res) => {
     const userId = getUserIdFromJWT(req)
 
@@ -40,6 +72,34 @@ const role = async (req, res) => {
       },
       data:{
         isArchived: true
+      }
+    });
+    res.json(data);
+  };
+
+  const archiveUser = async (req, res) => {
+    const {id} = req.query
+  
+    const data = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data:{
+        isBanned: true
+      }
+    });
+    res.json(data);
+  };
+
+  const unArchiveUser = async (req, res) => {
+    const {id} = req.query
+  
+    const data = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data:{
+        isBanned: false
       }
     });
     res.json(data);
@@ -134,9 +194,15 @@ const role = async (req, res) => {
             }
           }
         },
+        orderBy: {
+          user: {
+            person: {
+              firstName: 'asc'
+            }
+          }
+        }
       });
       res.status(201).json(data);
-      console.log(data)
       
     } catch (error) {
       console.error("Error getting alumni index:", error);
@@ -159,6 +225,12 @@ const role = async (req, res) => {
                   verifiReq: true
                 }
               }
+            }
+          }
+        },orderBy: {
+          user: {
+            person: {
+              firstName: 'asc'
             }
           }
         }
@@ -186,6 +258,13 @@ const role = async (req, res) => {
                   verifiReq:true
                 }
               }
+            }
+          }
+        },
+        orderBy:{
+          user:{
+            company:{
+              companyName: 'asc'
             }
           }
         }
@@ -220,6 +299,47 @@ const role = async (req, res) => {
     }
   }
 
+  const resumeLog =  async (req, res) => {
+    try {
+      const { ownerId, viewerId, action } = req.body;
+      const data = await prisma.resumeLogs.create({
+        data:{
+          viewerId: viewerId,
+          ownerId:ownerId,
+          action:action,
+        }
+      });
+      res.status(201).json(data);
+    } catch (error) {
+      console.error("Error getting company index:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  const getResumeLog =  async (req, res) => {
+    try {
+      const {id} = req.query;
+      const data = await prisma.resumeLogs.findMany({
+        where:{
+          ownerId: id
+        },
+        include:{
+          resumeViewer:{
+            select:{
+              company: true,
+              person:true,
+            }
+          }
+        }
+      });
+
+      res.status(201).json(data);
+    } catch (error) {
+      console.error("Error getting resume log:", error);
+     res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
 
 module.exports ={
     role,
@@ -231,5 +351,10 @@ module.exports ={
     userSetting,
     userSettingUpdate,
     deactivateAccount,
-    reactivateAccount
+    reactivateAccount,
+    resumeLog,
+    getResumeLog,
+    archiveUser,
+    unArchiveUser,
+    sendEmail,
 }

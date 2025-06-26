@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import MondalPendingVerification from '../../components/ModalPendingVerification';
 import ModalPendingVerification from '../../components/ModalPendingVerification';
 import ModalAccountReactivate from '../../components/ModalAccountReactivate';
+import ModalAccountBanned from '../../components/ModalAccountBanned';
 const LoginScreen = () => {
   const navigate = useNavigate()
 
@@ -83,8 +84,8 @@ const LoginScreen = () => {
         setErrorMessage({ verification: "Pending account verification" });
       } else if(error.message === "Account is deactivated"){
         setErrorMessage({ deactivate: "Account is deactivated" });
-      } else if(error.message === "Account is banned"){
-        setErrorMessage({ banned: "Account is banned" });
+      } else if(error.message === "Account is banned, contact administrator"){
+        setErrorMessage({ banned: "Account is banned, contact administrator" });
       } 
     }
   };
@@ -94,17 +95,17 @@ const LoginScreen = () => {
     <div className="h-screen w-9/12 bg-white shadow-xl grid grid-cols-3">
       <div className="h-full col-span-2 flex flex-col justify-center align-center">
         <div className="flex flex-col bg-white h-1/2 justify-center items-center">
-          <span className="font-bold  text-6xl text-primary">
+          <span className="text-6xl text-primary font-TrajanRegular">
             KNIGHTS NETWORK
           </span>
-          <span className="text-3xl text-primary">
+          <span className="text-3xl text-primary font-TrajanRegular">
             ATENEO DE DAVAO UNIVERSITY
           </span>
         </div>
       </div>
       <div className="h-full flex flex-col justify-center align-center">
         <div className="flex flex-col bg-primary h-fit min-h-[67%] rounded-2xl mr-6 p-8 gap-3 items-center justify-center">
-          <img src="src\assets\UniversitySealWhite.png" className="h-[200px]" />
+          <img src="src\assets\ACCAHlogo.png" className="h-[200px]" />
 
           <form onSubmit={login} className=" w-11/12">
             <div className="flex flex-col gap-3">
@@ -159,6 +160,9 @@ const LoginScreen = () => {
               
               {errorMessage.deactivate &&
                 document.getElementById("deactivated").showModal()}
+
+            {errorMessage.banned &&
+                document.getElementById("banned").showModal()}
             </div>
             <div className="w-full flex flex-col justify-center items-center gap-3 mt-4">
               <button
@@ -184,6 +188,7 @@ const LoginScreen = () => {
 
           <ModalPendingVerification setErrorMessage={setErrorMessage} />
           <ModalAccountReactivate setErrorMessage={setErrorMessage} email={email} password={password}/>
+          <ModalAccountBanned setErrorMessage={setErrorMessage}/>
         </div>
       </div>
     </div>

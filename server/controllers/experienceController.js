@@ -18,7 +18,7 @@ const getPersonExperience = async (req, res) => {
             userId: userIdCookie
           }
         },orderBy:{
-          endDate:"desc"
+          startDate:"desc"
         }
       });
 
@@ -38,14 +38,39 @@ const createExperience = async (req, res) => {
   try {
     // Extract data from the request body
     const { jobTitle, companyName, jobDetails, startDate, endDate} = req.body;
-    // Create a new person record in the database using Prisma
+    let startDateCon
+
+    if(startDate=="null"){
+      startDateCon= null
+    }else{
+      startDateCon= startDate
+    }
+
+    let endDateCon
+    if(endDate=="null"){
+      endDateCon= null
+    }else{
+      endDateCon= endDate
+    }
+
+    if(!jobTitle){
+      throw new Error("Job Title is required")
+    }
+
+    if(!companyName){
+      throw new Error("Company Name is required")
+    }
+
+    if(!startDateCon){
+      throw new Error("Start date is required")
+    }
     const newExperience = await prisma.experience.create({ 
       data:{
         jobTitle, 
         companyName, 
         jobDetails,
-        startDate,
-        endDate,
+        startDate: startDateCon,
+        endDate: endDateCon,
         person:{
           connect:{
               userId:userIdCookie,
@@ -61,7 +86,7 @@ const createExperience = async (req, res) => {
     res.status(201).json(newExperience);
   } catch (error) {
     console.error('Error creating experience:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: error.message });
     // console.log(req.body)
   }
 }
@@ -70,6 +95,13 @@ const updateExperience = async (req, res) => {
   try{
     // Extract data from the request body
     const { expId, jobTitle, companyName, jobDetails, startDate, endDate} = req.body;
+    let endDateCon
+    if(endDate=="null"){
+      endDateCon= null
+    }else{
+      endDateCon= endDate
+    }
+
     // Create a new person record in the database using Prisma
     const updateExperience = await prisma.experience.update({ 
       where:{
@@ -80,7 +112,7 @@ const updateExperience = async (req, res) => {
         companyName, 
         jobDetails,
         startDate,
-        endDate,
+        endDate: endDateCon
       },
     });
 
@@ -88,7 +120,7 @@ const updateExperience = async (req, res) => {
     res.status(201).json(updateExperience);
     // console.log(updateExperience)
 
-  }catch{
+  }catch(error){
     console.error('Error updating experience:', error);
     res.status(500).json({ error: 'Internal Server Error' });
 

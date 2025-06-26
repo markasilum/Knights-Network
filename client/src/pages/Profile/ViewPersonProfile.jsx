@@ -138,7 +138,7 @@ const ViewPersonProfile = () => {
 
           {userData&&(
             profileNavButton === "creds" && (
-              <ViewCredentials preferences={personPref} personId={personId} experience={userData.experience} skills={userData.skills} educData={userData.education} licenses={userData.personLicense} certs={userData.certification}/>
+              <ViewCredentials userId={userData.user.id} preferences={personPref} personId={personId} experience={userData.experience} skills={userData.skills} educData={userData.education} licenses={userData.personLicense} certs={userData.certification}/>
             )
           )}  
 

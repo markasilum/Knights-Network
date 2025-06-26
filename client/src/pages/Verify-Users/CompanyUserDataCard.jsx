@@ -23,6 +23,46 @@ const CompanyUserDataCard = ({userData}) => {
     
         navigate(0)
       }
+
+      const banAccount = async (event) => {
+        try {
+          const response = await fetch(`http://localhost:3000/user/admin/archive?id=${userData.id}`, {
+            method: "GET",
+            credentials:'include'
+          });
+    
+          const responseData = await response.json();
+    
+          if (!response.ok) {
+            throw new Error(responseData.error);
+          }
+    
+          fetchUsers()
+        } catch (error) {
+          console.error("Error verifying user:", error);
+        }
+    
+      }
+    
+      const unBanAccount = async (event) => {
+        try {
+          const response = await fetch(`http://localhost:3000/user/admin/unarchive?id=${userData.id}`, {
+            method: "GET",
+            credentials:'include'
+          });
+    
+          const responseData = await response.json();
+    
+          if (!response.ok) {
+            throw new Error(responseData.error);
+          }
+    
+          fetchUsers()
+        } catch (error) {
+          console.error("Error verifying user:", error);
+        }
+    
+      }
   return (
     <div className="w-2/3 border-2 rounded-lg h-fit max-h-[90%] p-3 overflow-scroll">
       {userData &&(
@@ -82,13 +122,44 @@ const CompanyUserDataCard = ({userData}) => {
           </div>
         )}
 
-          <div className="flex flex-row justify-end w-full">
-            {userData.verified === true && (
-              <div className="bg-success h-fit justify-center flex p-3 rounded-lg w-32 text-white cursor-not-allowed">Verified</div>
-            )}
+<div className="flex flex-col gap-2 w-full mt-2">
+            <div className="flex flex-row gap-2 items-center">
+            <p className="font-semibold">Account Status: </p>
+            {userData.isArchived === false && (
+              <div className="badge badge-success badge-outline">Active</div>
+            )} 
+             {userData.isArchived === true && (
+              <div className="badge badge-info badge-outline">Deactivated</div>
+            )} 
+
             {userData.verified === false && (
-              <button className="btn btn-primary w-32" onClick={handleSubmit}>Verify User</button>
+              <div className="badge badge-outline">Unverified</div>
             )}
+             {userData.verified === true && (
+              <div className="badge badge-success badge-outline">Verified</div>
+            )}
+
+            {userData.isBanned === false && (
+              <div className="badge badge-success badge-outline">Not Banned</div>
+            )}
+           
+            {userData.isBanned === true && (
+              <div className="badge badge-error badge-outline">Banned</div>
+            )}
+            
+            </div>
+
+            <div className="w-full flex flex-row justify-between">
+            {userData.isBanned === false && (
+            <button className="btn btn-primary btn-error text-white btn-sm w-32" onClick={banAccount}>Ban User</button>
+          )}
+           {userData.isBanned === true && (
+            <button className="btn btn-primary btn-success text-white btn-sm w-32" onClick={unBanAccount}>Restore</button>
+          )}
+            {userData.verified === false && (
+              <button className="btn btn-primary btn-sm w-32" onClick={handleSubmit}>Verify User</button>
+            )}
+            </div>
           </div>
         </div>
       )}

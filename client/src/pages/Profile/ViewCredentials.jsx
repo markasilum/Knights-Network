@@ -5,7 +5,24 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DateToWords from "../../components/DateFormatter";
 import ButtonNavigator from "../../components/ButtonNavigator";
-const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,preferences }) => {
+import { useAuthContext } from "../../hooks/useAuthContext";
+const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,preferences, userId }) => {
+
+  const{user} = useAuthContext()
+
+  const viewResume = async () => {
+    try {
+        const response = await fetch("http://localhost:3000/user/resume/log", {
+            method: "POST",
+            body: JSON.stringify({"ownerId": userId, "viewerId": user.user.id, "action": "view"}),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (error) {}
+
+  }
   return (
     <div className="overflow-auto-y w-full  bg-white h-fit mt-2 p-4 flex flex-col rounded-xl mb-20 gap-2">
       <div>
@@ -22,9 +39,16 @@ const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,p
                 <DateToWords dateString={experience.startDate} />
               </span>
               <span className="font-thin">-</span>
-              <span className="font-thin">
+              {experience.endDate&&(
+                <span className="font-thin">
                 <DateToWords dateString={experience.endDate} />
               </span>
+              )}
+              {!experience.endDate&&(
+                <span className="font-thin">
+                present
+              </span>
+              )}
             </div>
             <ul className="list-disc ml-8 font-thin">
               {experience.jobDetails.split("\r\n").map((line, index) => (
@@ -59,7 +83,12 @@ const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,p
               <div className='flex flex-row gap-1'>
               <span className='font-thin'><DateToWords dateString={education.startDate} /></span>
               <span className='font-thin'>-</span>
-              <span className='font-thin'><DateToWords dateString={education.endDate} /></span>
+              {education.endDate&&(
+                  <span className='font-thin'><DateToWords dateString={education.endDate} /></span>
+              )}
+              {!education.endDate&&(
+                  <span className='font-thin'>present</span>
+              )}
               </div>
               <span className='font-thin'>{"QPI: " +education.qpi}</span>
               <span className='font-thin'>{education.awards}</span>
@@ -97,8 +126,8 @@ const ViewCredentials = ({personId, experience, skills,educData,licenses,certs,p
 
       {preferences.allowViewResume == true &&(
         <div className='w-full flex flex-row justify-end'>
-        <ButtonNavigator path={`/person/resume/view/${personId}`} text={"View Resume"}/>
-      </div> 
+          <ButtonNavigator path={`/person/resume/view/${personId}`} text={"View Resume"} onClick={viewResume}/>
+        </div> 
       )}  
     </div>
   );
