@@ -2,6 +2,7 @@ const express = require('express');
 const multer  = require('multer');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
+require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes')
 const personRoutes = require('./routes/personRoutes')
@@ -59,7 +60,6 @@ app.use('/uploads', express.static('uploads'))
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-
     swaggerDocs(app, port)
   });
   

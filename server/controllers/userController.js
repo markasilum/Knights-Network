@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const nodemailer = require('nodemailer');
 
-
 const jwt = require("jsonwebtoken");
 
 const getUserIdFromJWT = (req) => {
@@ -29,13 +28,13 @@ const sendEmail = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: '***REMOVED***',
-        pass: '***REMOVED***'
+        user: process.env.ADMIN_EMAIL,
+        pass: process.env.APP_PASSWORD,
       }
     });
 
     const info = await transporter.sendMail({
-      from: "***REMOVED***",
+      from: process.env.ADMIN_EMAIL,
       to: email,
       subject: "Knights Network Account Verification",
       text: "Knights Network Account Verified"
